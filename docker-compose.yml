@@ -1,0 +1,56 @@
+
+services:
+
+  php:
+    image: php:8.3-apache
+
+    container_name: php
+
+    ports:
+      - "80:80"
+
+    volumes:
+      - ./:/var/www/html
+
+    command: >
+      bash -c "
+      a2enmod rewrite &&
+      docker-php-ext-install mysqli pdo pdo_mysql &&
+      apache2-foreground
+      "
+
+  mysql:
+    image: mysql:8.4
+
+    container_name: mysql
+
+    restart: always
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: badminton
+      MYSQL_USER: badminton
+      MYSQL_PASSWORD: badminton
+
+    ports:
+      - "3306:3306"
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+
+    container_name: phpmyadmin
+
+    ports:
+      - "8080:80"
+
+    environment:
+      PMA_HOST: mysql
+
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:
