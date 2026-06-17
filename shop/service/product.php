@@ -1,7 +1,7 @@
 <?php
 
-require_once PATH_RETAIL . 'service/base.php';
-require_once PATH_RETAIL . 'repository/product.php';
+require_once PATH_SHOP . 'service/base.php';
+require_once PATH_SHOP . 'repository/product.php';
 
 function product_service(): array
 {
@@ -26,7 +26,7 @@ function product_context(): array
         'brands' => get_array('brand'),
         'price'  => get_query('price'),
         'page'   => max(1, (int)get_query('page', 1)),
-        'perPage'=> 6
+        'perPage'=> 30
     ];
 }
 

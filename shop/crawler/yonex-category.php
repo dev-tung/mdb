@@ -1,14 +1,14 @@
 <?php
 
-require_once PATH_RETAIL . 'crawler/base.php';
+require_once PATH_SHOP . 'crawler/base.php';
 
 $baseUrl = 'https://www.yonex.com/badminton';
 
 /**
  * OUTPUT PATH
  */
-$jsonFile = PATH_RETAIL . 'json/yonex_category.json';
-$imgDir   = PATH_RETAIL . 'image/yonex_category';
+$jsonFile = PATH_SHOP . 'json/yonex_category.json';
+$imgDir   = PATH_SHOP . 'image/yonex_category';
 
 /**
  * PARSE CATEGORIES

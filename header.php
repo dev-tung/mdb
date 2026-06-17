@@ -28,29 +28,29 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link <?= (str_contains($current, '/retail/page/product')) ? 'active fw-bold text-success' : '' ?>"
-                          href="<?= URL_ROOT ?>/retail/page/product">
+                        <a class="nav-link <?= (str_contains($current, '/shop/product')) ? 'active fw-bold text-success' : '' ?>"
+                          href="<?= URL_ROOT ?>/shop/product">
                             Sản phẩm
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link <?= (str_contains($current, '/stringing/page/table')) ? 'active fw-bold text-success' : '' ?>"
-                          href="<?= URL_ROOT ?>/stringing/page/table">
+                        <a class="nav-link <?= (str_contains($current, '/stringing/table')) ? 'active fw-bold text-success' : '' ?>"
+                          href="<?= URL_ROOT ?>/stringing/table">
                             Căng cước
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link <?= (str_contains($current, 'human/page/affilate')) ? 'active fw-bold text-success' : '' ?>"
-                          href="<?= URL_ROOT ?>/human/page/affilate">
+                        <a class="nav-link <?= (str_contains($current, 'human/affilate')) ? 'active fw-bold text-success' : '' ?>"
+                          href="<?= URL_ROOT ?>/human/affilate">
                             Cộng tác viên
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link <?= (str_contains($current, 'human/page/recruitment')) ? 'active fw-bold text-success' : '' ?>"
-                          href="<?= URL_ROOT ?>/human/page/recruitment">
+                        <a class="nav-link <?= (str_contains($current, 'human/recruitment')) ? 'active fw-bold text-success' : '' ?>"
+                          href="<?= URL_ROOT ?>/human/recruitment">
                             Tuyển dụng
                         </a>
                     </li>

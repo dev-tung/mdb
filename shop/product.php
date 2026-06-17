@@ -1,5 +1,5 @@
 <?php require_once PATH_ROOT . 'header.php'; ?>
-<?php require_once PATH_RETAIL . 'service/product.php'; ?>
+<?php require_once PATH_SHOP . 'service/product.php'; ?>
 
 <?php $result = product_service(); ?>
 
@@ -14,7 +14,6 @@
 
                 <input type="hidden" name="page" value="<?= $result['page'] ?>">
 
-                <!-- FILTER WRAPPER -->
                 <div class="border rounded bg-white shadow-sm p-3">
 
                     <h5 class="fw-bold mb-3 text-success">Bộ lọc</h5>
@@ -26,7 +25,7 @@
                         <select class="form-select form-select-sm" name="type">
                             <?php foreach ([
                                 'all'=>'Tất cả',
-                                'racquet'=>'Vợt',
+                                'racquets'=>'Vợt',
                                 'shoes'=>'Giày',
                                 'bag'=>'Túi',
                                 'accessory'=>'Phụ kiện'
@@ -51,7 +50,8 @@
                                     type="checkbox"
                                     name="brand[]"
                                     value="<?= $b ?>"
-                                    <?= in_array($b,$result['filters']['brands'])?'checked':'' ?>>
+                                    <?= in_array($b, $result['filters']['brands']) ? 'checked' : '' ?>>
+
                                 <label class="form-check-label">
                                     <?= ucfirst($b) ?>
                                 </label>
@@ -77,6 +77,7 @@
                                     name="price"
                                     value="<?= $k ?>"
                                     <?= $result['filters']['price']==$k?'checked':'' ?>>
+
                                 <label class="form-check-label">
                                     <?= $v ?>
                                 </label>
@@ -84,7 +85,6 @@
                         <?php endforeach; ?>
                     </div>
 
-                    <!-- BUTTON -->
                     <button class="btn btn-success btn-sm w-100 mt-2">
                         Lọc sản phẩm
                     </button>
@@ -101,20 +101,46 @@
             <div class="row g-3">
 
                 <?php foreach ($result['products'] as $p): ?>
+
+                    <?php
+                        $img = $p['image'] ?? 'https://placehold.co/300x300?text=No+Image';
+                    ?>
+
                     <div class="col-6 col-md-4 col-xl-3">
 
-                        <div class="card h-100 border-0 shadow-sm">
-                            <img src="https://placehold.co/300x300" class="card-img-top">
+                        <a href="/shop/product/<?= $p['slug'] ?>"
+                           class="text-decoration-none text-dark">
 
-                            <div class="card-body">
-                                <h6><?= $p['name'] ?></h6>
-                                <div class="text-danger fw-bold">
-                                    <?= number_format($p['price']) ?>₫
+                            <div class="card h-100 border-0 shadow-sm">
+
+                                <!-- IMAGE (FIX NOT CROPPED) -->
+                                <div class="ratio ratio-1x1" style="background:#f9f9f9;">
+
+                                    <img src="<?= htmlspecialchars($img) ?>"
+                                         class="w-100 h-100 p-2"
+                                         style="object-fit:contain;">
+
                                 </div>
+
+                                <!-- BODY -->
+                                <div class="card-body">
+
+                                    <h6 class="mb-2">
+                                        <?= htmlspecialchars($p['name']) ?>
+                                    </h6>
+
+                                    <div class="text-danger fw-bold">
+                                        <?= isset($p['price']) ? number_format($p['price']) . '₫' : 'Liên hệ' ?>
+                                    </div>
+
+                                </div>
+
                             </div>
-                        </div>
+
+                        </a>
 
                     </div>
+
                 <?php endforeach; ?>
 
             </div>

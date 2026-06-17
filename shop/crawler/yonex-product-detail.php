@@ -1,6 +1,6 @@
 <?php
 
-require_once PATH_RETAIL . 'crawler/base.php';
+require_once PATH_SHOP . 'crawler/base.php';
 
 /**
  * =========================
@@ -8,15 +8,15 @@ require_once PATH_RETAIL . 'crawler/base.php';
  * =========================
  */
 
-$inputFile = PATH_RETAIL . 'json/yonex_product.json';
+$inputFile = PATH_SHOP . 'json/yonex_product.json';
 
 $page  = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $limit = 20;
 $offset = ($page - 1) * $limit;
 
-$outputFile = PATH_RETAIL . 'json/yonex_product_detail_page_' . $page . '.json';
+$outputFile = PATH_SHOP . 'json/yonex_product_detail_page_' . $page . '.json';
 
-$imageDir = PATH_RETAIL . 'image/yonex_product_detail';
+$imageDir = PATH_SHOP . 'image/yonex_product_detail';
 
 /**
  * =========================
