@@ -18,7 +18,7 @@
 
               <div class="d-flex align-items-center">
 
-                  <img width="130" src="https://dangkywebvoibocongthuong.com/wp-content/uploads/2021/11/logo-da-thong-bao-bo-cong-thuong.png"
+                  <img width="130" src="<?= URL_ROOT ?>/bocongthuong.png"
                               alt="Đã thông báo Bộ Công Thương">
 
               </div>
