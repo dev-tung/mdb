@@ -16,22 +16,43 @@
             <div class="collapse navbar-collapse" id="mainNavbar">
 
                 <!-- NAV -->
+                <?php $current = $_SERVER['REQUEST_URI']; ?>
+
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= ROOT_URL ?>">Trang chủ</a>
+                        <a class="nav-link <?= ($current == ROOT_URL) ? 'active fw-bold text-success' : '' ?>"
+                          href="<?= ROOT_URL ?>">
+                            Trang chủ
+                        </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= ROOT_URL ?>/retail/page/product">Sản phẩm</a>
+                        <a class="nav-link <?= (str_contains($current, '/retail/page/product')) ? 'active fw-bold text-success' : '' ?>"
+                          href="<?= ROOT_URL ?>/retail/page/product">
+                            Sản phẩm
+                        </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= ROOT_URL ?>/brand">Thương hiệu</a>
+                        <a class="nav-link <?= (str_contains($current, '/stringing/page/table')) ? 'active fw-bold text-success' : '' ?>"
+                          href="<?= ROOT_URL ?>/stringing/page/table">
+                            Căng cước
+                        </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= ROOT_URL ?>/contact">Liên hệ</a>
+                        <a class="nav-link <?= (str_contains($current, 'affiliate')) ? 'active fw-bold text-success' : '' ?>"
+                          href="<?= ROOT_URL ?>/affiliate">
+                            Cộng tác viên
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link <?= (str_contains($current, 'recruit')) ? 'active fw-bold text-success' : '' ?>"
+                          href="<?= ROOT_URL ?>/recruit">
+                            Tuyển dụng
+                        </a>
                     </li>
 
                 </ul>
