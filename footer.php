@@ -2,22 +2,31 @@
 
     <div class="container py-5">
 
-        <div class="row g-4">
+        <div class="row g-4 justify-content-between">
 
             <!-- ABOUT -->
             <div class="col-12 col-md-6 col-lg-4">
 
-                <h5 class="fw-bold mb-3">MDB Sports</h5>
+              <h5 class="fw-bold mb-3">
+                  MẠNH DŨNG SPORTS
+              </h5>
 
-                <p class="text-muted mb-0">
-                    Chuyên cung cấp vợt cầu lông, giày cầu lông và phụ kiện chính hãng.
-                    Cam kết chất lượng và giá tốt nhất.
-                </p>
+              <p class="text-muted small mb-2 lh-lg">
+                  Chuyên cung cấp vợt cầu lông, giày cầu lông và phụ kiện chính hãng.
+                  Cam kết chất lượng và giá tốt nhất.
+              </p>
+
+              <div class="d-flex align-items-center">
+
+                  <img width="130" src="https://dangkywebvoibocongthuong.com/wp-content/uploads/2021/11/logo-da-thong-bao-bo-cong-thuong.png"
+                              alt="Đã thông báo Bộ Công Thương">
+
+              </div>
 
             </div>
 
             <!-- PRODUCTS -->
-            <div class="col-6 col-lg-2">
+            <div class="col-6 col-lg-auto">
 
                 <h6 class="fw-bold mb-3">Sản phẩm</h6>
 
@@ -33,7 +42,7 @@
             </div>
 
             <!-- SUPPORT -->
-            <div class="col-6 col-lg-2">
+            <div class="col-6 col-lg-auto">
 
                 <h6 class="fw-bold mb-3">Hỗ trợ</h6>
 
@@ -49,7 +58,7 @@
             </div>
 
             <!-- CONTACT -->
-            <div class="col-12 col-lg-2">
+            <div class="col-12 col-lg-auto">
 
                 <h6 class="fw-bold mb-3">Liên hệ</h6>
 
@@ -81,7 +90,7 @@
             </div>
 
             <!-- SOCIAL (NEW COLUMN) -->
-            <div class="col-12 col-lg-2">
+            <div class="col-12 col-lg-auto">
 
                 <h6 class="fw-bold mb-3">Kết nối</h6>
 

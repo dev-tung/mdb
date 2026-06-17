@@ -10,16 +10,20 @@
         <!-- FILTER -->
         <aside class="col-12 col-lg-3">
 
-            <form method="GET">
+            <form method="GET" class="position-sticky" style="top: 20px;">
 
                 <input type="hidden" name="page" value="<?= $result['page'] ?>">
 
-                <!-- CATEGORY -->
-                <div class="card mb-3">
-                    <div class="card-header"><b>Danh mục</b></div>
-                    <div class="card-body">
+                <!-- FILTER WRAPPER -->
+                <div class="border rounded bg-white shadow-sm p-3">
 
-                        <select class="form-select" name="type">
+                    <h5 class="fw-bold mb-3 text-success">Bộ lọc</h5>
+
+                    <!-- CATEGORY -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Danh mục</label>
+
+                        <select class="form-select form-select-sm" name="type">
                             <?php foreach ([
                                 'all'=>'Tất cả',
                                 'racquet'=>'Vợt',
@@ -33,35 +37,33 @@
                                 </option>
                             <?php endforeach; ?>
                         </select>
-
                     </div>
-                </div>
 
-                <!-- BRAND -->
-                <div class="card mb-3">
-                    <div class="card-header"><b>Thương hiệu</b></div>
-                    <div class="card-body">
+                    <hr class="my-3">
+
+                    <!-- BRAND -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Thương hiệu</label>
 
                         <?php foreach (['yonex','victor','lining','mizuno'] as $b): ?>
-                            <div class="form-check">
+                            <div class="form-check small mb-1">
                                 <input class="form-check-input"
-                                       type="checkbox"
-                                       name="brand[]"
-                                       value="<?= $b ?>"
-                                       <?= in_array($b,$result['filters']['brands'])?'checked':'' ?>>
+                                    type="checkbox"
+                                    name="brand[]"
+                                    value="<?= $b ?>"
+                                    <?= in_array($b,$result['filters']['brands'])?'checked':'' ?>>
                                 <label class="form-check-label">
                                     <?= ucfirst($b) ?>
                                 </label>
                             </div>
                         <?php endforeach; ?>
-
                     </div>
-                </div>
 
-                <!-- PRICE -->
-                <div class="card mb-3">
-                    <div class="card-header"><b>Khoảng giá</b></div>
-                    <div class="card-body">
+                    <hr class="my-3">
+
+                    <!-- PRICE -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Khoảng giá</label>
 
                         <?php foreach ([
                             'lt1'=>'Dưới 1 triệu',
@@ -69,24 +71,25 @@
                             '3-5'=>'3 - 5 triệu',
                             'gt5'=>'Trên 5 triệu'
                         ] as $k=>$v): ?>
-                            <div class="form-check">
+                            <div class="form-check small mb-1">
                                 <input class="form-check-input"
-                                       type="radio"
-                                       name="price"
-                                       value="<?= $k ?>"
-                                       <?= $result['filters']['price']==$k?'checked':'' ?>>
+                                    type="radio"
+                                    name="price"
+                                    value="<?= $k ?>"
+                                    <?= $result['filters']['price']==$k?'checked':'' ?>>
                                 <label class="form-check-label">
                                     <?= $v ?>
                                 </label>
                             </div>
                         <?php endforeach; ?>
-
                     </div>
-                </div>
 
-                <button class="btn btn-success w-100">
-                    Lọc sản phẩm
-                </button>
+                    <!-- BUTTON -->
+                    <button class="btn btn-success btn-sm w-100 mt-2">
+                        Lọc sản phẩm
+                    </button>
+
+                </div>
 
             </form>
 
