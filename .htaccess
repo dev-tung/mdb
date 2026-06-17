@@ -1,6 +1,8 @@
 RewriteEngine On
 
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+# Cho phép CSS/JS/Image chạy trực tiếp
+RewriteCond %{REQUEST_URI} \.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf)$ [NC]
+RewriteRule ^ - [L]
 
-RewriteRule ^(.*)$ index.php?route=$1 [QSA,L]
+# Tất cả còn lại vào index.php
+RewriteRule ^ index.php [QSA,L]
