@@ -189,7 +189,7 @@
         </div>
 
         <!-- KHÔNG ÁP DỤNG -->
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
 
             <div class="card shadow-lg border-0">
 
@@ -212,7 +212,7 @@
         </div>
 
         <!-- ĐIỀU CHỈNH -->
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
 
             <div class="card shadow-lg border-0">
 
