@@ -49,8 +49,8 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link <?= (str_contains($current, 'recruit')) ? 'active fw-bold text-success' : '' ?>"
-                          href="<?= ROOT_URL ?>/recruit">
+                        <a class="nav-link <?= (str_contains($current, 'human/page/recruitment')) ? 'active fw-bold text-success' : '' ?>"
+                          href="<?= ROOT_URL ?>/human/page/recruitment">
                             Tuyển dụng
                         </a>
                     </li>
