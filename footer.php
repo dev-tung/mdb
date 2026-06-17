@@ -68,14 +68,14 @@
                         <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M6.6 10.8c1.5 3 3.6 5.1 6.6 6.6l2.2-2.2c.3-.3.8-.4 1.2-.3 1.3.4 2.7.7 4 .7.7 0 1.4.6 1.4 1.4V21c0 .8-.6 1.4-1.4 1.4C11.6 22.4 1.6 12.4 1.6 2.4 1.6 1.6 2.2 1 3 1h3.6C7.4 1 8 1.6 8 2.4c0 1.3.2 2.7.7 4 .1.4 0 .9-.3 1.2L6.6 10.8z"/>
                         </svg>
-                        0900 000 000
+                        0973 359 165
                     </li>
 
                     <li class="mb-2 d-flex align-items-center gap-2">
                         <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
                         </svg>
-                        support@mdbsports.vn
+                        manhdungsports@gmail.com
                     </li>
 
                     <li class="mb-2 d-flex align-items-center gap-2">
