@@ -7,8 +7,8 @@
             <!-- ABOUT -->
             <div class="col-12 col-md-6 col-lg-4">
 
-              <h5 class="fw-bold mb-3">
-                  MẠNH DŨNG SPORTS
+              <h5 class="fw-bold mb-3 fs-6">
+                  CÔNG TY TNHH MẠNH DŨNG SPORTS
               </h5>
 
               <p class="text-muted small mb-2 lh-lg">

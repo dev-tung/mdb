@@ -5,7 +5,7 @@
 
             <!-- Logo -->
             <a class="navbar-brand fw-bold me-4" href="<?= ROOT_URL ?>">
-                <img src="<?= ROOT_URL ?>/logo-black.png" alt="MDB Sports logo" width="150">
+                <img src="<?= ROOT_URL ?>/logo-primary.png" alt="MDB Sports logo" width="150">
             </a>
 
             <!-- Toggle -->
