@@ -4,8 +4,8 @@
         <nav class="navbar navbar-expand-lg navbar-light py-3">
 
             <!-- Logo -->
-            <a class="navbar-brand fw-bold me-4" href="<?= ROOT_URL ?>">
-                <img src="<?= ROOT_URL ?>/logo-primary.png" alt="MDB Sports logo" width="150">
+            <a class="navbar-brand fw-bold me-4" href="<?= URL_ROOT ?>">
+                <img src="<?= URL_ROOT ?>/logo-primary.png" alt="MDB Sports logo" width="150">
             </a>
 
             <!-- Toggle -->
@@ -21,36 +21,36 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                     <li class="nav-item">
-                        <a class="nav-link <?= ($current == ROOT_URL) ? 'active fw-bold text-success' : '' ?>"
-                          href="<?= ROOT_URL ?>">
+                        <a class="nav-link <?= ($current == URL_ROOT) ? 'active fw-bold text-success' : '' ?>"
+                          href="<?= URL_ROOT ?>">
                             Trang chủ
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link <?= (str_contains($current, '/retail/page/product')) ? 'active fw-bold text-success' : '' ?>"
-                          href="<?= ROOT_URL ?>/retail/page/product">
+                          href="<?= URL_ROOT ?>/retail/page/product">
                             Sản phẩm
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link <?= (str_contains($current, '/stringing/page/table')) ? 'active fw-bold text-success' : '' ?>"
-                          href="<?= ROOT_URL ?>/stringing/page/table">
+                          href="<?= URL_ROOT ?>/stringing/page/table">
                             Căng cước
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link <?= (str_contains($current, 'human/page/affilate')) ? 'active fw-bold text-success' : '' ?>"
-                          href="<?= ROOT_URL ?>/human/page/affilate">
+                          href="<?= URL_ROOT ?>/human/page/affilate">
                             Cộng tác viên
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link <?= (str_contains($current, 'human/page/recruitment')) ? 'active fw-bold text-success' : '' ?>"
-                          href="<?= ROOT_URL ?>/human/page/recruitment">
+                          href="<?= URL_ROOT ?>/human/page/recruitment">
                             Tuyển dụng
                         </a>
                     </li>
@@ -60,7 +60,7 @@
                 <!-- SEARCH (desktop compact) -->
                 <form class="d-flex flex-grow-1 mx-lg-4 mb-3 mb-lg-0 border border-success rounded overflow-hidden"
                       method="get"
-                      action="<?= ROOT_URL ?>/search">
+                      action="<?= URL_ROOT ?>/search">
 
                     <input class="form-control border-0 shadow-none"
                           type="search"
@@ -91,12 +91,12 @@
                 <!-- ACTIONS -->
                 <div class="d-flex gap-2">
 
-                    <a href="<?= ROOT_URL ?>/account"
+                    <a href="<?= URL_ROOT ?>/account"
                        class="btn btn-outline-secondary btn-sm">
                         Tài khoản
                     </a>
 
-                    <a href="<?= ROOT_URL ?>/cart"
+                    <a href="<?= URL_ROOT ?>/cart"
                        class="btn btn-success btn-sm">
                         Giỏ hàng
                     </a>

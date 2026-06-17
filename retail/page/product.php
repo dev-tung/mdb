@@ -1,5 +1,5 @@
-<?php require_once ROOT_PATH . 'header.php'; ?>
-<?php require_once RETAIL_PATH . 'service/product.php'; ?>
+<?php require_once PATH_ROOT . 'header.php'; ?>
+<?php require_once PATH_RETAIL . 'service/product.php'; ?>
 
 <?php $result = product_service(); ?>
 
@@ -141,4 +141,4 @@
 
 </main>
 
-<?php require_once ROOT_PATH . 'footer.php'; ?>
+<?php require_once PATH_ROOT . 'footer.php'; ?>

@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/bootstrap.php';
+require_once __DIR__ . '/define.php';
 
 $request = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 

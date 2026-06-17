@@ -1,7 +1,7 @@
 <?php
 
-require_once ROOT_PATH . 'helper.php';
-require_once ROOT_PATH . 'retail/repository/product.php';
+require_once PATH_RETAIL . 'service/base.php';
+require_once PATH_RETAIL . 'repository/product.php';
 
 function product_service(): array
 {

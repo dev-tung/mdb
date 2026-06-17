@@ -1,4 +1,4 @@
-<?php require_once ROOT_PATH . 'header.php'; ?>
+<?php require_once PATH_ROOT . 'header.php'; ?>
 
 <main class="container py-4">
   <!-- HERO / BANNER -->
@@ -189,4 +189,4 @@
 
 </main>
 
-<?php require_once ROOT_PATH . 'footer.php'; ?>
+<?php require_once PATH_ROOT . 'footer.php'; ?>

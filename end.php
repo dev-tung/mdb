@@ -1,3 +1,3 @@
-  <script src="<?= ROOT_URL ?>/script.js"></script>
+  <script src="<?= URL_ROOT ?>/script.js"></script>
 </body>
 </html>
