@@ -29,84 +29,265 @@
   <!-- DANH MỤC -->
   <section class="mb-5">
 
-      <header class="mb-4">
-          <h2 class="fw-bold">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+
+          <h2 class="fw-bold mb-0">
               Danh Mục Sản Phẩm
           </h2>
-      </header>
 
-      <div class="row g-4">
+          <a href="/products" class="text-decoration-none text-success">
+              Xem tất cả →
+          </a>
 
-          <div class="col-6 col-lg-3">
-              <article class="card h-100 shadow-sm border-0">
-                  <div class="card-body text-center">
+      </div>
 
-                      <svg width="50" height="50" fill="currentColor" class="text-success mb-3" viewBox="0 0 16 16">
-                          <path d="M5.5 2a.5.5 0 0 1 .5.5V7h4V2.5a.5.5 0 0 1 1 0V7h1.5a.5.5 0 0 1 0 1H11v5.5a.5.5 0 0 1-1 0V8H6v5.5a.5.5 0 0 1-1 0V8H3.5a.5.5 0 0 1 0-1H5V2.5a.5.5 0 0 1 .5-.5z"/>
-                      </svg>
+      <div id="categoryCarousel"
+          class="carousel slide"
+          data-bs-ride="carousel">
 
-                      <h3 class="h5">Vợt Cầu Lông</h3>
+          <div class="carousel-inner">
 
-                      <p class="text-muted small mb-0">
-                          Vợt Yonex, Victor, Lining chính hãng.
-                      </p>
+              <!-- Slide 1 -->
+              <div class="carousel-item active">
+
+                  <div class="row g-4">
+
+                      <div class="col-md-4">
+
+                          <a href="/products/vot-cau-long"
+                            class="text-decoration-none text-dark">
+
+                              <div class="card border shadow-sm rounded-3 overflow-hidden h-100">
+
+                                  <div class="text-center py-4 bg-light border-bottom">
+
+                                      <svg width="120"
+                                          height="120"
+                                          viewBox="0 0 24 24"
+                                          fill="none"
+                                          stroke="currentColor"
+                                          stroke-width="1.5">
+
+                                          <circle cx="8" cy="8" r="5"></circle>
+                                          <line x1="11.5" y1="11.5" x2="20" y2="20"></line>
+                                          <line x1="18" y1="18" x2="21" y2="21"></line>
+
+                                      </svg>
+
+                                  </div>
+
+                                  <div class="card-body text-center">
+
+                                      <h5 class="mb-0">
+                                          Vợt Cầu Lông
+                                      </h5>
+
+                                  </div>
+
+                              </div>
+
+                          </a>
+
+                      </div>
+
+                      <div class="col-md-4">
+
+                          <a href="/products/giay-cau-long"
+                            class="text-decoration-none text-dark">
+
+                              <div class="card border shadow-sm rounded-3 overflow-hidden h-100">
+
+                                  <div class="text-center py-4 bg-light border-bottom">
+
+                                      <svg width="120"
+                                          height="120"
+                                          viewBox="0 0 24 24"
+                                          fill="currentColor">
+
+                                          <path d="M3 16c1.5 0 2.5-1 4-1 1.5 0 2.5 1 4 1h10v3H3v-3z"/>
+                                          <path d="M9 6v5l3 2"/>
+
+                                      </svg>
+
+                                  </div>
+
+                                  <div class="card-body text-center">
+
+                                      <h5 class="mb-0">
+                                          Giày Cầu Lông
+                                      </h5>
+
+                                  </div>
+
+                              </div>
+
+                          </a>
+
+                      </div>
+
+                      <div class="col-md-4">
+
+                          <a href="/products/tui-vot"
+                            class="text-decoration-none text-dark">
+
+                              <div class="card border shadow-sm rounded-3 overflow-hidden h-100">
+
+                                  <div class="text-center py-4 bg-light border-bottom">
+
+                                      <svg width="120"
+                                          height="120"
+                                          viewBox="0 0 24 24"
+                                          fill="none"
+                                          stroke="currentColor"
+                                          stroke-width="1.5">
+
+                                          <rect x="5" y="6" width="14" height="14"></rect>
+                                          <path d="M9 6V4a3 3 0 0 1 6 0v2"></path>
+
+                                      </svg>
+
+                                  </div>
+
+                                  <div class="card-body text-center">
+
+                                      <h5 class="mb-0">
+                                          Túi Vợt
+                                      </h5>
+
+                                  </div>
+
+                              </div>
+
+                          </a>
+
+                      </div>
 
                   </div>
-              </article>
-          </div>
 
-          <div class="col-6 col-lg-3">
-              <article class="card h-100 shadow-sm border-0">
-                  <div class="card-body text-center">
+              </div>
 
-                      <svg width="50" height="50" fill="currentColor" class="text-success mb-3" viewBox="0 0 16 16">
-                          <path d="M8 0a2 2 0 0 1 2 2v2h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2V2a2 2 0 0 1 2-2z"/>
-                      </svg>
+              <!-- Slide 2 -->
+              <div class="carousel-item">
 
-                      <h3 class="h5">Giày Cầu Lông</h3>
+                  <div class="row g-4">
 
-                      <p class="text-muted small mb-0">
-                          Êm ái, chống trượt và bảo vệ cổ chân.
-                      </p>
+                      <div class="col-md-4">
+
+                          <a href="/products/phu-kien"
+                            class="text-decoration-none text-dark">
+
+                              <div class="card border shadow-sm rounded-3 overflow-hidden h-100">
+
+                                  <div class="text-center py-4 bg-light border-bottom">
+
+                                      <svg width="120"
+                                          height="120"
+                                          viewBox="0 0 24 24"
+                                          fill="none"
+                                          stroke="currentColor"
+                                          stroke-width="1.5">
+
+                                          <circle cx="12" cy="12" r="4"></circle>
+                                          <path d="M12 2v3M12 19v3M2 12h3M19 12h3"></path>
+
+                                      </svg>
+
+                                  </div>
+
+                                  <div class="card-body text-center">
+
+                                      <h5 class="mb-0">
+                                          Phụ Kiện
+                                      </h5>
+
+                                  </div>
+
+                              </div>
+
+                          </a>
+
+                      </div>
+
+                      <div class="col-md-4">
+
+                          <a href="/products/day-cuoc"
+                            class="text-decoration-none text-dark">
+
+                              <div class="card border shadow-sm rounded-3 overflow-hidden h-100">
+
+                                  <div class="text-center py-4 bg-light border-bottom">
+
+                                      <svg width="120"
+                                          height="120"
+                                          viewBox="0 0 24 24"
+                                          fill="none"
+                                          stroke="currentColor"
+                                          stroke-width="1.5">
+
+                                          <circle cx="12" cy="12" r="8"></circle>
+                                          <circle cx="12" cy="12" r="4"></circle>
+
+                                      </svg>
+
+                                  </div>
+
+                                  <div class="card-body text-center">
+
+                                      <h5 class="mb-0">
+                                          Dây Cước
+                                      </h5>
+
+                                  </div>
+
+                              </div>
+
+                          </a>
+
+                      </div>
+
+                      <div class="col-md-4">
+
+                          <a href="/bang-gia-cang-cuoc"
+                            class="text-decoration-none text-dark">
+
+                              <div class="card border shadow-sm rounded-3 overflow-hidden h-100">
+
+                                  <div class="text-center py-4 bg-light border-bottom">
+
+                                      <svg width="120"
+                                          height="120"
+                                          viewBox="0 0 24 24"
+                                          fill="none"
+                                          stroke="currentColor"
+                                          stroke-width="1.5">
+
+                                          <path d="M21 7l-4-4"></path>
+                                          <path d="M14 3l7 7"></path>
+                                          <path d="M11 6l7 7"></path>
+                                          <path d="M3 21l8-8"></path>
+
+                                      </svg>
+
+                                  </div>
+
+                                  <div class="card-body text-center">
+
+                                      <h5 class="mb-0">
+                                          Căng Cước
+                                      </h5>
+
+                                  </div>
+
+                              </div>
+
+                          </a>
+
+                      </div>
 
                   </div>
-              </article>
-          </div>
 
-          <div class="col-6 col-lg-3">
-              <article class="card h-100 shadow-sm border-0">
-                  <div class="card-body text-center">
+              </div>
 
-                      <svg width="50" height="50" fill="currentColor" class="text-success mb-3" viewBox="0 0 16 16">
-                          <path d="M4 1h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2z"/>
-                      </svg>
-
-                      <h3 class="h5">Túi Vợt</h3>
-
-                      <p class="text-muted small mb-0">
-                          Nhiều ngăn tiện lợi, chống thấm nước.
-                      </p>
-
-                  </div>
-              </article>
-          </div>
-
-          <div class="col-6 col-lg-3">
-              <article class="card h-100 shadow-sm border-0">
-                  <div class="card-body text-center">
-
-                      <svg width="50" height="50" fill="currentColor" class="text-success mb-3" viewBox="0 0 16 16">
-                          <path d="M8 1a7 7 0 1 1 0 14A7 7 0 0 1 8 1z"/>
-                      </svg>
-
-                      <h3 class="h5">Phụ Kiện</h3>
-
-                      <p class="text-muted small mb-0">
-                          Quấn cán, dây đan, tất và phụ kiện khác.
-                      </p>
-
-                  </div>
-              </article>
           </div>
 
       </div>
@@ -121,43 +302,41 @@
               Sản Phẩm Nổi Bật
           </h2>
 
-          <a href="/products" class="btn btn-outline-success">
-              Xem Tất Cả
+          <a href="/products" class="text-decoration-none text-success">
+              Xem tất cả →
           </a>
       </header>
 
-      <div class="row g-4">
+      <div class="row g-4 justify-content-center">
 
-          <?php for ($i = 1; $i <= 8; $i++): ?>
+          <?php for ($i = 1; $i <= 6; $i++): ?>
 
-              <div class="col-6 col-lg-3">
+              <div class="col-6 col-lg-2">
 
-                  <article class="card h-100 shadow-sm">
+                  <article class="card h-100 shadow-sm border-0">
+
+                      <img src="https://placehold.co/600x600?text=Yonex+Astrox+<?= $i ?>"
+                          class="card-img-top"
+                          alt="Yonex Astrox <?= $i ?>">
 
                       <div class="card-body">
 
-                          <span class="badge bg-success mb-2">
-                              HOT
-                          </span>
-
-                          <h3 class="h5">
+                          <h6 class="mb-2">
                               Yonex Astrox <?= $i ?>
-                          </h3>
+                          </h6>
 
-                          <p class="text-muted small">
-                              Vợt cầu lông cao cấp dành cho người chơi phong trào và thi đấu.
-                          </p>
-
-                          <p class="h5 text-danger fw-bold mb-0">
-                              <?= number_format(1990000 + ($i * 100000), 0, ',', '.') ?>đ
-                          </p>
+                          <div class="text-danger fw-bold">
+                              <?= number_format(1990000 + ($i * 100000), 0, ',', '.') ?>₫
+                          </div>
 
                       </div>
 
-                      <div class="card-footer bg-white border-0">
+                      <div class="card-footer bg-white border-0 pt-0">
+
                           <a href="#" class="btn btn-success w-100">
                               Xem Chi Tiết
                           </a>
+
                       </div>
 
                   </article>
