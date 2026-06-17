@@ -5,7 +5,7 @@
         <div class="row g-4">
 
             <!-- ABOUT -->
-            <div class="col-12 col-md-6 col-lg-3">
+            <div class="col-12 col-md-6 col-lg-4">
 
                 <h5 class="fw-bold mb-3">MDB Sports</h5>
 
@@ -49,7 +49,7 @@
             </div>
 
             <!-- CONTACT -->
-            <div class="col-12 col-lg-3">
+            <div class="col-12 col-lg-2">
 
                 <h6 class="fw-bold mb-3">Liên hệ</h6>
 
