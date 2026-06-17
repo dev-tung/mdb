@@ -1,0 +1,27 @@
+{
+    "name": "ASTROX E 13",
+    "slug": "astrox-e-13",
+    "url": "https://www.yonex.com/badminton/racquets/axe13",
+    "category": "racquets",
+    "image": "https://www.yonex.com/media/catalog/product/a/x/axe13_blackblue.png?quality=80&bg-color=248,248,248,0.75&fit=bounds&height=300&width=240&canvas=240:300",
+    "image_file": "image/yonex_product/racquets/astrox-e-13.png",
+    "title": "ASTROX E 13",
+    "description": null,
+    "specs": {
+        "Frame": "Aluminum",
+        "Shaft": "Graphite",
+        "Weight / Grip": "3U (Avg. 88g) G4,5",
+        "Stringing Advice": "3U: 16 - 20 lbs",
+        "Color(s)": "Black / Blue, Black / Bright Red",
+        "Item Code": "AXE13"
+    },
+    "images": [
+        "https://www.yonex.com/media/catalog/product/a/x/axe13_blackblue.png",
+        "https://www.yonex.com/media/catalog/product/a/x/axe13_blackbright-red.png"
+    ],
+    "detail_url": "https://www.yonex.com/badminton/racquets/axe13",
+    "local_images": [
+        "image/yonex_product_detail/astrox-e-13/1.png",
+        "image/yonex_product_detail/astrox-e-13/2.png"
+    ]
+}

@@ -1,0 +1,30 @@
+{
+    "name": "ASTROX 88 D PRO",
+    "slug": "astrox-88-d-pro",
+    "url": "https://www.yonex.com/badminton/racquets/3ax88d-p",
+    "category": "racquets",
+    "image": "https://www.yonex.com/media/catalog/product/3/a/3ax88d-p_076-1_02.png?quality=80&bg-color=248,248,248,0.75&fit=bounds&height=300&width=240&canvas=240:300",
+    "image_file": "image/yonex_product/racquets/astrox-88-d-pro.png",
+    "title": "ASTROX 88 D PRO",
+    "description": null,
+    "specs": {
+        "Flex": "STIFF",
+        "Frame": "HM Graphite, CFR, Tungsten",
+        "Shaft": "HM Graphite, 2G-Namd™ FLEX FORCE, Ultra PE Fiber",
+        "Joint": "NEW Built-in T-Joint",
+        "Length": "10 mm longer",
+        "Weight / Grip": "4U (Avg. 83g) G5,63U (Avg. 88g) G4,5,6",
+        "Stringing Advice": "4U: 20 - 28 lbs3U: 21 - 29 lbs",
+        "Color(s)": "Black / Silver",
+        "Made In": "Japan",
+        "Item Code": "3AX88D-P",
+        "MAIN TIE OFF: b8, B8": "CROSS TIE OFF: A5"
+    },
+    "images": [
+        "https://www.yonex.com/media/catalog/product/3/a/3ax88d-p_076-1_02.png"
+    ],
+    "detail_url": "https://www.yonex.com/badminton/racquets/3ax88d-p",
+    "local_images": [
+        "image/yonex_product_detail/astrox-88-d-pro/1.png"
+    ]
+}

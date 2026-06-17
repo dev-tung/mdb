@@ -1,0 +1,29 @@
+{
+    "name": "ASTROX 88 S TOUR",
+    "slug": "astrox-88-s-tour",
+    "url": "https://www.yonex.com/badminton/racquets/3ax88s-t",
+    "category": "racquets",
+    "image": "https://www.yonex.com/media/catalog/product/3/a/3ax88s-t_417-1_02.png?quality=80&bg-color=248,248,248,0.75&fit=bounds&height=300&width=240&canvas=240:300",
+    "image_file": "image/yonex_product/racquets/astrox-88-s-tour.png",
+    "title": "ASTROX 88 S TOUR",
+    "description": null,
+    "specs": {
+        "Flex": "STIFF",
+        "Frame": "HM Graphite, CSR, Tungsten",
+        "Shaft": "HM Graphite, 2G-Namd™ FLEX FORCE",
+        "Joint": "Built-in T-Joint",
+        "Length": "5 mm longer",
+        "Weight / Grip": "4U (Avg. 83g) G5,63U (Avg. 88g) G4,5,6",
+        "Stringing Advice": "4U: 20 - 28 lbs3U: 21 - 29 lbs",
+        "Color(s)": "Silver / Black",
+        "Item Code": "3AX88S-T",
+        "MAIN TIE OFF: b8, B8": "CROSS TIE OFF: A5"
+    },
+    "images": [
+        "https://www.yonex.com/media/catalog/product/3/a/3ax88s-t_417-1_02.png"
+    ],
+    "detail_url": "https://www.yonex.com/badminton/racquets/3ax88s-t",
+    "local_images": [
+        "image/yonex_product_detail/astrox-88-s-tour/1.png"
+    ]
+}

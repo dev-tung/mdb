@@ -1,0 +1,29 @@
+{
+    "name": "ASTROX 70",
+    "slug": "astrox-70",
+    "url": "https://www.yonex.com/badminton/racquets/ax70",
+    "category": "racquets",
+    "image": "https://www.yonex.com/media/catalog/product/a/x/ax70.png?quality=80&bg-color=248,248,248,0.75&fit=bounds&height=300&width=240&canvas=240:300",
+    "image_file": "image/yonex_product/racquets/astrox-70.png",
+    "title": "ASTROX 70",
+    "description": null,
+    "specs": {
+        "Flex": "Hi-Flex",
+        "Frame": "HM Graphite, VDM, Tungsten",
+        "Shaft": "HM Graphite, Namd™",
+        "Joint": "NEW Built-in T-Joint",
+        "Length": "10 mm longer",
+        "Weight / Grip": "4U (Avg. 83g) G5,6",
+        "Stringing Advice": "4U 18-26lbs",
+        "Color(s)": "Saxe",
+        "Item Code": "AX70",
+        "MAIN TIE OFF: b8, B8": "CROSS TIE OFF: A5"
+    },
+    "images": [
+        "https://www.yonex.com/media/catalog/product/a/x/ax70.png"
+    ],
+    "detail_url": "https://www.yonex.com/badminton/racquets/ax70",
+    "local_images": [
+        "image/yonex_product_detail/astrox-70/1.png"
+    ]
+}

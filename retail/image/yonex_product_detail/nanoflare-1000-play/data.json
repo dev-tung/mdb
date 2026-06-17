@@ -1,0 +1,28 @@
+{
+    "name": "NANOFLARE 1000 PLAY",
+    "slug": "nanoflare-1000-play",
+    "url": "https://www.yonex.com/badminton/racquets/nf-1000p",
+    "category": "racquets",
+    "image": "https://www.yonex.com/media/catalog/product/n/a/nanoflare_1000play.png?quality=80&bg-color=248,248,248,0.75&fit=bounds&height=300&width=240&canvas=240:300",
+    "image_file": "image/yonex_product/racquets/nanoflare-1000-play.png",
+    "title": "NANOFLARE 1000 PLAY",
+    "description": null,
+    "specs": {
+        "Flex": "Medium",
+        "Frame": "Graphite",
+        "Shaft": "Graphite",
+        "Length": "10 mm longer",
+        "Weight / Grip": "4U (Avg. 83g) G5,6",
+        "Stringing Advice": "4U: 20 - 28 lbs",
+        "Color(s)": "Lightning Yellow",
+        "Item Code": "NF-1000P",
+        "MAIN TIE OFF: b8, B8": "CROSS TIE OFF: A5"
+    },
+    "images": [
+        "https://www.yonex.com/media/catalog/product/n/a/nanoflare_1000play.png"
+    ],
+    "detail_url": "https://www.yonex.com/badminton/racquets/nf-1000p",
+    "local_images": [
+        "image/yonex_product_detail/nanoflare-1000-play/1.png"
+    ]
+}

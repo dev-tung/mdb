@@ -23,7 +23,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= ROOT_URL ?>/product">Sản phẩm</a>
+                        <a class="nav-link" href="<?= ROOT_URL ?>/retail/page/product">Sản phẩm</a>
                     </li>
 
                     <li class="nav-item">

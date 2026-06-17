@@ -1,0 +1,29 @@
+{
+    "name": "ASTROX 3 DG HF",
+    "slug": "astrox-3-dg-hf",
+    "url": "https://www.yonex.com/badminton/racquets/ax3dg-hf",
+    "category": "racquets",
+    "image": "https://www.yonex.com/media/catalog/product/a/x/ax3dg_hf.png?quality=80&bg-color=248,248,248,0.75&fit=bounds&height=300&width=240&canvas=240:300",
+    "image_file": "image/yonex_product/racquets/astrox-3-dg-hf.png",
+    "title": "ASTROX 3 DG HF",
+    "description": null,
+    "specs": {
+        "Flex": "Hi-Flex",
+        "Frame": "HM Graphite, Tungsten",
+        "Shaft": "HM Graphite, NANOMESH NEO",
+        "Joint": "Built-in T-Joint",
+        "Length": "10 mm longer",
+        "Weight / Grip": "4U (Avg. 83g) G4,5",
+        "Stringing Advice": "4U: 20 - 35 lbs",
+        "Color(s)": "Blue / White",
+        "Item Code": "AX3DG HF",
+        "MAIN TIE OFF: b8, B8": "CROSS TIE OFF: A5"
+    },
+    "images": [
+        "https://www.yonex.com/media/catalog/product/a/x/ax3dg_hf.png"
+    ],
+    "detail_url": "https://www.yonex.com/badminton/racquets/ax3dg-hf",
+    "local_images": [
+        "image/yonex_product_detail/astrox-3-dg-hf/1.png"
+    ]
+}

@@ -1,0 +1,40 @@
+{
+    "name": "ASTROX 100VA TOUR",
+    "slug": "astrox-100va-tour",
+    "url": "https://www.yonex.com/badminton/racquets/astrox-100va-tour",
+    "category": "racquets",
+    "image": "https://www.yonex.com/media/catalog/product/a/l/all_ax100tva_328-1.png?quality=80&bg-color=248,248,248,0.75&fit=bounds&height=300&width=240&canvas=240:300",
+    "image_file": "image/yonex_product/racquets/astrox-100va-tour.png",
+    "title": "ASTROX 100VA TOUR",
+    "description": null,
+    "specs": {
+        "Flex": "STIFF",
+        "Frame": "HM Graphite, NANOMESH NEO, VOLUME CUT RESIN, Tungsten",
+        "Shaft": "HM Graphite, Namd™",
+        "Joint": "Built-in T-Joint",
+        "Length": "10 mm longer",
+        "Weight / Grip": "4U (Avg.83g) G5, 63U (Avg.88g) G4, 5, 6",
+        "Stringing Advice": "4U: 20 - 28 lbs、3U: 21 - 29 lbs",
+        "Recommended String": "Control Players:AEROBITEHard Hitters:BG66 FORCE",
+        "Color(s)": "Dark Olive",
+        "Item Code": "AX100VAT",
+        "MAIN TIE OFF: b8, B8": "CROSS TIE OFF: A5"
+    },
+    "images": [
+        "https://www.yonex.com/media/catalog/product/a/l/all_ax100tva_328-1.png",
+        "https://www.yonex.com/media/catalog/product/a/l/all_ax100va_racquet_case_1.png",
+        "https://www.yonex.com/media/catalog/product/a/l/all_ax100tva_328-3.png",
+        "https://www.yonex.com/media/catalog/product/a/l/all_ax100tva_328-4.png",
+        "https://www.yonex.com/media/catalog/product/a/l/all_ax100tva_328-5.png",
+        "https://www.yonex.com/media/catalog/product/a/l/all_ax100tva_328-6.png"
+    ],
+    "detail_url": "https://www.yonex.com/badminton/racquets/astrox-100va-tour",
+    "local_images": [
+        "image/yonex_product_detail/astrox-100va-tour/1.png",
+        "image/yonex_product_detail/astrox-100va-tour/2.png",
+        "image/yonex_product_detail/astrox-100va-tour/3.png",
+        "image/yonex_product_detail/astrox-100va-tour/4.png",
+        "image/yonex_product_detail/astrox-100va-tour/5.png",
+        "image/yonex_product_detail/astrox-100va-tour/6.png"
+    ]
+}

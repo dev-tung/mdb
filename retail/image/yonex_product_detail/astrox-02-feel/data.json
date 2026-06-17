@@ -1,0 +1,40 @@
+{
+    "name": "ASTROX 02 FEEL",
+    "slug": "astrox-02-feel",
+    "url": "https://www.yonex.com/badminton/racquets/ax02f",
+    "category": "racquets",
+    "image": "https://www.yonex.com/media/catalog/product/i/n/int_ax02f_136-1_1.png?quality=80&bg-color=248,248,248,0.75&fit=bounds&height=300&width=240&canvas=240:300",
+    "image_file": "image/yonex_product/racquets/astrox-02-feel.png",
+    "title": "ASTROX 02 FEEL",
+    "description": null,
+    "specs": {
+        "Flex": "Hi-Flex",
+        "Frame": "HT Graphite",
+        "Shaft": "Graphite",
+        "Length": "10 mm longer",
+        "Weight / Grip": "4U (Avg. 83g) G4,5",
+        "Stringing Advice": "4U: 20 - 30 lbs",
+        "Recommended String": "Control Players:NANOGY 98Hard Hitters:NANOGY 95",
+        "Color(s)": "White / Green, Turquoise",
+        "Made In": "China",
+        "Item Code": "AX02F",
+        "MAIN TIE OFF:\r\n                  b8, B8": "CROSS TIE OFF:\r\n                  A5"
+    },
+    "images": [
+        "https://www.yonex.com/media/catalog/product/i/n/int_ax02f_136-1_1.png",
+        "https://www.yonex.com/media/catalog/product/i/n/int_ax02f_136-2.png",
+        "https://www.yonex.com/media/catalog/product/i/n/int_ax02f_136-3.png",
+        "https://www.yonex.com/media/catalog/product/i/n/int_ax02f_136-4.png",
+        "https://www.yonex.com/media/catalog/product/i/n/int_ax02f_136-5.png",
+        "https://www.yonex.com/media/catalog/product/i/n/int_ax02f_136-6.png"
+    ],
+    "detail_url": "https://www.yonex.com/badminton/racquets/ax02f",
+    "local_images": [
+        "image/yonex_product_detail/astrox-02-feel/1.png",
+        "image/yonex_product_detail/astrox-02-feel/2.png",
+        "image/yonex_product_detail/astrox-02-feel/3.png",
+        "image/yonex_product_detail/astrox-02-feel/4.png",
+        "image/yonex_product_detail/astrox-02-feel/5.png",
+        "image/yonex_product_detail/astrox-02-feel/6.png"
+    ]
+}

@@ -1,0 +1,47 @@
+{
+    "name": "ASTROX 100ZZ",
+    "slug": "astrox-100zz",
+    "url": "https://www.yonex.com/badminton/racquets/ax100zz",
+    "category": "racquets",
+    "image": "https://www.yonex.com/media/catalog/product/a/s/astrox100zz_kurenai.png?quality=80&bg-color=248,248,248,0.75&fit=bounds&height=300&width=240&canvas=240:300",
+    "image_file": "image/yonex_product/racquets/astrox-100zz.png",
+    "title": "ASTROX 100ZZ",
+    "description": null,
+    "specs": {
+        "Flex": "Extra Stiff",
+        "Frame": "HM Graphite, Namd, Tungsten, Black Micro Core, Nanometric",
+        "Shaft": "HM Graphite, Namd™",
+        "Joint": "NEW Built-in T-Joint",
+        "Length": "10 mm longer",
+        "Weight / Grip": "4U (Avg.83g) G5, 63U (Avg.88g) G4, 5, 6",
+        "Stringing Advice": "4U: 20 - 28 lbs3U: 21 - 29 lbs",
+        "Recommended String": "Control Players: AEROBITE BOOSTHard Hitters: BG66 FORCE",
+        "Color(s)": "Kurenai",
+        "Made In": "Japan",
+        "Item Code": "AX100ZZ",
+        "MAIN TIE OFF:\r\nb8, B8": "CROSS TIE OFF:\r\nA5"
+    },
+    "images": [
+        "https://www.yonex.com/media/catalog/product/a/s/astrox100zz_kurenai.png",
+        "https://www.yonex.com/media/catalog/product/a/z/az100zz-08.png",
+        "https://www.yonex.com/media/catalog/product/a/x/ax100zz-06.png",
+        "https://www.yonex.com/media/catalog/product/a/x/ax100zz-07.png",
+        "https://www.yonex.com/media/catalog/product/a/x/ax100zz-01-03.png",
+        "https://www.yonex.com/media/catalog/product/a/x/ax100zz-05.png",
+        "https://www.yonex.com/media/catalog/product/a/x/ax100zz_2.png",
+        "https://www.yonex.com/media/catalog/product/h/q/hqdefault_33_16.jpg",
+        "https://www.yonex.com/media/catalog/product/h/q/hqdefault_33.jpg"
+    ],
+    "detail_url": "https://www.yonex.com/badminton/racquets/ax100zz",
+    "local_images": [
+        "image/yonex_product_detail/astrox-100zz/1.png",
+        "image/yonex_product_detail/astrox-100zz/2.png",
+        "image/yonex_product_detail/astrox-100zz/3.png",
+        "image/yonex_product_detail/astrox-100zz/4.png",
+        "image/yonex_product_detail/astrox-100zz/5.png",
+        "image/yonex_product_detail/astrox-100zz/6.png",
+        "image/yonex_product_detail/astrox-100zz/7.png",
+        "image/yonex_product_detail/astrox-100zz/8.jpg",
+        "image/yonex_product_detail/astrox-100zz/9.jpg"
+    ]
+}

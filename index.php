@@ -4,6 +4,11 @@ require_once __DIR__ . '/bootstrap.php';
 
 $request = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 
+/* nếu truy cập root "/" thì dùng home.php */
+if ($request === '') {
+    $request = 'home';
+}
+
 $file = __DIR__ . '/' . $request . '.php';
 
 if (file_exists($file)) {

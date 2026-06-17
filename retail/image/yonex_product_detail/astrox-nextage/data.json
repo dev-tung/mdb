@@ -1,0 +1,30 @@
+{
+    "name": "ASTROX NEXTAGE",
+    "slug": "astrox-nextage",
+    "url": "https://www.yonex.com/badminton/racquets/axnt",
+    "category": "racquets",
+    "image": "https://www.yonex.com/media/catalog/product/a/x/ax-nx__2223_2.png?quality=80&bg-color=248,248,248,0.75&fit=bounds&height=300&width=240&canvas=240:300",
+    "image_file": "image/yonex_product/racquets/astrox-nextage.png",
+    "title": "ASTROX NEXTAGE",
+    "description": null,
+    "specs": {
+        "Flex": "Medium",
+        "Frame": "HM Graphite, VDM, Tungsten",
+        "Shaft": "Graphite, NANOMESH NEO",
+        "Joint": "Built-in T-Joint",
+        "Length": "10 mm longer",
+        "Weight / Grip": "4U(Avg:83g)5",
+        "Stringing Advice": "4U: 20 - 28 lbs",
+        "Recommended String": "Control Players: BG66 ULTIMAXHard Hitters: BG80",
+        "Color(s)": "Light Gray, Black / Green",
+        "Item Code": "AXNT",
+        "MAIN TIE OFF:\r\nb8, B8": "ROSS TIE OFF:\r\nA5"
+    },
+    "images": [
+        "https://www.yonex.com/media/catalog/product/a/x/ax-nx__2223_2.png"
+    ],
+    "detail_url": "https://www.yonex.com/badminton/racquets/axnt",
+    "local_images": [
+        "image/yonex_product_detail/astrox-nextage/1.png"
+    ]
+}

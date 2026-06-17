@@ -33,3 +33,4 @@ function get_array(string $key): array
 {
     return (array)($_GET[$key] ?? []);
 }
+
