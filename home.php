@@ -3,7 +3,9 @@
 <main class="container py-4">
   <!-- HERO / BANNER -->
   <section class="p-5 mb-5 text-white rounded-3 shadow-sm"
-      style="background: linear-gradient(135deg, #0f172a 0%, #0ea5e9 50%, #22c55e 100%);">
+      style="
+          background: linear-gradient(135deg, #2f3e2c 0%, #69a84f 55%, #3f6f32 100%);
+      ">
 
       <div class="container-fluid py-3">
 
@@ -15,7 +17,8 @@
               Chuyên cung cấp vợt cầu lông, giày cầu lông, túi vợt và phụ kiện chính hãng Yonex, Victor, Lining với giá tốt và bảo hành đầy đủ.
           </p>
 
-          <a href="/products" class="btn btn-light btn-lg fw-semibold text-dark">
+          <a href="/products" class="btn btn-light btn-lg fw-semibold"
+            style="color:#2f3e2c;">
               Mua Ngay
           </a>
 
