@@ -42,8 +42,8 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link <?= (str_contains($current, 'affiliate')) ? 'active fw-bold text-success' : '' ?>"
-                          href="<?= ROOT_URL ?>/affiliate">
+                        <a class="nav-link <?= (str_contains($current, 'human/page/affilate')) ? 'active fw-bold text-success' : '' ?>"
+                          href="<?= ROOT_URL ?>/human/page/affilate">
                             Cộng tác viên
                         </a>
                     </li>
