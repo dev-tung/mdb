@@ -120,7 +120,7 @@
 
                     </div>
 
-                    <button class="btn btn-default btn-sm w-100">
+                    <button class="btn btn-success btn-sm w-100">
                         Lọc sản phẩm
                     </button>
 
