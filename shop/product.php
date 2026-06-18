@@ -212,7 +212,7 @@
             <!-- PAGINATION (Chuẩn SEO nâng cao kèm nút Đầu/Cuối) -->
             <?php if ($result['totalPages'] > 1): ?>
                 <nav class="mt-5 d-flex justify-content-center">
-                    <ul class="pagination pagination shadow-sm mb-0">
+                    <ul class="pagination pagination-sm shadow-sm mb-0">
 
                         <!-- NÚT TRANG ĐẦU (Chỉ hiện khi không ở trang 1) -->
                         <?php if ($result['page'] > 1): ?>
