@@ -22,7 +22,7 @@
               Chuyên cung cấp vợt cầu lông, giày cầu lông, túi vợt và phụ kiện chính hãng Yonex, Victor, Lining với giá tốt và bảo hành đầy đủ.
           </p>
 
-          <a href="/products" class="btn btn-light btn-lg fw-semibold"
+          <a href="/product" class="btn btn-light btn-lg fw-semibold"
             style="color:#2f3e2c;">
               Mua Ngay
           </a>
@@ -40,7 +40,7 @@
                 Danh mục sản phẩm
             </h2>
 
-            <a href="/products" class="text-decoration-none text-success">
+            <a href="/product" class="text-decoration-none text-success">
                 Xem tất cả →
             </a>
 
@@ -59,7 +59,7 @@
                 <div class="col-6 col-md-4 col-lg-3">
 
                     <a
-                        href="/products?category=<?= urlencode($category['slug']) ?>"
+                        href="/product?category=<?= urlencode($category['id']) ?>"
                         class="text-decoration-none text-dark">
 
                         <div class="card border-0 shadow-sm h-100">
@@ -105,7 +105,7 @@
                 Sản phẩm nổi bật
             </h2>
 
-            <a href="/products" class="text-decoration-none text-success">
+            <a href="/product" class="text-decoration-none text-success">
                 Xem tất cả →
             </a>
 
