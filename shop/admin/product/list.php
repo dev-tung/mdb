@@ -156,4 +156,4 @@
   ?>
 </div>
 
-<?php require_once PATH_ROOT . 'shop/admin/footer.php'; ?>
+<?php require_once PATH_ROOT . 'footer.php'; ?>
