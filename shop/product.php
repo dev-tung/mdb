@@ -16,7 +16,7 @@
 
                 <div class="border rounded bg-white shadow-sm p-3">
 
-                    <h5 class="fw-bold mb-3 text-success">
+                    <h5 class="fw-bold mb-3 text-default">
                         Bộ lọc
                     </h5>
 
@@ -120,7 +120,7 @@
 
                     </div>
 
-                    <button class="btn btn-success btn-sm w-100">
+                    <button class="btn btn-default btn-sm w-100">
                         Lọc sản phẩm
                     </button>
 
@@ -209,34 +209,70 @@
 
             </div>
 
-            <!-- PAGINATION -->
+            <!-- PAGINATION (Chuẩn SEO nâng cao kèm nút Đầu/Cuối) -->
             <?php if ($result['totalPages'] > 1): ?>
+                <nav class="mt-5 d-flex justify-content-center">
+                    <ul class="pagination pagination shadow-sm mb-0">
 
-                <nav class="mt-4">
-
-                    <ul class="pagination">
-
-                        <?php for ($i = 1; $i <= $result['totalPages']; $i++): ?>
-
-                            <li class="page-item <?= $i == $result['page'] ? 'active' : '' ?>">
-
-                                <a
-                                    class="page-link"
-                                    href="<?= product_build_query(['page' => $i]) ?>">
-
-                                    <?= $i ?>
-
+                        <!-- NÚT TRANG ĐẦU (Chỉ hiện khi không ở trang 1) -->
+                        <?php if ($result['page'] > 1): ?>
+                            <li class="page-item">
+                                <a class="page-link text-default fw-semibold" href="<?= product_build_query(['page' => 1]) ?>" title="Trang đầu">
+                                    « Đầu
                                 </a>
-
                             </li>
+                            <li class="page-item">
+                                <a class="page-link text-default" href="<?= product_build_query(['page' => $result['page'] - 1]) ?>" title="Trang trước">
+                                    ‹
+                                </a>
+                            </li>
+                        <?php endif; ?>
 
+                        <!-- CÁC TRANG SỐ TRUNG GIAN (Chỉ hiển thị tối đa 5 trang xung quanh trang hiện tại) -->
+                        <?php
+                        $startPage = max(1, $result['page'] - 2);
+                        $endPage = min($result['totalPages'], $result['page'] + 2);
+
+                        // Dấu ba chấm bên trái nếu danh sách bị ẩn bớt trang đầu
+                        if ($startPage > 1): ?>
+                            <li class="page-item disabled"><span class="page-link text-muted">...</span></li>
+                        <?php endif; ?>
+
+                        <?php for ($i = $startPage; $i <= $endPage; $i++): ?>
+                            <li class="page-item <?= $i == $result['page'] ? 'active' : '' ?>">
+                                <?php if ($i == $result['page']): ?>
+                                    <span class="page-link bg-default border-default text-white fw-bold"><?= $i ?></span>
+                                <?php else: ?>
+                                    <a class="page-link text-default" href="<?= product_build_query(['page' => $i]) ?>">
+                                        <?= $i ?>
+                                    </a>
+                                <?php endif; ?>
+                            </li>
                         <?php endfor; ?>
 
+                        <!-- Dấu ba chấm bên phải nếu danh sách bị ẩn bớt trang cuối -->
+                        <?php if ($endPage < $result['totalPages']): ?>
+                            <li class="page-item disabled"><span class="page-link text-muted">...</span></li>
+                        <?php endif; ?>
+
+                        <!-- NÚT TRANG CUỐI (Chỉ hiện khi chưa tới trang cuối) -->
+                        <?php if ($result['page'] < $result['totalPages']): ?>
+                            <li class="page-item">
+                                <a class="page-link text-default" href="<?= product_build_query(['page' => $result['page'] + 1]) ?>" title="Trang sau">
+                                    ›
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link text-default fw-semibold" href="<?= product_build_query(['page' => $result['totalPages']]) ?>" title="Trang cuối">
+                                    Cuối »
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
                     </ul>
-
                 </nav>
-
             <?php endif; ?>
+
 
         </section>
 
