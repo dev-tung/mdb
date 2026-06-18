@@ -89,3 +89,4 @@ function product_build_query(array $extra = []): string
 {
     return build_query($extra);
 }
+

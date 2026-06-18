@@ -59,3 +59,23 @@ function get_related_products(array $product, int $limit = 4): array
         ]
     );
 }
+
+function search_products(string $keyword): array
+{
+    return db_all(
+        "SELECT p.*,
+                b.name AS brand_name,
+                c.name AS category_name
+         FROM shop_product p
+         LEFT JOIN shop_brand b
+            ON b.id = p.brand_id
+         LEFT JOIN shop_category c
+            ON c.id = p.category_id
+         WHERE p.status = 1
+           AND p.name LIKE :keyword
+         ORDER BY p.name",
+        [
+            'keyword' => "%{$keyword}%"
+        ]
+    );
+}

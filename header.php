@@ -62,10 +62,12 @@
                       method="get"
                       action="<?= URL_ROOT ?>/search">
 
-                    <input class="form-control border-0 shadow-none"
-                          type="search"
-                          name="keyword"
-                          placeholder="Tìm kiếm đồ cầu lông...">
+                    <input
+                        class="form-control border-0 shadow-none"
+                        type="search"
+                        name="q"
+                        placeholder="Tìm kiếm đồ cầu lông..."
+                        value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
 
                     <button class="btn btn-sm rounded-0 d-flex align-items-center justify-content-center px-3"
                             type="submit">
