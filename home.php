@@ -96,96 +96,69 @@
 
     </section>
 
-    <!-- SẢN PHẨM NỔI BẬT -->
-    <section class="mb-5">
+<!-- SẢN PHẨM NỔI BẬT -->
+<section class="mb-5">
 
-        <header class="d-flex justify-content-between align-items-center mb-4">
+    <header class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0 fs-3">Sản phẩm nổi bật</h2>
+        <a href="/product" class="text-decoration-none text-success fw-semibold">
+            Xem tất cả →
+        </a>
+    </header>
 
-            <h2 class="fw-bold mb-0">
-                Sản phẩm nổi bật
-            </h2>
+    <div class="row g-3 g-md-4">
 
-            <a href="/product" class="text-decoration-none text-success">
-                Xem tất cả →
-            </a>
+        <?php foreach ($featured_products as $p): ?>
 
-        </header>
+            <?php
+                $img = !empty($p['thumbnail'])
+                    ? (str_starts_with($p['thumbnail'], 'http')
+                        ? $p['thumbnail']
+                        : URL_ROOT . '/shop/' . ltrim($p['thumbnail'], '/'))
+                    : 'https://placehold.co';
 
-        <div class="row g-4">
+                $price = (int)($p['price'] ?? 0);
+            ?>
 
-            <?php foreach ($featured_products as $p): ?>
+            <div class="col-6 col-md-4 col-lg-2">
 
-                <?php
-                    $img = !empty($p['thumbnail'])
-                        ? (
-                            str_starts_with($p['thumbnail'], 'http')
-                            ? $p['thumbnail']
-                            : URL_ROOT . '/shop/' . ltrim($p['thumbnail'], '/')
-                        )
-                        : 'https://placehold.co/600x600?text=No+Image';
+                <article class="card h-100 shadow-sm border-0 position-relative overflow-hidden">
 
-                    $price = (int)($p['price'] ?? 0);
-                ?>
+                    <!-- Khung chứa ảnh: Dùng bg-light (hoặc bg-white) làm nền cho khoảng trống -->
+                    <div class="w-100 bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
+                        <img
+                            src="<?= htmlspecialchars($img) ?>"
+                            class="w-100 h-100"
+                            alt="<?= htmlspecialchars($p['name']) ?>"
+                            style="object-fit: contain;"
+                            loading="lazy">
+                    </div>
 
-                <div class="col-6 col-md-4 col-lg-2">
+                    <div class="card-body d-flex flex-column p-3">
 
-                    <article class="card h-100 shadow-sm border-0">
-
-                        <a href="/product/<?= urlencode($p['slug']) ?>">
-
-                            <img
-                                src="<?= htmlspecialchars($img) ?>"
-                                class="card-img-top p-2"
-                                alt="<?= htmlspecialchars($p['name']) ?>"
-                                style="height:220px;object-fit:contain;">
-
-                        </a>
-
-                        <div class="card-body">
-
-                            <h6 class="mb-2">
-
-                                <a
-                                    href="/product/<?= urlencode($p['slug']) ?>"
-                                    class="text-decoration-none text-dark">
-
-                                    <?= htmlspecialchars($p['name']) ?>
-
-                                </a>
-
-                            </h6>
-
-                            <div class="text-danger fw-bold">
-
-                                <?= $price
-                                    ? number_format($price) . '₫'
-                                    : 'Liên hệ' ?>
-
-                            </div>
-
-                        </div>
-
-                        <div class="card-footer bg-white border-0 pt-0">
-
-                            <a
-                                href="/product/<?= urlencode($p['slug']) ?>"
-                                class="btn btn-success w-100">
-
-                                Xem Chi Tiết
-
+                        <h6 class="card-title mb-2 fs-6 text-truncate">
+                            <a href="/product/<?= urlencode($p['slug']) ?>" 
+                               class="text-decoration-none text-dark stretched-link">
+                                <?= htmlspecialchars($p['name']) ?>
                             </a>
+                        </h6>
 
+                        <div class="text-danger fw-bold mt-auto pt-1">
+                            <?= $price ? number_format($price) . '₫' : 'Liên hệ' ?>
                         </div>
 
-                    </article>
+                    </div>
 
-                </div>
+                </article>
 
-            <?php endforeach; ?>
+            </div>
 
-        </div>
+        <?php endforeach; ?>
 
-    </section>
+    </div>
+
+</section>
+
 
   <!-- GIỚI THIỆU SEO -->
   <section class="bg-light rounded-3 p-5">
