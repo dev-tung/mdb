@@ -29,7 +29,7 @@ function matchRoute(string $request, array $routes): bool
 {
     foreach ($routes as $pattern => $route) {
 
-        // convert /shop/product/{slug} -> regex
+        // convert /retail/product/{slug} -> regex
         $regex = preg_replace('#\{[a-zA-Z_]+\}#', '([^/]+)', $pattern);
         $regex = "#^" . $regex . "$#";
 

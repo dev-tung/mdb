@@ -1,5 +1,5 @@
 <?php require_once PATH_ROOT . 'header.php'; ?>
-<?php require_once PATH_SHOP . 'repository/product.php'; ?>
+<?php require_once PATH_RETAIL . 'repository/product.php'; ?>
 
 <?php
 
@@ -55,7 +55,7 @@ $products = $q
                 ? (
                     str_starts_with($p['thumbnail'], 'http')
                     ? $p['thumbnail']
-                    : URL_ROOT . '/shop/' . ltrim($p['thumbnail'], '/')
+                    : URL_ROOT . '/retail/' . ltrim($p['thumbnail'], '/')
                 )
                 : 'https://placehold.co/300x300?text=No+Image';
 

@@ -4,7 +4,7 @@ function get_product_by_slug(string $slug): ?array
 {
     return db_one(
         "SELECT *
-         FROM shop_product
+         FROM retail_product
          WHERE slug = :slug
          LIMIT 1",
         ['slug' => $slug]
@@ -15,7 +15,7 @@ function get_products(): array
 {
     return db_all(
         "SELECT *
-         FROM shop_product
+         FROM retail_product
          WHERE status = 1
          ORDER BY id DESC"
     );
@@ -25,7 +25,7 @@ function get_brands(): array
 {
     return db_all(
         "SELECT id, name, slug
-         FROM shop_brand
+         FROM retail_brand
          ORDER BY name"
     );
 }
@@ -34,7 +34,7 @@ function get_categories(): array
 {
     return db_all(
         "SELECT id, name, slug, thumbnail
-         FROM shop_category
+         FROM retail_category
          ORDER BY name"
     );
 }
@@ -47,7 +47,7 @@ function get_related_products(array $product, int $limit = 4): array
 
     return db_all(
         "SELECT *
-         FROM shop_product
+         FROM retail_product
          WHERE category_id = :category_id
            AND slug != :slug
            AND status = 1
@@ -64,7 +64,7 @@ function get_featured_products(int $limit = 8): array
 {
     return db_all(
         "SELECT *
-         FROM shop_product
+         FROM retail_product
          WHERE status = 1
          AND category_id = 1
          ORDER BY id DESC
@@ -110,9 +110,9 @@ function search_products(string $keyword): array
         "SELECT p.*,
                 b.name AS brand_name,
                 c.name AS category_name
-         FROM shop_product p
-         LEFT JOIN shop_brand b ON b.id = p.brand_id
-         LEFT JOIN shop_category c ON c.id = p.category_id
+         FROM retail_product p
+         LEFT JOIN retail_brand b ON b.id = p.brand_id
+         LEFT JOIN retail_category c ON c.id = p.category_id
          WHERE p.status = 1
            AND {$whereSql}
          ORDER BY p.name ASC",
@@ -126,7 +126,7 @@ function get_product_specs(int $productId): array
 {
     $rows = db_all("
         SELECT spec_key, spec_value
-        FROM shop_product_spec
+        FROM retail_product_spec
         WHERE product_id = ?
     ", [$productId]);
 
@@ -143,7 +143,7 @@ function get_product_images(int $productId): array
 {
     $rows = db_all("
         SELECT image
-        FROM shop_product_image
+        FROM retail_product_image
         WHERE product_id = ?
         ORDER BY sort_order ASC
     ", [$productId]);

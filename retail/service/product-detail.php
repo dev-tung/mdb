@@ -1,7 +1,7 @@
 <?php
 
-require_once PATH_SHOP . 'service/base.php';
-require_once PATH_SHOP . 'repository/product.php';
+require_once PATH_RETAIL . 'service/base.php';
+require_once PATH_RETAIL . 'repository/product.php';
 
 function product_detail_service(): array
 {
@@ -64,7 +64,7 @@ function format_product_for_view(array $p, array $specs, array $images): array
             return $img;
         }
 
-        return URL_ROOT . '/shop/' . ltrim($img, '/');
+        return URL_ROOT . '/retail/' . ltrim($img, '/');
 
     }, $images);
 

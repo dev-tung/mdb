@@ -1,6 +1,6 @@
 <?php
 
-require_once PATH_SHOP . 'crawler/base.php';
+require_once PATH_RETAIL . 'crawler/base.php';
 
 /**
  * =========================
@@ -8,10 +8,10 @@ require_once PATH_SHOP . 'crawler/base.php';
  * =========================
  */
 
-$categoryFile = PATH_SHOP . 'json/yonex_category.json';
+$categoryFile = PATH_RETAIL . 'json/yonex_category.json';
 
-$jsonFile = PATH_SHOP . 'json/yonex_product.json';
-$imgDir   = PATH_SHOP . 'image/yonex_product';
+$jsonFile = PATH_RETAIL . 'json/yonex_product.json';
+$imgDir   = PATH_RETAIL . 'image/yonex_product';
 
 /**
  * =========================

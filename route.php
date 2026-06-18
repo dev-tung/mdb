@@ -1,19 +1,46 @@
 <?php
 
 return [
-    '' => ['path' => 'home.php'],
-    'home' => ['path' => 'home.php'],
+
+    // Public
+    ''       => ['path' => 'home.php'],
+    'home'   => ['path' => 'home.php'],
     'search' => ['path' => 'search.php'],
 
-    'product' => ['path' => 'shop/product.php'],
-    'product/{slug}' => ['path' => 'shop/product-detail.php', 'params' => ['slug']],
+    // Product
+    'product'        => ['path' => 'retail/product.php'],
+    'product/{slug}' => [
+        'path'   => 'retail/product-detail.php',
+        'params' => ['slug'],
+    ],
 
-    'admin/product' => ['path' => 'shop/admin/product/list.php'],
+    // Admin
+    'admin/product' => [
+        'path' => 'retail/admin/product/list.php',
+    ],
 
-    'crawler/yonex-product-detail' => ['path' => 'shop/crawler/yonex-product-detail.php'],
-    'import/yonex-product' => ['path' => 'shop/import/yonex-product.php'],
+    // Crawler
+    'crawler/yonex-product-detail' => [
+        'path' => 'retail/crawler/yonex-product-detail.php',
+    ],
 
-    'string' => ['path' => 'stringing/table.php'],
-    'affilate' => ['path' => 'human/affilate.php'],
-    'recruitment' => ['path' => 'human/recruitment.php'],
+    // Import
+    'import/yonex-product' => [
+        'path' => 'retail/import/yonex-product.php',
+    ],
+
+    // Stringing
+    'string' => [
+        'path' => 'stringing/table.php',
+    ],
+
+    // Human
+    'affilate' => [
+        'path' => 'human/affilate.php',
+    ],
+
+    'recruitment' => [
+        'path' => 'human/recruitment.php',
+    ],
+
 ];

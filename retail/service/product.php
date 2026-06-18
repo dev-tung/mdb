@@ -1,7 +1,7 @@
 <?php
 
-require_once PATH_SHOP . 'service/base.php';
-require_once PATH_SHOP . 'repository/product.php';
+require_once PATH_RETAIL . 'service/base.php';
+require_once PATH_RETAIL . 'repository/product.php';
 
 /* =========================
    SERVICE
@@ -144,7 +144,7 @@ function product_image($thumbnail): string
 
     return str_starts_with($thumbnail, 'http')
         ? $thumbnail
-        : URL_ROOT . '/shop/' . ltrim($thumbnail, '/');
+        : URL_ROOT . '/retail/' . ltrim($thumbnail, '/');
 }
 
 function product_card_image($thumbnail): string
