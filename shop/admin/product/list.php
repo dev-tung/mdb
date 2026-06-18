@@ -11,12 +11,12 @@
     <div class="d-flex gap-2">
 
       <input type="text"
-             name="keyword"
-             class="form-control form-control-sm"
-             placeholder="Tìm theo tên sản phẩm"
-             value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>">
+            name="keyword"
+            class="form-control form-control-sm"
+            placeholder="Tìm theo tên sản phẩm"
+            value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>">
 
-      <!-- CATEGORY DROPDOWN -->
+      <!-- CATEGORY -->
       <select name="category" class="form-select form-select-sm">
         <option value="">Tất cả loại sản phẩm</option>
 
@@ -36,14 +36,20 @@
         <option value="0" <?= (($_GET['status'] ?? '') == '0') ? 'selected' : '' ?>>Ẩn</option>
       </select>
 
-      <button class="btn btn-sm btn-secondary">Lọc</button>
+      <button type="submit" class="btn btn-sm btn-secondary">
+        Lọc
+      </button>
+
+      <!-- RESET FILTER (ĐÚNG CÁCH) -->
+      <a href="<?= url('/admin/product') ?>" class="btn btn-sm btn-outline-secondary">
+        Xóa
+      </a>
+
     </div>
 
     <div class="d-flex gap-2">
-      <button type="submit" class="btn btn-sm btn-secondary">Lọc</button>
-
       <a href="<?= url('/product/create'); ?>"
-         class="btn btn-sm btn-secondary">
+        class="btn btn-sm btn-secondary">
         Thêm sản phẩm
       </a>
     </div>
@@ -156,4 +162,4 @@
   ?>
 </div>
 
-<?php require_once PATH_ROOT . 'footer.php'; ?>
+<?php require_once PATH_ROOT . 'end.php'; ?>
