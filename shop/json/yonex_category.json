@@ -54,19 +54,5 @@
         "url": "https://www.yonex.com/badminton/accessories",
         "image": null,
         "image_file": null
-    },
-    {
-        "name": "LEARN MORE about RACQUET SELECTOR",
-        "slug": "racquetselector",
-        "url": "https://www.yonex.com/badminton/racquetselector/",
-        "image": null,
-        "image_file": null
-    },
-    {
-        "name": "PRODUCTS about NANOFLARE 1000",
-        "slug": "nanoflare",
-        "url": "https://www.yonex.com/badminton/racquets/nanoflare/",
-        "image": null,
-        "image_file": null
     }
 ]

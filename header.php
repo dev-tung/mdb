@@ -93,12 +93,12 @@
                 <!-- ACTIONS -->
                 <div class="d-flex gap-2">
 
-                    <a href="<?= URL_ROOT ?>/account"
+                    <a href="#"
                        class="btn btn-outline-secondary btn-sm">
                         Tài khoản
                     </a>
 
-                    <a href="<?= URL_ROOT ?>/cart"
+                    <a href="#"
                        class="btn btn-success btn-sm">
                         Giỏ hàng
                     </a>

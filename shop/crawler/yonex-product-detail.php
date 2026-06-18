@@ -1,5 +1,10 @@
 <?php
 
+// Tự động sửa lỗi nếu hằng số PATH_SHOP bị bỏ trống hoặc chưa định nghĩa
+if (!defined('PATH_SHOP') || PATH_SHOP === '') {
+    define('PATH_SHOP', dirname(__DIR__) . '/'); 
+}
+
 require_once PATH_SHOP . 'crawler/base.php';
 
 /**
@@ -8,15 +13,13 @@ require_once PATH_SHOP . 'crawler/base.php';
  * =========================
  */
 
-$inputFile = PATH_SHOP . 'json/yonex_product.json';
+$inputFile  = PATH_SHOP . 'json/yonex_product.json';
 
-$page  = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$limit = 20;
-$offset = ($page - 1) * $limit;
+// Thay đổi: Lưu toàn bộ dữ liệu cào được vào một file duy nhất tại json/yonex_product_detail.json
+$outputFile = PATH_SHOP . 'json/yonex_product_detail.json';
 
-$outputFile = PATH_SHOP . 'json/yonex_product_detail_page_' . $page . '.json';
-
-$imageDir = PATH_SHOP . 'image/yonex_product_detail';
+// Sử dụng đường dẫn tuyệt đối chính xác cho thư mục lưu ảnh
+$imageDir   = rtrim(PATH_SHOP, '/') . '/image/yonex_product_detail';
 
 /**
  * =========================
@@ -57,14 +60,14 @@ function fetch_html(string $url): array
 }
 
 /**
- * PARSE DETAIL (GIỮ NGUYÊN LOGIC)
+ * PARSE DETAIL
  */
 function parse_detail(string $html): array
 {
     libxml_use_internal_errors(true);
 
     $dom = new DOMDocument();
-    $dom->loadHTML($html);
+    @$dom->loadHTML($html); // Ẩn các cảnh báo HTML5 không chuẩn từ mã nguồn trang gốc
 
     $xpath = new DOMXPath($dom);
 
@@ -87,7 +90,7 @@ function parse_detail(string $html): array
 
     foreach ($xpath->query('//table//tr') as $row) {
 
-        $cols = $xpath->query('.//td|.//th', $row);
+        $cols = $xpath->query('.//td|./th', $row);
 
         if ($cols->length < 2) continue;
 
@@ -125,7 +128,7 @@ function parse_detail(string $html): array
     if (empty($images)) {
 
         $dom2 = new DOMDocument();
-        $dom2->loadHTML($html);
+        @$dom2->loadHTML($html);
         $xpath2 = new DOMXPath($dom2);
 
         $frames = $xpath2->query('//div[contains(@class,"fotorama__stage__frame")]');
@@ -150,7 +153,7 @@ function parse_detail(string $html): array
     if (empty($images)) {
 
         $dom3 = new DOMDocument();
-        $dom3->loadHTML($html);
+        @$dom3->loadHTML($html);
         $xpath3 = new DOMXPath($dom3);
 
         $imgNodes = $xpath3->query('//img[contains(@src,"/media/catalog/product/")]');
@@ -175,16 +178,35 @@ function parse_detail(string $html): array
 }
 
 /**
- * DOWNLOAD IMAGES
+ * DOWNLOAD IMAGES (Giải pháp dứt điểm lỗi biến $imageDir bị null)
  */
 function download_images(string $slug, array $images): array
 {
-    global $imageDir;
+    // Đảm bảo lấy đường dẫn tuyệt đối chính xác từ file, không dùng từ khóa global
+    $localPathShop = (defined('PATH_SHOP') && PATH_SHOP !== '') ? PATH_SHOP : dirname(__DIR__) . '/';
+    $localImageDir = rtrim($localPathShop, '/') . '/image/yonex_product_detail';
 
-    $dir = $imageDir . '/' . $slug;
+    // 1. Kiểm tra và tự động tạo thư mục ảnh tổng nếu chưa có
+    if (!is_dir($localImageDir)) {
+        @mkdir($localImageDir, 0777, true);
+        @chmod($localImageDir, 0777);
+    }
 
+    $dir = $localImageDir . '/' . $slug;
+
+    // 2. Tạo thư mục con riêng biệt cho từng sản phẩm
     if (!is_dir($dir)) {
-        mkdir($dir, 0777, true);
+        if (!@mkdir($dir, 0777, true)) {
+            crawler_log("WARNING: Không thể tạo thư mục lưu trữ bằng code: $dir");
+            return []; 
+        }
+        @chmod($dir, 0777);
+    }
+
+    // 3. Kiểm tra quyền ghi trước khi tiến hành ghi file ảnh vào ổ cứng
+    if (!is_writable($dir)) {
+        crawler_log("CRITICAL ERROR: Thư mục $dir không có quyền ghi dữ liệu!");
+        return [];
     }
 
     $saved = [];
@@ -218,66 +240,81 @@ function download_images(string $slug, array $images): array
  * =========================
  */
 
+// Đặt thời gian chạy vô hạn để không bị timeout khi cào lượng lớn dữ liệu
 set_time_limit(0);
 
-crawler_log("PAGE: $page | LIMIT: $limit");
+crawler_log("TIẾN TRÌNH: CÀO TOÀN BỘ SẢN PHẨM VÀ LƯU FILE JSON TỔNG DUY NHẤT");
 
 /**
  * LOAD PRODUCTS
  */
+if (!file_exists($inputFile)) {
+    throw new RuntimeException("Lỗi nghiêm trọng: File danh sách sản phẩm gốc không tồn tại tại: $inputFile");
+}
+
 $products = json_decode(file_get_contents($inputFile), true);
 
 if (!is_array($products)) {
-    throw new RuntimeException("Invalid product file");
+    throw new RuntimeException("Dữ liệu file json đầu vào sai cấu trúc.");
 }
 
 /**
- * PAGINATION
- */
-$products = array_slice($products, $offset, $limit);
-
-/**
- * OUTPUT FILE
+ * OUTPUT FILE SYSTEM DIRECTORY
  */
 $outputDir = dirname($outputFile);
+if (!is_dir($outputDir)) {
+    @mkdir($outputDir, 0777, true);
+    @chmod($outputDir, 0777);
+}
 
 /**
  * =========================
- * CLEAR IMAGE ONLY PAGE 1
+ * CLEAR IMAGE ON START
  * =========================
  */
-if ($page === 1) {
-    if (is_dir($imageDir)) {
-        crawler_delete_directory($imageDir);
-    }
+// Tự động dọn dẹp thư mục ảnh cũ để tải mới từ đầu
+if (is_dir($imageDir)) {
+    crawler_delete_directory($imageDir);
 }
 
 if (!is_dir($imageDir)) {
-    mkdir($imageDir, 0777, true);
+    if (!@mkdir($imageDir, 0777, true)) {
+        throw new RuntimeException("CRITICAL: Không thể khởi tạo thư mục lưu ảnh tổng: $imageDir");
+    }
+    @chmod($imageDir, 0777);
 }
 
+// ĐỌC TIẾP DỮ LIỆU CŨ TỪ FILE TỔNG ĐỂ HỖ TRỢ CƠ CHẾ RESUME (NẾU FILE ĐÃ TỒN TẠI)
 $results = [];
+if (file_exists($outputFile)) {
+    $oldData = json_decode(file_get_contents($outputFile), true);
+    if (is_array($oldData)) {
+        foreach ($oldData as $oldItem) {
+            if (!empty($oldItem['slug'])) {
+                $results[$oldItem['slug']] = $oldItem;
+            }
+        }
+    }
+}
 
 foreach ($products as $i => $product) {
 
-    $url = $product['url'] ?? '';
+    $url  = $product['url'] ?? '';
+    $slug = $product['slug'] ?? '';
 
-    if (!$url) {
-        crawler_log("[$i] SKIP NO URL");
+    if (!$url || !$slug) {
+        crawler_log("[$i] SKIP LỖI: Sản phẩm thiếu thông tin URL hoặc Slug định danh");
         continue;
     }
 
-    $slug = $product['slug'];
-
     /**
      * =========================
-     * RESUME CHECK
+     * RESUME CHECK (KIỂM TRA TRONG MẢNG FILE TỔNG)
      * =========================
      */
-    $slugFile = $imageDir . '/' . $slug . '/data.json';
-
-    if (file_exists($slugFile)) {
-        crawler_log("[$i] SKIP EXISTING: $slug");
+    // Đã sửa đổi: Không kiểm tra file cục bộ data.json nữa, kiểm tra sự tồn tại thẳng trong file tổng
+    if (isset($results[$slug])) {
+        crawler_log("[$i] SKIP EXISTING IN TOTAL JSON: $slug");
         continue;
     }
 
@@ -285,10 +322,8 @@ foreach ($products as $i => $product) {
 
     $res = fetch_html($url);
 
-    crawler_log("HTTP CODE: " . $res['code']);
-
     if ($res['code'] !== 200 || !$res['html']) {
-        crawler_log("SKIP INVALID PAGE");
+        crawler_log("SKIP INVALID PAGE - HTTP CODE: " . $res['code']);
         continue;
     }
 
@@ -307,45 +342,35 @@ foreach ($products as $i => $product) {
         ]
     );
 
-    /**
-     * SAVE PER PRODUCT
-     */
-    $dir = $imageDir . '/' . $slug;
+    // THÀNH CÔNG: Đã loại bỏ hoàn toàn khối mã tạo thư mục cục bộ và lưu file data.json tại đây!
 
-    if (!is_dir($dir)) {
-        mkdir($dir, 0777, true);
-    }
-
-    file_put_contents(
-        $dir . '/data.json',
-        json_encode(
-            $item,
-            JSON_PRETTY_PRINT |
-            JSON_UNESCAPED_UNICODE |
-            JSON_UNESCAPED_SLASHES
-        )
-    );
-
+    // Đẩy sản phẩm vừa cào thành công vào mảng tổng kết quả
     $results[$slug] = $item;
 
+    /**
+     * GHI CUỐN CHIẾU VÀO FILE TỔNG SAU MỖI VÒNG LẶP (Bảo vệ dữ liệu không bị mất nếu sập mạng)
+     */
+    if (is_dir($outputDir) && is_writable($outputDir)) {
+        file_put_contents(
+            $outputFile,
+            json_encode(
+                array_values($results),
+                JSON_PRETTY_PRINT |
+                JSON_UNESCAPED_UNICODE |
+                JSON_UNESCAPED_SLASHES
+            )
+        );
+        @chmod($outputFile, 0666);
+    }
+
     crawler_log("DONE: $slug");
+
+    // Giãn cách nhẹ 1 giây để tránh bị hệ thống tường lửa của Yonex chặn IP truy cập
+    sleep(1);
 }
 
-/**
- * SAVE PAGE JSON
- */
-file_put_contents(
-    $outputFile,
-    json_encode(
-        array_values($results),
-        JSON_PRETTY_PRINT |
-        JSON_UNESCAPED_UNICODE |
-        JSON_UNESCAPED_SLASHES
-    )
-);
-
 crawler_log("================================");
-crawler_log("DONE PAGE: $page");
-crawler_log("TOTAL: " . count($results));
-crawler_log("OUTPUT: " . $outputFile);
+crawler_log("HOÀN THÀNH TIẾN TRÌNH CÀO TỔNG");
+crawler_log("TỔNG SỐ SẢN PHẨM ĐÃ LƯU: " . count($results));
+crawler_log("ĐƯỜNG DẪN FILE JSON TỔNG: " . $outputFile);
 crawler_log("================================");

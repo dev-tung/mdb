@@ -9,7 +9,7 @@ class Database
         if (self::$instance === null) {
 
             $host = 'mysql';
-            $db   = 'mdb';
+            $db   = 'badminton';
             $user = 'root';
             $pass = 'root';
             $charset = 'utf8mb4';

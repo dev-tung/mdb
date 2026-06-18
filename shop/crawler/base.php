@@ -45,7 +45,23 @@ function crawler_get_html(string $url): string
 
 function crawler_download_image(string $url, string $path): bool
 {
+    // Tự động kiểm tra và tạo thư mục chứa ảnh cấp thấp nhất nếu chưa có
+    $dir = dirname($path);
+    if (!is_dir($dir)) {
+        if (!@mkdir($dir, 0777, true)) {
+            crawler_log("CRAWLER ERROR: Không thể tạo thư mục lưu ảnh: $dir");
+            return false;
+        }
+        @chmod($dir, 0777);
+    }
+
     $fp = fopen($path, 'wb');
+
+    // Chặn đứng lỗi TypeError làm sập script cURL nếu không mở được luồng ghi file
+    if ($fp === false) {
+        crawler_log("CRAWLER ERROR: Không thể mở luồng ghi file tại đường dẫn: $path");
+        return false;
+    }
 
     $ch = curl_init($url);
 
@@ -62,6 +78,12 @@ function crawler_download_image(string $url, string $path): bool
     curl_close($ch);
     fclose($fp);
 
+    if (!$result) {
+        crawler_log("CRAWLER ERROR: cURL tải ảnh thất bại từ URL: $url");
+    } else {
+        @chmod($path, 0666); // Cấp quyền đọc ghi cho file ảnh vừa tải thành công
+    }
+
     return (bool) $result;
 }
 
@@ -77,9 +99,9 @@ function crawler_delete_directory(string $dir): void
         if (is_dir($path)) {
             crawler_delete_directory($path);
         } else {
-            unlink($path);
+            @unlink($path);
         }
     }
 
-    rmdir($dir);
+    @rmdir($dir);
 }
