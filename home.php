@@ -1,4 +1,9 @@
 <?php require_once PATH_ROOT . 'header.php'; ?>
+<?php require_once PATH_SHOP . 'repository/product.php'; ?>
+<?php
+    $categories = get_categories();
+    $featured_products = get_featured_products(6);
+?>
 
 <main class="container py-4">
   <!-- HERO / BANNER -->
@@ -26,328 +31,161 @@
 
   </section>
 
-  <!-- DANH MỤC -->
-  <section class="mb-5">
+    <!-- DANH MỤC -->
+    <section class="mb-5">
 
-      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
 
-          <h2 class="fw-bold mb-0">
-              Danh Mục Sản Phẩm
-          </h2>
+            <h2 class="fw-bold mb-0">
+                Danh mục sản phẩm
+            </h2>
 
-          <a href="/products" class="text-decoration-none text-success">
-              Xem tất cả →
-          </a>
+            <a href="/products" class="text-decoration-none text-success">
+                Xem tất cả →
+            </a>
 
-      </div>
+        </div>
 
-      <div id="categoryCarousel"
-          class="carousel slide"
-          data-bs-ride="carousel">
+        <div class="row g-4">
 
-          <div class="carousel-inner">
+            <?php foreach ($categories as $category): ?>
 
-              <!-- Slide 1 -->
-              <div class="carousel-item active">
+                <?php
+                $img = !empty($category['image'])
+                    ? URL_ROOT . '/shop/' . ltrim($category['image'], '/')
+                    : 'https://placehold.co/600x400?text=' . urlencode($category['name']);
+                ?>
 
-                  <div class="row g-4">
+                <div class="col-6 col-md-4 col-lg-3">
 
-                      <div class="col-md-4">
+                    <a
+                        href="/products?category=<?= urlencode($category['slug']) ?>"
+                        class="text-decoration-none text-dark">
 
-                          <a href="/products/vot-cau-long"
-                            class="text-decoration-none text-dark">
+                        <div class="card border-0 shadow-sm h-100">
 
-                              <div class="card border shadow-sm rounded-3 overflow-hidden h-100">
+                            <div class="ratio ratio-4x3 bg-light">
 
-                                  <div class="text-center py-4 bg-light border-bottom">
+                                <img
+                                    src="<?= htmlspecialchars($img) ?>"
+                                    alt="<?= htmlspecialchars($category['name']) ?>"
+                                    class="w-100 h-100"
+                                    style="object-fit:contain;padding:20px;">
 
-                                      <svg width="120"
-                                          height="120"
-                                          viewBox="0 0 24 24"
-                                          fill="none"
-                                          stroke="currentColor"
-                                          stroke-width="1.5">
+                            </div>
 
-                                          <circle cx="8" cy="8" r="5"></circle>
-                                          <line x1="11.5" y1="11.5" x2="20" y2="20"></line>
-                                          <line x1="18" y1="18" x2="21" y2="21"></line>
+                            <div class="card-body text-center">
 
-                                      </svg>
+                                <h6 class="mb-0 fw-semibold">
 
-                                  </div>
+                                    <?= htmlspecialchars($category['name']) ?>
 
-                                  <div class="card-body text-center">
+                                </h6>
 
-                                      <h5 class="mb-0">
-                                          Vợt Cầu Lông
-                                      </h5>
+                            </div>
 
-                                  </div>
+                        </div>
 
-                              </div>
+                    </a>
 
-                          </a>
+                </div>
 
-                      </div>
+            <?php endforeach; ?>
 
-                      <div class="col-md-4">
+        </div>
 
-                          <a href="/products/giay-cau-long"
-                            class="text-decoration-none text-dark">
+    </section>
 
-                              <div class="card border shadow-sm rounded-3 overflow-hidden h-100">
+    <!-- SẢN PHẨM NỔI BẬT -->
+    <section class="mb-5">
 
-                                  <div class="text-center py-4 bg-light border-bottom">
+        <header class="d-flex justify-content-between align-items-center mb-4">
 
-                                      <svg width="120"
-                                          height="120"
-                                          viewBox="0 0 24 24"
-                                          fill="currentColor">
+            <h2 class="fw-bold mb-0">
+                Sản phẩm nổi bật
+            </h2>
 
-                                          <path d="M3 16c1.5 0 2.5-1 4-1 1.5 0 2.5 1 4 1h10v3H3v-3z"/>
-                                          <path d="M9 6v5l3 2"/>
+            <a href="/products" class="text-decoration-none text-success">
+                Xem tất cả →
+            </a>
 
-                                      </svg>
+        </header>
 
-                                  </div>
+        <div class="row g-4">
 
-                                  <div class="card-body text-center">
+            <?php foreach ($featured_products as $p): ?>
 
-                                      <h5 class="mb-0">
-                                          Giày Cầu Lông
-                                      </h5>
+                <?php
+                    $img = !empty($p['thumbnail'])
+                        ? (
+                            str_starts_with($p['thumbnail'], 'http')
+                            ? $p['thumbnail']
+                            : URL_ROOT . '/shop/' . ltrim($p['thumbnail'], '/')
+                        )
+                        : 'https://placehold.co/600x600?text=No+Image';
 
-                                  </div>
+                    $price = (int)($p['price'] ?? 0);
+                ?>
 
-                              </div>
+                <div class="col-6 col-md-4 col-lg-2">
 
-                          </a>
+                    <article class="card h-100 shadow-sm border-0">
 
-                      </div>
+                        <a href="/product/<?= urlencode($p['slug']) ?>">
 
-                      <div class="col-md-4">
+                            <img
+                                src="<?= htmlspecialchars($img) ?>"
+                                class="card-img-top p-2"
+                                alt="<?= htmlspecialchars($p['name']) ?>"
+                                style="height:220px;object-fit:contain;">
 
-                          <a href="/products/tui-vot"
-                            class="text-decoration-none text-dark">
+                        </a>
 
-                              <div class="card border shadow-sm rounded-3 overflow-hidden h-100">
+                        <div class="card-body">
 
-                                  <div class="text-center py-4 bg-light border-bottom">
+                            <h6 class="mb-2">
 
-                                      <svg width="120"
-                                          height="120"
-                                          viewBox="0 0 24 24"
-                                          fill="none"
-                                          stroke="currentColor"
-                                          stroke-width="1.5">
+                                <a
+                                    href="/product/<?= urlencode($p['slug']) ?>"
+                                    class="text-decoration-none text-dark">
 
-                                          <rect x="5" y="6" width="14" height="14"></rect>
-                                          <path d="M9 6V4a3 3 0 0 1 6 0v2"></path>
+                                    <?= htmlspecialchars($p['name']) ?>
 
-                                      </svg>
+                                </a>
 
-                                  </div>
+                            </h6>
 
-                                  <div class="card-body text-center">
+                            <div class="text-danger fw-bold">
 
-                                      <h5 class="mb-0">
-                                          Túi Vợt
-                                      </h5>
+                                <?= $price
+                                    ? number_format($price) . '₫'
+                                    : 'Liên hệ' ?>
 
-                                  </div>
+                            </div>
 
-                              </div>
+                        </div>
 
-                          </a>
+                        <div class="card-footer bg-white border-0 pt-0">
 
-                      </div>
+                            <a
+                                href="/product/<?= urlencode($p['slug']) ?>"
+                                class="btn btn-success w-100">
 
-                  </div>
+                                Xem Chi Tiết
 
-              </div>
+                            </a>
 
-              <!-- Slide 2 -->
-              <div class="carousel-item">
+                        </div>
 
-                  <div class="row g-4">
+                    </article>
 
-                      <div class="col-md-4">
+                </div>
 
-                          <a href="/products/phu-kien"
-                            class="text-decoration-none text-dark">
+            <?php endforeach; ?>
 
-                              <div class="card border shadow-sm rounded-3 overflow-hidden h-100">
+        </div>
 
-                                  <div class="text-center py-4 bg-light border-bottom">
-
-                                      <svg width="120"
-                                          height="120"
-                                          viewBox="0 0 24 24"
-                                          fill="none"
-                                          stroke="currentColor"
-                                          stroke-width="1.5">
-
-                                          <circle cx="12" cy="12" r="4"></circle>
-                                          <path d="M12 2v3M12 19v3M2 12h3M19 12h3"></path>
-
-                                      </svg>
-
-                                  </div>
-
-                                  <div class="card-body text-center">
-
-                                      <h5 class="mb-0">
-                                          Phụ Kiện
-                                      </h5>
-
-                                  </div>
-
-                              </div>
-
-                          </a>
-
-                      </div>
-
-                      <div class="col-md-4">
-
-                          <a href="/products/day-cuoc"
-                            class="text-decoration-none text-dark">
-
-                              <div class="card border shadow-sm rounded-3 overflow-hidden h-100">
-
-                                  <div class="text-center py-4 bg-light border-bottom">
-
-                                      <svg width="120"
-                                          height="120"
-                                          viewBox="0 0 24 24"
-                                          fill="none"
-                                          stroke="currentColor"
-                                          stroke-width="1.5">
-
-                                          <circle cx="12" cy="12" r="8"></circle>
-                                          <circle cx="12" cy="12" r="4"></circle>
-
-                                      </svg>
-
-                                  </div>
-
-                                  <div class="card-body text-center">
-
-                                      <h5 class="mb-0">
-                                          Dây Cước
-                                      </h5>
-
-                                  </div>
-
-                              </div>
-
-                          </a>
-
-                      </div>
-
-                      <div class="col-md-4">
-
-                          <a href="/bang-gia-cang-cuoc"
-                            class="text-decoration-none text-dark">
-
-                              <div class="card border shadow-sm rounded-3 overflow-hidden h-100">
-
-                                  <div class="text-center py-4 bg-light border-bottom">
-
-                                      <svg width="120"
-                                          height="120"
-                                          viewBox="0 0 24 24"
-                                          fill="none"
-                                          stroke="currentColor"
-                                          stroke-width="1.5">
-
-                                          <path d="M21 7l-4-4"></path>
-                                          <path d="M14 3l7 7"></path>
-                                          <path d="M11 6l7 7"></path>
-                                          <path d="M3 21l8-8"></path>
-
-                                      </svg>
-
-                                  </div>
-
-                                  <div class="card-body text-center">
-
-                                      <h5 class="mb-0">
-                                          Căng Cước
-                                      </h5>
-
-                                  </div>
-
-                              </div>
-
-                          </a>
-
-                      </div>
-
-                  </div>
-
-              </div>
-
-          </div>
-
-      </div>
-
-  </section>
-
-  <!-- SẢN PHẨM NỔI BẬT -->
-  <section class="mb-5">
-
-      <header class="d-flex justify-content-between align-items-center mb-4">
-          <h2 class="fw-bold mb-0">
-              Sản Phẩm Nổi Bật
-          </h2>
-
-          <a href="/products" class="text-decoration-none text-success">
-              Xem tất cả →
-          </a>
-      </header>
-
-      <div class="row g-4 justify-content-center">
-
-          <?php for ($i = 1; $i <= 6; $i++): ?>
-
-              <div class="col-6 col-lg-2">
-
-                  <article class="card h-100 shadow-sm border-0">
-
-                      <img src="https://placehold.co/600x600?text=Yonex+Astrox+<?= $i ?>"
-                          class="card-img-top"
-                          alt="Yonex Astrox <?= $i ?>">
-
-                      <div class="card-body">
-
-                          <h6 class="mb-2">
-                              Yonex Astrox <?= $i ?>
-                          </h6>
-
-                          <div class="text-danger fw-bold">
-                              <?= number_format(1990000 + ($i * 100000), 0, ',', '.') ?>₫
-                          </div>
-
-                      </div>
-
-                      <div class="card-footer bg-white border-0 pt-0">
-
-                          <a href="#" class="btn btn-success w-100">
-                              Xem Chi Tiết
-                          </a>
-
-                      </div>
-
-                  </article>
-
-              </div>
-
-          <?php endfor; ?>
-
-      </div>
-
-  </section>
+    </section>
 
   <!-- GIỚI THIỆU SEO -->
   <section class="bg-light rounded-3 p-5">

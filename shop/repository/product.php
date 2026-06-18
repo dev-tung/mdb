@@ -60,6 +60,17 @@ function get_related_products(array $product, int $limit = 4): array
     );
 }
 
+function get_featured_products(int $limit = 8): array
+{
+    return db_all(
+        "SELECT *
+         FROM shop_product
+         WHERE status = 1
+         ORDER BY id DESC
+         LIMIT $limit"
+    );
+}
+
 function search_products(string $keyword): array
 {
     return db_all(
