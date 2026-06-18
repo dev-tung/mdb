@@ -150,3 +150,4 @@ function get_product_images(int $productId): array
 
     return array_column($rows, 'image');
 }
+

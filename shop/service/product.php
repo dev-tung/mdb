@@ -32,9 +32,10 @@ function product_service(): array
 function product_context(): array
 {
     return [
+        'keyword'  => trim(get_query('keyword') ?? ''),
         'category' => (int)get_query('category'),
         'brands'   => array_map('intval', get_array('brand')),
-        'price'    => get_query('price'),
+        'price'    => get_query('price') ?? '',
         'page'     => max(1, (int)get_query('page', 1)),
         'perPage'  => 20
     ];
@@ -42,6 +43,17 @@ function product_context(): array
 
 function product_filter(array $products, array $ctx): array
 {
+    if (!empty($ctx['keyword'])) {
+        $keyword = mb_strtolower($ctx['keyword']);
+
+        $products = array_filter($products, function ($p) use ($keyword) {
+            return str_contains(
+                mb_strtolower($p['name'] ?? ''),
+                $keyword
+            );
+        });
+    }
+
     if ($ctx['category']) {
         $products = array_filter(
             $products,
