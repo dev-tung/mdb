@@ -75,76 +75,43 @@
       <tbody>
 
         <?php if (empty($result['products'])): ?>
-          <tr>
-            <td colspan="7" class="text-center text-muted py-3">
-              Không tìm thấy sản phẩm nào.
-            </td>
-          </tr>
+            <tr>
+                <td colspan="7" class="text-center text-muted py-3">
+                    Không tìm thấy sản phẩm nào.
+                </td>
+            </tr>
         <?php else: ?>
 
-          <?php foreach ($result['products'] as $index => $p): ?>
+            <?php foreach ($result['products'] as $index => $p): ?>
 
-            <?php
-              $page = $result['page'];
-              $indexNumber = (($page - 1) * 20) + $index + 1;
+                <tr>
+                    <td><?= product_index($result['page'], $index) ?></td>
 
-              $price = number_format($p['price'] ?? 0, 0, ',', '.') . ' đ';
-              $status = (($p['status'] ?? 0) == 1) ? 'Đang bán' : 'Ẩn';
-              $updated = $p['updated_at'] ?? $p['created_at'] ?? 'Chưa cập nhật';
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <img src="<?= product_image($p['thumbnail']) ?>"
+                                class="rounded"
+                                style="width:35px;height:35px;object-fit:cover">
+                            <?= htmlspecialchars($p['name']) ?>
+                        </div>
+                    </td>
 
-              // category name
-              $catName = 'Chưa phân loại';
-              foreach ($result['categories'] as $c) {
-                  if ((int)$c['id'] === (int)($p['category_id'] ?? 0)) {
-                      $catName = $c['name'];
-                      break;
-                  }
-              }
+                    <td><?= product_category_name($p['category_id'], $result['categories']) ?></td>
+                    <td><?= product_price($p['price']) ?></td>
+                    <td><?= product_updated_at($p) ?></td>
+                    <td><?= product_status($p['status']) ?></td>
 
-              // image
-              $img = 'https://placehold.co';
-              if (!empty($p['thumbnail'])) {
-                  if (str_starts_with($p['thumbnail'], 'http')) {
-                      $img = $p['thumbnail'];
-                  } else {
-                      $img = URL_ROOT . '/shop/' . ltrim($p['thumbnail'], '/');
-                  }
-              }
-            ?>
+                    <td>
+                        <a href="<?= url('/product/edit?id=' . $p['id']) ?>"
+                          class="btn btn-sm btn-outline-secondary">Sửa</a>
 
-            <tr>
-              <td><?= $indexNumber ?></td>
+                        <a href="<?= url('/product/delete?id=' . $p['id']) ?>"
+                          onclick="return confirm('Xóa sản phẩm này?')"
+                          class="btn btn-sm btn-outline-secondary">Xóa</a>
+                    </td>
+                </tr>
 
-              <td>
-                <div class="d-flex align-items-center gap-2">
-                  <img src="<?= $img ?>"
-                       style="width:35px;height:35px;object-fit:cover"
-                       class="rounded">
-                  <?= htmlspecialchars($p['name'] ?? '') ?>
-                </div>
-              </td>
-
-              <td><?= htmlspecialchars($catName) ?></td>
-              <td><?= $price ?></td>
-              <td><?= htmlspecialchars($updated) ?></td>
-              <td><?= $status ?></td>
-
-              <td>
-                <a href="<?= url('/product/edit?id=' . $p['id']) ?>"
-                   class="btn btn-sm btn-outline-secondary">
-                  Sửa
-                </a>
-
-                <a href="<?= url('/product/delete?id=' . $p['id']) ?>"
-                   onclick="return confirm('Xóa sản phẩm này?')"
-                   class="btn btn-sm btn-outline-secondary">
-                  Xóa
-                </a>
-              </td>
-
-            </tr>
-
-          <?php endforeach; ?>
+            <?php endforeach; ?>
 
         <?php endif; ?>
 

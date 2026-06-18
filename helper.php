@@ -252,3 +252,4 @@ if (!function_exists('pager')) {
         return ob_get_clean();
     }
 }
+

@@ -137,30 +137,17 @@
 
                 <?php foreach ($result['products'] as $p): ?>
 
-                    <?php
-                    $img = $p['thumbnail']
-                        ? (
-                            str_starts_with($p['thumbnail'], 'http')
-                                ? $p['thumbnail']
-                                : URL_ROOT . '/shop/' . ltrim($p['thumbnail'], '/')
-                        )
-                        : 'https://placehold.co/300x300?text=No+Image';
-
-                    $price = (int)($p['price'] ?? 0);
-                    ?>
-
                     <div class="col-6 col-md-4 col-xl-3">
 
-                        <a
-                            href="/product/<?= urlencode($p['slug']) ?>"
-                            class="text-decoration-none text-dark">
+                        <a href="/product/<?= urlencode($p['slug']) ?>"
+                        class="text-decoration-none text-dark">
 
                             <div class="card h-100 border-0 shadow-sm">
 
                                 <div class="ratio ratio-1x1 bg-light">
 
                                     <img
-                                        src="<?= htmlspecialchars($img) ?>"
+                                        src="<?= htmlspecialchars(product_card_image($p['thumbnail'])) ?>"
                                         alt="<?= htmlspecialchars($p['name']) ?>"
                                         class="w-100 h-100 p-2"
                                         style="object-fit:contain;">
@@ -170,17 +157,11 @@
                                 <div class="card-body">
 
                                     <h6 class="mb-2">
-
                                         <?= htmlspecialchars($p['name']) ?>
-
                                     </h6>
 
                                     <div class="text-danger fw-bold">
-
-                                        <?= $price
-                                            ? number_format($price) . '₫'
-                                            : 'Liên hệ' ?>
-
+                                        <?= product_card_price($p['price']) ?>
                                     </div>
 
                                 </div>
@@ -196,13 +177,9 @@
                 <?php if (empty($result['products'])): ?>
 
                     <div class="col-12">
-
                         <div class="alert alert-light border text-center">
-
                             Không tìm thấy sản phẩm phù hợp.
-
                         </div>
-
                     </div>
 
                 <?php endif; ?>
@@ -218,7 +195,6 @@
                     'color' => true
                 ]);
             ?>
-
 
         </section>
 
