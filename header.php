@@ -44,7 +44,7 @@
                     <li class="nav-item">
                         <a class="nav-link <?= (str_contains($current, '/affilate')) ? 'active fw-bold text-success' : '' ?>"
                           href="<?= URL_ROOT ?>/affilate">
-                            Cộng tác viên
+                            CTV
                         </a>
                     </li>
 
