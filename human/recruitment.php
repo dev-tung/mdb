@@ -163,7 +163,7 @@
                             <thead class="table-light">
 
                                 <tr>
-                                    <th width="250">Hạng mục</th>
+                                    <th>Hạng mục</th>
                                     <th>Thông tin</th>
                                 </tr>
 
