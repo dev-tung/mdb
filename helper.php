@@ -214,7 +214,7 @@ if (!function_exists('pager')) {
                         <li class="page-item <?= $i == $page ? 'active' : '' ?>">
 
                             <?php if ($i == $page): ?>
-                                <span class="page-link border-<?= $color ?> text-white">
+                                <span class="page-link border-<?= $color ?> text-<?= $color ?> bg-light">
                                     <?= $i ?>
                                 </span>
                             <?php else: ?>
