@@ -5,88 +5,67 @@ require_once PATH_SHOP . 'repository/product.php';
 
 function product_detail_service(): array
 {
-    $slug = product_detail_context();
+    $slug = trim(get_query('slug', ''));
 
-    // ❌ không có slug thì dừng luôn
-    if (!$slug) {
-        return [
-            'found' => false,
-            'product' => null,
-            'related_products' => []
-        ];
-    }
+    $product = $slug ? get_product_by_slug($slug) : null;
 
-    $product = get_product_by_slug($slug);
-
-    // ❌ không tìm thấy sản phẩm
     if (!$product) {
         return [
             'found' => false,
-            'product' => null,
+
+            // view không cần if nữa → vẫn render được safe data
+            'product' => [
+                'name' => 'Product not found',
+                'category' => '',
+                'description' => '',
+                'price' => 0,
+                'images' => ['https://placehold.co/600x600'],
+                'specifications' => []
+            ],
+
             'related_products' => []
         ];
     }
 
     return [
         'found' => true,
-        'product' => product_detail_format($product),
+        'product' => format_product_for_view($product),
         'related_products' => get_related_products($product)
     ];
 }
 
 
 /**
- * Lấy slug từ URL query
+ * VIEW-READY DATA (100% clean, no logic in view)
  */
-function product_detail_context(): string
+function format_product_for_view(array $p): array
 {
-    return trim(get_query('slug', ''));
-}
+    $images = array_map(function ($img) {
 
+        if (empty($img)) {
+            return 'https://placehold.co/600x600';
+        }
 
-/**
- * Format data cho VIEW (chuẩn hóa output)
- */
-function product_detail_format(array $p): array
-{
+        if (str_starts_with($img, 'http')) {
+            return $img;
+        }
+
+        return URL_ROOT . '/shop/' . ltrim($img, '/');
+
+    }, $p['images'] ?? []);
+
     return [
-        'slug' => $p['slug'] ?? '',
         'name' => $p['name'] ?? '',
-
-        // image gallery (array)
-        'images' => $p['images'] ?? [],
-
-        // local images (array)
-        'local_images' => $p['local_images'] ?? [],
-
-        'price' => $p['price'] ?? 0,
-        'brand' => $p['brand'] ?? '',
-        'sku' => $p['sku'] ?? '',
-
         'category' => $p['category'] ?? '',
-        'category_name' => $p['category_name'] ?? '',
-
         'description' => $p['description'] ?? '',
+        'price' => $p['price'] ?? 0,
 
-        // FIX: đồng bộ repo (specs)
+        // already safe
+        'images' => $images,
+
+        // already safe fallback
+        'main_image' => $images[0] ?? 'https://placehold.co/600x600',
+
         'specifications' => $p['specs'] ?? []
     ];
-}
-
-
-/**
- * Lấy sản phẩm liên quan (cùng category, trừ chính nó)
- */
-function get_related_products(array $product): array
-{
-    $all = get_products();
-
-    $related = array_filter($all, function ($p) use ($product) {
-
-        return ($p['slug'] ?? '') !== ($product['slug'] ?? '')
-            && ($p['category'] ?? '') === ($product['category'] ?? '');
-
-    });
-
-    return array_slice(array_values($related), 0, 4);
 }

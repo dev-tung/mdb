@@ -28,29 +28,29 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link <?= (str_contains($current, '/shop/product')) ? 'active fw-bold text-success' : '' ?>"
-                          href="<?= URL_ROOT ?>/shop/product">
+                        <a class="nav-link <?= (str_contains($current, '/product')) ? 'active fw-bold text-success' : '' ?>"
+                          href="<?= URL_ROOT ?>/product">
                             Sản phẩm
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link <?= (str_contains($current, '/stringing/table')) ? 'active fw-bold text-success' : '' ?>"
-                          href="<?= URL_ROOT ?>/stringing/table">
+                        <a class="nav-link <?= (str_contains($current, '/string')) ? 'active fw-bold text-success' : '' ?>"
+                          href="<?= URL_ROOT ?>/string">
                             Căng cước
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link <?= (str_contains($current, 'human/affilate')) ? 'active fw-bold text-success' : '' ?>"
-                          href="<?= URL_ROOT ?>/human/affilate">
+                        <a class="nav-link <?= (str_contains($current, '/affilate')) ? 'active fw-bold text-success' : '' ?>"
+                          href="<?= URL_ROOT ?>/affilate">
                             Cộng tác viên
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link <?= (str_contains($current, 'human/recruitment')) ? 'active fw-bold text-success' : '' ?>"
-                          href="<?= URL_ROOT ?>/human/recruitment">
+                        <a class="nav-link <?= (str_contains($current, '/recruitment')) ? 'active fw-bold text-success' : '' ?>"
+                          href="<?= URL_ROOT ?>/recruitment">
                             Tuyển dụng
                         </a>
                     </li>

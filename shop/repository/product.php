@@ -2,82 +2,60 @@
 
 function get_product_by_slug(string $slug): ?array
 {
-    $jsonFile = PATH_SHOP . 'json/yonex_product_detail_page_1.json';
-
-    if (!file_exists($jsonFile)) {
-        return null;
-    }
-
-    $raw = file_get_contents($jsonFile);
-    $data = json_decode($raw, true);
-
-    if (!is_array($data)) {
-        return null;
-    }
-
-    foreach ($data as $item) {
-
-        if (($item['slug'] ?? '') !== $slug) {
-            continue;
-        }
-
-        return [
-            "name"        => $item['name'] ?? '',
-            "slug"        => $item['slug'] ?? '',
-            "url"         => $item['url'] ?? '',
-            "category"    => $item['category'] ?? '',
-            "title"       => $item['title'] ?? ($item['name'] ?? ''),
-            "description" => $item['description'] ?? null,
-
-            // images
-            "images"       => $item['images'] ?? [],
-            "local_images" => $item['local_images'] ?? [],
-
-            // specs luôn là array
-            "specs"        => is_array($item['specs'] ?? null) ? $item['specs'] : [],
-
-            "detail_url"   => $item['detail_url'] ?? ''
-        ];
-    }
-
-    return null;
+    return db_one(
+        "SELECT *
+         FROM shop_product
+         WHERE slug = :slug
+         LIMIT 1",
+        ['slug' => $slug]
+    );
 }
 
-
-/**
- * Get product list grouped by category
- */
 function get_products(): array
 {
-    $jsonFile = PATH_SHOP . 'json/yonex_product.json';
+    return db_all(
+        "SELECT *
+         FROM shop_product
+         WHERE status = 1
+         ORDER BY id DESC"
+    );
+}
 
-    if (!file_exists($jsonFile)) {
+function get_brands(): array
+{
+    return db_all(
+        "SELECT id, name, slug
+         FROM shop_brand
+         ORDER BY name"
+    );
+}
+
+function get_categories(): array
+{
+    return db_all(
+        "SELECT id, name, slug
+         FROM shop_category
+         ORDER BY name"
+    );
+}
+
+function get_related_products(array $product, int $limit = 4): array
+{
+    if (empty($product['category_id'])) {
         return [];
     }
 
-    $raw = file_get_contents($jsonFile);
-    $data = json_decode($raw, true);
-
-    if (!is_array($data)) {
-        return [];
-    }
-
-    $result = [];
-
-    foreach ($data as $item) {
-
-        $category = $item['category'] ?? 'unknown';
-
-        $result[$category][] = [
-            "name"  => $item['name'] ?? '',
-            "slug"  => $item['slug'] ?? '',
-            "url"   => $item['url'] ?? '',
-            "image" => $item['image'] ?? '',
-
-            // fix: không ghép path sai nữa
-            "local_image" => $item['image_file'] ?? null
-        ];
-    }
-
-    return $result;
+    return db_all(
+        "SELECT *
+         FROM shop_product
+         WHERE category_id = :category_id
+           AND slug != :slug
+           AND status = 1
+         ORDER BY id DESC
+         LIMIT $limit",
+        [
+            'category_id' => $product['category_id'],
+            'slug'        => $product['slug']
+        ]
+    );
 }

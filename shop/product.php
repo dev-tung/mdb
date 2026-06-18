@@ -10,82 +10,117 @@
         <!-- FILTER -->
         <aside class="col-12 col-lg-3">
 
-            <form method="GET" class="position-sticky" style="top: 20px;">
+            <form method="GET" class="position-sticky" style="top:20px;">
 
                 <input type="hidden" name="page" value="<?= $result['page'] ?>">
 
                 <div class="border rounded bg-white shadow-sm p-3">
 
-                    <h5 class="fw-bold mb-3 text-success">Bộ lọc</h5>
+                    <h5 class="fw-bold mb-3 text-success">
+                        Bộ lọc
+                    </h5>
 
                     <!-- CATEGORY -->
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Danh mục</label>
 
-                        <select class="form-select form-select-sm" name="type">
-                            <?php foreach ([
-                                'all'=>'Tất cả',
-                                'racquets'=>'Vợt',
-                                'shoes'=>'Giày',
-                                'bag'=>'Túi',
-                                'accessory'=>'Phụ kiện'
-                            ] as $k=>$v): ?>
-                                <option value="<?= $k ?>"
-                                    <?= $result['filters']['type']==$k?'selected':'' ?>>
-                                    <?= $v ?>
+                        <label class="form-label fw-semibold">
+                            Danh mục
+                        </label>
+
+                        <select
+                            class="form-select form-select-sm"
+                            name="category">
+
+                            <option value="0">
+                                Tất cả danh mục
+                            </option>
+
+                            <?php foreach ($result['categories'] as $category): ?>
+
+                                <option
+                                    value="<?= $category['id'] ?>"
+                                    <?= $result['filters']['category'] == $category['id'] ? 'selected' : '' ?>>
+
+                                    <?= htmlspecialchars($category['name']) ?>
+
                                 </option>
+
                             <?php endforeach; ?>
+
                         </select>
+
                     </div>
 
                     <hr class="my-3">
 
                     <!-- BRAND -->
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Thương hiệu</label>
 
-                        <?php foreach (['yonex','victor','lining','mizuno'] as $b): ?>
+                        <label class="form-label fw-semibold">
+                            Thương hiệu
+                        </label>
+
+                        <?php foreach ($result['brands'] as $brand): ?>
+
                             <div class="form-check small mb-1">
-                                <input class="form-check-input"
+
+                                <input
+                                    class="form-check-input"
                                     type="checkbox"
                                     name="brand[]"
-                                    value="<?= $b ?>"
-                                    <?= in_array($b, $result['filters']['brands']) ? 'checked' : '' ?>>
+                                    value="<?= $brand['id'] ?>"
+                                    <?= in_array($brand['id'], $result['filters']['brands']) ? 'checked' : '' ?>>
 
                                 <label class="form-check-label">
-                                    <?= ucfirst($b) ?>
+
+                                    <?= htmlspecialchars($brand['name']) ?>
+
                                 </label>
+
                             </div>
+
                         <?php endforeach; ?>
+
                     </div>
 
                     <hr class="my-3">
 
                     <!-- PRICE -->
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Khoảng giá</label>
+
+                        <label class="form-label fw-semibold">
+                            Khoảng giá
+                        </label>
 
                         <?php foreach ([
-                            'lt1'=>'Dưới 1 triệu',
-                            '1-3'=>'1 - 3 triệu',
-                            '3-5'=>'3 - 5 triệu',
-                            'gt5'=>'Trên 5 triệu'
-                        ] as $k=>$v): ?>
+                            'lt1' => 'Dưới 1 triệu',
+                            '1-3' => '1 - 3 triệu',
+                            '3-5' => '3 - 5 triệu',
+                            'gt5' => 'Trên 5 triệu'
+                        ] as $k => $v): ?>
+
                             <div class="form-check small mb-1">
-                                <input class="form-check-input"
+
+                                <input
+                                    class="form-check-input"
                                     type="radio"
                                     name="price"
                                     value="<?= $k ?>"
-                                    <?= $result['filters']['price']==$k?'checked':'' ?>>
+                                    <?= $result['filters']['price'] == $k ? 'checked' : '' ?>>
 
                                 <label class="form-check-label">
+
                                     <?= $v ?>
+
                                 </label>
+
                             </div>
+
                         <?php endforeach; ?>
+
                     </div>
 
-                    <button class="btn btn-success btn-sm w-100 mt-2">
+                    <button class="btn btn-success btn-sm w-100">
                         Lọc sản phẩm
                     </button>
 
@@ -103,34 +138,49 @@
                 <?php foreach ($result['products'] as $p): ?>
 
                     <?php
-                        $img = $p['image'] ?? 'https://placehold.co/300x300?text=No+Image';
+                    $img = $p['thumbnail']
+                        ? (
+                            str_starts_with($p['thumbnail'], 'http')
+                                ? $p['thumbnail']
+                                : URL_ROOT . '/shop/' . ltrim($p['thumbnail'], '/')
+                        )
+                        : 'https://placehold.co/300x300?text=No+Image';
+
+                    $price = (int)($p['price'] ?? 0);
                     ?>
 
                     <div class="col-6 col-md-4 col-xl-3">
 
-                        <a href="/shop/product/<?= $p['slug'] ?>"
-                           class="text-decoration-none text-dark">
+                        <a
+                            href="/product/<?= urlencode($p['slug']) ?>"
+                            class="text-decoration-none text-dark">
 
                             <div class="card h-100 border-0 shadow-sm">
 
-                                <!-- IMAGE (FIX NOT CROPPED) -->
-                                <div class="ratio ratio-1x1" style="background:#f9f9f9;">
+                                <div class="ratio ratio-1x1 bg-light">
 
-                                    <img src="<?= htmlspecialchars($img) ?>"
-                                         class="w-100 h-100 p-2"
-                                         style="object-fit:contain;">
+                                    <img
+                                        src="<?= htmlspecialchars($img) ?>"
+                                        alt="<?= htmlspecialchars($p['name']) ?>"
+                                        class="w-100 h-100 p-2"
+                                        style="object-fit:contain;">
 
                                 </div>
 
-                                <!-- BODY -->
                                 <div class="card-body">
 
                                     <h6 class="mb-2">
+
                                         <?= htmlspecialchars($p['name']) ?>
+
                                     </h6>
 
                                     <div class="text-danger fw-bold">
-                                        <?= isset($p['price']) ? number_format($p['price']) . '₫' : 'Liên hệ' ?>
+
+                                        <?= $price
+                                            ? number_format($price) . '₫'
+                                            : 'Liên hệ' ?>
+
                                     </div>
 
                                 </div>
@@ -143,23 +193,50 @@
 
                 <?php endforeach; ?>
 
+                <?php if (empty($result['products'])): ?>
+
+                    <div class="col-12">
+
+                        <div class="alert alert-light border text-center">
+
+                            Không tìm thấy sản phẩm phù hợp.
+
+                        </div>
+
+                    </div>
+
+                <?php endif; ?>
+
             </div>
 
             <!-- PAGINATION -->
-            <nav class="mt-4">
-                <ul class="pagination">
+            <?php if ($result['totalPages'] > 1): ?>
 
-                    <?php for ($i=1; $i <= $result['totalPages']; $i++): ?>
-                        <li class="page-item <?= $i==$result['page']?'active':'' ?>">
-                            <a class="page-link"
-                               href="<?= product_build_query(['page'=>$i]) ?>">
-                                <?= $i ?>
-                            </a>
-                        </li>
-                    <?php endfor; ?>
+                <nav class="mt-4">
 
-                </ul>
-            </nav>
+                    <ul class="pagination">
+
+                        <?php for ($i = 1; $i <= $result['totalPages']; $i++): ?>
+
+                            <li class="page-item <?= $i == $result['page'] ? 'active' : '' ?>">
+
+                                <a
+                                    class="page-link"
+                                    href="<?= product_build_query(['page' => $i]) ?>">
+
+                                    <?= $i ?>
+
+                                </a>
+
+                            </li>
+
+                        <?php endfor; ?>
+
+                    </ul>
+
+                </nav>
+
+            <?php endif; ?>
 
         </section>
 
