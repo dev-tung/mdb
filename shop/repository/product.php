@@ -66,6 +66,7 @@ function get_featured_products(int $limit = 8): array
         "SELECT *
          FROM shop_product
          WHERE status = 1
+         AND category_id = 1
          ORDER BY id DESC
          LIMIT $limit"
     );
