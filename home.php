@@ -51,8 +51,8 @@
             <?php foreach ($categories as $category): ?>
 
                 <?php
-                $img = !empty($category['image'])
-                    ? URL_ROOT . '/shop/' . ltrim($category['image'], '/')
+                $img = !empty($category['thumbnail'])
+                    ? URL_ROOT . '/shop/' . ltrim($category['thumbnail'], '/')
                     : 'https://placehold.co/600x400?text=' . urlencode($category['name']);
                 ?>
 

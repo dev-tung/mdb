@@ -33,7 +33,7 @@ function get_brands(): array
 function get_categories(): array
 {
     return db_all(
-        "SELECT id, name, slug
+        "SELECT id, name, slug, thumbnail
          FROM shop_category
          ORDER BY name"
     );
