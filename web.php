@@ -19,6 +19,10 @@ return [
         'path' => 'shop/admin/product/list.php',
     ],
 
+    'admin/customer' => [
+        'path' => 'customer/admin/list.php',
+    ],
+
     // Crawler
     'crawler/yonex-product-detail' => [
         'path' => 'shop/crawler/yonex-product-detail.php',
