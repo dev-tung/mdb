@@ -1,6 +1,5 @@
 <?php
-require_once PATH_CUSTOMER . 'repository/customer.php';
-require_once PATH_CUSTOMER . 'repository/customer-group.php';
+require_once PATH_REPOSITORY. 'customer.php';
 
 class CustomerController extends BaseController
 {

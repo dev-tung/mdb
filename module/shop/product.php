@@ -1,5 +1,5 @@
 
-<?php require_once PATH_SHOP . 'service/product.php'; ?>
+<?php require_once PATH_ROOT. 'service/product.php'; ?>
 
 <?php $result = product_service(); ?>
 

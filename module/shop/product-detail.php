@@ -1,11 +1,6 @@
+<?php require_once PATH_ROOT . 'service/product.php'; ?>
 
-<?php require_once PATH_SHOP . 'service/product-detail.php'; ?>
-
-<?php
-    $result  = product_detail_service();
-    $product = $result['product'] ?? [];
-    $price = (float)($product['price'] ?? 0);
-?>
+<?php $result = product_detail_service(); ?>
 
 <main class="container py-4">
 
@@ -17,19 +12,18 @@
             <div class="bg-white border rounded p-3 text-center">
 
                 <img id="mainImg"
-                     src="<?= htmlspecialchars($product['main_image'] ?? 'https://placehold.co/600x600') ?>"
+                     src="<?= htmlspecialchars($result['product']['main_image'] ?? 'https://placehold.co/600x600') ?>"
                      class="img-fluid rounded"
                      style="max-height:500px; object-fit:contain;"
-                     alt="<?= htmlspecialchars($product['name'] ?? '') ?>">
+                     alt="<?= htmlspecialchars($result['product']['name'] ?? '') ?>">
 
             </div>
 
-            <?php if (!empty($product['images']) && is_array($product['images'])): ?>
+            <?php if (!empty($result['product']['images']) && is_array($result['product']['images'])): ?>
 
                 <div class="d-flex gap-2 mt-3 flex-wrap justify-content-center">
 
-                    <?php foreach ($product['images'] as $img): ?>
-
+                    <?php foreach ($result['product']['images'] as $img): ?>
                         <?php if (!$img) continue; ?>
 
                         <img src="<?= htmlspecialchars($img) ?>"
@@ -49,24 +43,24 @@
         <div class="col-lg-6">
 
             <div class="text-uppercase text-muted small mb-2">
-                <?= htmlspecialchars($product['category'] ?? '') ?>
+                <?= htmlspecialchars($result['product']['category'] ?? '') ?>
             </div>
 
             <h1 class="fw-bold mb-3">
-                <?= htmlspecialchars($product['name'] ?? '') ?>
+                <?= htmlspecialchars($result['product']['name'] ?? '') ?>
             </h1>
 
             <p class="text-secondary mb-4">
-                <?= htmlspecialchars($product['description'] ?? '') ?>
+                <?= htmlspecialchars($result['product']['description'] ?? '') ?>
             </p>
 
             <!-- PRICE -->
             <div class="mb-4">
 
-                <?php if ($price > 0): ?>
+                <?php if ((float)($result['product']['price'] ?? 0) > 0): ?>
 
                     <div class="fs-3 fw-bold text-success">
-                        <?= number_format($price, 0, ',', '.') ?> ₫
+                        <?= number_format((float)($result['product']['price'] ?? 0), 0, ',', '.') ?> ₫
                     </div>
 
                 <?php else: ?>
@@ -80,7 +74,7 @@
             </div>
 
             <!-- SPECIFICATIONS -->
-            <?php if (!empty($product['specifications']) && is_array($product['specifications'])): ?>
+            <?php if (!empty($result['product']['specifications']) && is_array($result['product']['specifications'])): ?>
 
                 <div class="border rounded p-3 bg-light">
 
@@ -88,7 +82,7 @@
 
                     <table class="table table-sm mb-0">
 
-                        <?php foreach ($product['specifications'] as $key => $value): ?>
+                        <?php foreach ($result['product']['specifications'] as $key => $value): ?>
 
                             <tr>
                                 <th class="text-muted fw-normal">

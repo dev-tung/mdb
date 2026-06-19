@@ -1,6 +1,6 @@
 
-<?php require_once PATH_SHOP . 'repository/product.php'; ?>
-<?php require_once PATH_SHOP . 'service/product.php'; ?>
+<?php require_once PATH_REPOSITORY. '/product.php'; ?>
+<?php require_once PATH_ROOT. 'service/product.php'; ?>
 
 <main class="container py-4">
 

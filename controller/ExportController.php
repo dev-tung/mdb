@@ -1,6 +1,6 @@
 <?php
-require_once PATH_ROOT . 'validate/export.php';
-require_once PATH_ROOT . 'repository/export.php';
+require_once PATH_VALIDATE . 'export.php';
+require_once PATH_REPOSITORY . 'export.php';
 
 class ExportController extends BaseController
 {
@@ -14,12 +14,12 @@ class ExportController extends BaseController
     {
         $input = request_input();
 
-        $validator = new ExportValidator($input);
+        $errors = validate_export($input);
 
-        if ($validator->fails()) {
+        if (export_validate_fails($errors)) {
             return json_response([
                 'success' => false,
-                'errors' => $validator->errors()
+                'errors' => $errors
             ]);
         }
 
