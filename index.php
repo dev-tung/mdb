@@ -1,20 +1,52 @@
 <?php
+
 require_once __DIR__ . '/bootstrap.php';
 
 /* =========================
    RESOLVE REQUEST
 ========================= */
+
 function resolveRequest(): string
 {
-    $request = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+    $request = trim(
+        parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH),
+        '/'
+    );
+
     return $request === '' ? 'home' : $request;
+}
+
+/* =========================
+   LOAD ROUTES
+========================= */
+
+function loadRoutes(): array
+{
+    return array_merge(
+        require __DIR__ . '/web.php',
+        require __DIR__ . '/api.php'
+    );
 }
 
 /* =========================
    DISPATCH ROUTE
 ========================= */
+
 function dispatchRoute(array $route): void
 {
+    // API Controller
+    if (isset($route['controller'])) {
+
+        $controller = new $route['controller'];
+
+        $action = $route['action'] ?? 'index';
+
+        $controller->$action();
+
+        return;
+    }
+
+    // Web View
     require_once __DIR__ . '/start.php';
 
     require __DIR__ . '/' . $route['path'];
@@ -25,13 +57,18 @@ function dispatchRoute(array $route): void
 /* =========================
    MATCH ROUTES
 ========================= */
+
 function matchRoute(string $request, array $routes): bool
 {
     foreach ($routes as $pattern => $route) {
 
-        // convert /retail/product/{slug} -> regex
-        $regex = preg_replace('#\{[a-zA-Z_]+\}#', '([^/]+)', $pattern);
-        $regex = "#^" . $regex . "$#";
+        $regex = preg_replace(
+            '#\{[a-zA-Z_]+\}#',
+            '([^/]+)',
+            $pattern
+        );
+
+        $regex = "#^{$regex}$#";
 
         if (!preg_match($regex, $request, $matches)) {
             continue;
@@ -39,14 +76,15 @@ function matchRoute(string $request, array $routes): bool
 
         array_shift($matches);
 
-        // inject params
         if (!empty($route['params'])) {
+
             foreach ($route['params'] as $i => $key) {
                 $_GET[$key] = $matches[$i] ?? null;
             }
         }
 
         dispatchRoute($route);
+
         return true;
     }
 
@@ -58,9 +96,11 @@ function matchRoute(string $request, array $routes): bool
 ========================= */
 
 $request = resolveRequest();
-$routes = require __DIR__ . '/route.php';
+$routes  = loadRoutes();
 
 if (!matchRoute($request, $routes)) {
+
     http_response_code(404);
-    echo "404 Not Found";
+
+    echo '404 Not Found';
 }
