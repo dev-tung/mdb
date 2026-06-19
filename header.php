@@ -4,7 +4,7 @@
         <nav class="navbar navbar-expand-lg navbar-light py-3">
 
             <!-- Logo -->
-            <a class="navbar-brand fw-bold me-4 text-success" href="<?= URL_ROOT ?>">
+            <a class="navbar-brand fw-bold me-4" style="color: #26750e" href="<?= URL_ROOT ?>">
                 MDB SHOP
             </a>
 
