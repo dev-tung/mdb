@@ -1,6 +1,6 @@
 <?php
-require_once PATH_RETAIL . 'api/BaseController.php';
-require_once PATH_RETAIL . 'api/ProductController.php';
+require_once PATH_SHOP . 'api/BaseController.php';
+require_once PATH_SHOP . 'api/ProductController.php';
 
 return [
 

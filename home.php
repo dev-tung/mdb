@@ -1,5 +1,5 @@
 <?php require_once PATH_ROOT . 'header.php'; ?>
-<?php require_once PATH_RETAIL . 'repository/product.php'; ?>
+<?php require_once PATH_SHOP . 'repository/product.php'; ?>
 <?php
     $categories = get_categories();
     $featured_products = get_featured_products(6);
@@ -15,7 +15,7 @@
       <div class="container-fluid py-3">
 
           <h1 class="display-5 fw-bold mb-3">
-              Badminton Retail - Vợt Cầu Lông Chính Hãng
+              Badminton Shop - Vợt Cầu Lông Chính Hãng
           </h1>
 
           <p class="col-lg-8 fs-5 opacity-75">
@@ -52,7 +52,7 @@
 
                 <?php
                 $img = !empty($category['thumbnail'])
-                    ? URL_ROOT . '/retail/' . ltrim($category['thumbnail'], '/')
+                    ? URL_ROOT . '/shop/' . ltrim($category['thumbnail'], '/')
                     : 'https://placehold.co/600x400?text=' . urlencode($category['name']);
                 ?>
 
@@ -114,7 +114,7 @@
                 $img = !empty($p['thumbnail'])
                     ? (str_starts_with($p['thumbnail'], 'http')
                         ? $p['thumbnail']
-                        : URL_ROOT . '/retail/' . ltrim($p['thumbnail'], '/'))
+                        : URL_ROOT . '/shop/' . ltrim($p['thumbnail'], '/'))
                     : 'https://placehold.co';
 
                 $price = (int)($p['price'] ?? 0);
@@ -168,7 +168,7 @@
       </h2>
 
       <p>
-          Badminton Retail chuyên cung cấp các dòng vợt cầu lông chính hãng từ Yonex, Victor, Lining cùng nhiều thương hiệu nổi tiếng khác. Chúng tôi mang đến giải pháp mua sắm cầu lông toàn diện với đầy đủ vợt, giày, túi và phụ kiện.
+          Badminton Shop chuyên cung cấp các dòng vợt cầu lông chính hãng từ Yonex, Victor, Lining cùng nhiều thương hiệu nổi tiếng khác. Chúng tôi mang đến giải pháp mua sắm cầu lông toàn diện với đầy đủ vợt, giày, túi và phụ kiện.
       </p>
 
       <p>

@@ -1,5 +1,5 @@
 <?php
-require_once PATH_RETAIL . 'repository/product.php';
+require_once PATH_SHOP . 'repository/product.php';
 
 class ProductController extends BaseController
 {

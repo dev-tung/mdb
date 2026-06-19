@@ -1,11 +1,11 @@
 <?php
 
-// Tự động sửa lỗi nếu hằng số PATH_RETAIL bị bỏ trống hoặc chưa định nghĩa
-if (!defined('PATH_RETAIL') || PATH_RETAIL === '') {
-    define('PATH_RETAIL', dirname(__DIR__) . '/'); 
+// Tự động sửa lỗi nếu hằng số PATH_SHOP bị bỏ trống hoặc chưa định nghĩa
+if (!defined('PATH_SHOP') || PATH_SHOP === '') {
+    define('PATH_SHOP', dirname(__DIR__) . '/'); 
 }
 
-require_once PATH_RETAIL . 'crawler/base.php';
+require_once PATH_SHOP . 'crawler/base.php';
 
 /**
  * =========================
@@ -13,13 +13,13 @@ require_once PATH_RETAIL . 'crawler/base.php';
  * =========================
  */
 
-$inputFile  = PATH_RETAIL . 'json/yonex_product.json';
+$inputFile  = PATH_SHOP . 'json/yonex_product.json';
 
 // Thay đổi: Lưu toàn bộ dữ liệu cào được vào một file duy nhất tại json/yonex_product_detail.json
-$outputFile = PATH_RETAIL . 'json/yonex_product_detail.json';
+$outputFile = PATH_SHOP . 'json/yonex_product_detail.json';
 
 // Sử dụng đường dẫn tuyệt đối chính xác cho thư mục lưu ảnh
-$imageDir   = rtrim(PATH_RETAIL, '/') . '/image/yonex_product_detail';
+$imageDir   = rtrim(PATH_SHOP, '/') . '/image/yonex_product_detail';
 
 /**
  * =========================
@@ -183,8 +183,8 @@ function parse_detail(string $html): array
 function download_images(string $slug, array $images): array
 {
     // Đảm bảo lấy đường dẫn tuyệt đối chính xác từ file, không dùng từ khóa global
-    $localPathRetail = (defined('PATH_RETAIL') && PATH_RETAIL !== '') ? PATH_RETAIL : dirname(__DIR__) . '/';
-    $localImageDir = rtrim($localPathRetail, '/') . '/image/yonex_product_detail';
+    $localPathShop = (defined('PATH_SHOP') && PATH_SHOP !== '') ? PATH_SHOP : dirname(__DIR__) . '/';
+    $localImageDir = rtrim($localPathShop, '/') . '/image/yonex_product_detail';
 
     // 1. Kiểm tra và tự động tạo thư mục ảnh tổng nếu chưa có
     if (!is_dir($localImageDir)) {

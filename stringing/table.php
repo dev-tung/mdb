@@ -12,7 +12,7 @@
         <div class="fw-bold fs-5">✓</div>
         <div>
             Căng xong – Nếu đứt trong 3 ngày đầu, các bác chụp ảnh lại trước khi cắt,
-            mang ra retail <strong class="text-danger">được căng lại miễn phí.</strong>
+            mang ra shop <strong class="text-danger">được căng lại miễn phí.</strong>
         </div>
     </div>
 

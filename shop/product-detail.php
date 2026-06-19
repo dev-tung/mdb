@@ -1,5 +1,5 @@
 <?php require_once PATH_ROOT . 'header.php'; ?>
-<?php require_once PATH_RETAIL . 'service/product-detail.php'; ?>
+<?php require_once PATH_SHOP . 'service/product-detail.php'; ?>
 
 <?php
 $result  = product_detail_service();

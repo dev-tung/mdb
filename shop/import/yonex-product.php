@@ -1,8 +1,8 @@
 <?php
 
 // Tự động nạp cấu hình hệ thống nếu chưa có
-if (!defined('PATH_RETAIL') || PATH_RETAIL === '') {
-    define('PATH_RETAIL', dirname(__DIR__) . '/'); 
+if (!defined('PATH_SHOP') || PATH_SHOP === '') {
+    define('PATH_SHOP', dirname(__DIR__) . '/'); 
 }
 
 /**
@@ -66,10 +66,10 @@ function reset_data(): void
 {
     db_query("SET FOREIGN_KEY_CHECKS = 0");
 
-    db_query("TRUNCATE TABLE retail_product_image");
-    db_query("TRUNCATE TABLE retail_product_spec");
-    db_query("TRUNCATE TABLE retail_product");
-    db_query("TRUNCATE TABLE retail_category");
+    db_query("TRUNCATE TABLE shop_product_image");
+    db_query("TRUNCATE TABLE shop_product_spec");
+    db_query("TRUNCATE TABLE shop_product");
+    db_query("TRUNCATE TABLE shop_category");
 
     db_query("SET FOREIGN_KEY_CHECKS = 1");
 }
@@ -79,7 +79,7 @@ function reset_data(): void
  */
 function get_category_map(): array
 {
-    $rows = db_all("SELECT id, slug FROM retail_category");
+    $rows = db_all("SELECT id, slug FROM shop_category");
 
     $map = [];
     foreach ($rows as $row) {
@@ -94,10 +94,10 @@ function get_category_map(): array
  */
 function get_brand_id(): int
 {
-    $row = db_one("SELECT id FROM retail_brand WHERE id = 1 LIMIT 1");
+    $row = db_one("SELECT id FROM shop_brand WHERE id = 1 LIMIT 1");
     
     if (!$row) {
-        db_insert('retail_brand', ['id' => 1, 'name' => 'Yonex', 'slug' => 'yonex']);
+        db_insert('shop_brand', ['id' => 1, 'name' => 'Yonex', 'slug' => 'yonex']);
         return 1;
     }
 
@@ -160,7 +160,7 @@ function import_product_specs(int $productId, array $specs): void
             continue;
         }
 
-        db_insert('retail_product_spec', [
+        db_insert('shop_product_spec', [
             'product_id' => $productId,
             'spec_key'   => spec_key_vi($key),
             'spec_value' => $value
@@ -185,7 +185,7 @@ function import_product_images(int $productId, array $images): void
             continue;
         }
 
-        db_insert('retail_product_image', [
+        db_insert('shop_product_image', [
             'product_id' => $productId,
             'image'      => $image,
             'sort_order' => $index + 1
@@ -235,7 +235,7 @@ function import_categories(array $categories, array $products): void
             continue;
         }
 
-        db_insert('retail_category', [
+        db_insert('shop_category', [
             'name'        => category_name_vi($slug, $item['name'] ?? ''),
             'slug'        => $slug,
             'thumbnail'   => $firstImageByCategory[$slug] ?? null
@@ -278,7 +278,7 @@ function import_products(array $products): void
             $name = $prefix . $name;
         }
 
-        db_insert('retail_product', [
+        db_insert('shop_product', [
             'category_id' => $categoryMap[$categorySlug] ?? null,
             'brand_id'    => $brandId,
             'name'        => $name, // Lưu tên mới đã có tiền tố chuẩn
@@ -290,7 +290,7 @@ function import_products(array $products): void
         ]);
 
         // Lấy chính xác ID vừa tạo
-        $res = db_one("SELECT id FROM retail_product WHERE slug = :slug LIMIT 1", ['slug' => $slug]);
+        $res = db_one("SELECT id FROM shop_product WHERE slug = :slug LIMIT 1", ['slug' => $slug]);
         $productId = $res ? (int)$res['id'] : 0;
 
         if (!$productId) {
@@ -307,8 +307,8 @@ function import_products(array $products): void
  * RUN PROCESSOR
  * =========================
  */
-$categoryFile = PATH_RETAIL . 'json/yonex_category.json';
-$productFile  = PATH_RETAIL . 'json/yonex_product_detail.json';
+$categoryFile = PATH_SHOP . 'json/yonex_category.json';
+$productFile  = PATH_SHOP . 'json/yonex_product_detail.json';
 
 $categories = load_json($categoryFile);
 $products   = load_json($productFile);

@@ -106,7 +106,7 @@
                     </h4>
 
                     <ul class="mb-0">
-                        <li>Đứng retail tư vấn và bán hàng.</li>
+                        <li>Đứng shop tư vấn và bán hàng.</li>
                         <li>Hỗ trợ khách chọn vợt và phụ kiện.</li>
                         <li>Căng cước cầu lông theo yêu cầu.</li>
                         <li>Đóng gói đơn hàng.</li>
