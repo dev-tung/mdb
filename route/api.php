@@ -1,8 +1,8 @@
 <?php
-require_once PATH_ROOT . 'api/BaseController.php';
-require_once PATH_ROOT . 'api/ProductController.php';
-require_once PATH_ROOT . 'api/CustomerController.php';
-require_once PATH_ROOT . 'api/ExportController.php';
+require_once PATH_ROOT . 'endpoint/BaseController.php';
+require_once PATH_ROOT . 'endpoint/ProductController.php';
+require_once PATH_ROOT . 'endpoint/CustomerController.php';
+require_once PATH_ROOT . 'endpoint/ExportController.php';
 
 return [
 

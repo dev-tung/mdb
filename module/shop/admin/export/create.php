@@ -334,7 +334,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const result = await response.json();
     if (result.success) {
       alert("Thêm đơn hàng thành công!");
-      window.location.href = "/export";
+      window.location.href = "/admin/export";
     } else {
       alert(result.message || "Thêm đơn hàng thất bại!");
     }
