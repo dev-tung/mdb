@@ -1,4 +1,4 @@
-<?php require_once PATH_ROOT . 'header-admin.php'; ?>
+<?php require_once PATH_ROOT . 'navbar.php'; ?>
 <?php require_once PATH_CUSTOMER . 'service/customer.php'; ?>
 
 <?php $result = customer_service(); ?>

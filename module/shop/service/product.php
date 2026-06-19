@@ -142,7 +142,7 @@ function product_image($thumbnail): string
 
     return str_starts_with($thumbnail, 'http')
         ? $thumbnail
-        : URL_ROOT . '/shop/' . ltrim($thumbnail, '/');
+        : URL_ROOT . '/module/shop/' . ltrim($thumbnail, '/');
 }
 
 function product_card_image($thumbnail): string

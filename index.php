@@ -23,8 +23,8 @@ function resolveRequest(): string
 function loadRoutes(): array
 {
     return array_merge(
-        require __DIR__ . '/web.php',
-        require __DIR__ . '/api.php'
+        require __DIR__ . '/route/web.php',
+        require __DIR__ . '/route/api.php'
     );
 }
 
@@ -49,7 +49,7 @@ function dispatchRoute(array $route): void
     // Web View
     require_once __DIR__ . '/start.php';
 
-    require __DIR__ . '/' . $route['path'];
+    require_once __DIR__ . '/' . $route['path'];
 
     require_once __DIR__ . '/end.php';
 }

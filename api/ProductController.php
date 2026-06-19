@@ -3,12 +3,19 @@ require_once PATH_SHOP . 'repository/product.php';
 
 class ProductController extends BaseController
 {
-    public function index(): void
+    /* =========================
+       LIST PRODUCTS
+    ========================= */
+
+    public function list(): void
     {
         $products = get_products();
-
         $this->success($products);
     }
+
+    /* =========================
+       SHOW PRODUCT DETAIL
+    ========================= */
 
     public function show(): void
     {
@@ -21,5 +28,15 @@ class ProductController extends BaseController
         }
 
         $this->success($product);
+    }
+
+    /* =========================
+       SEARCH PRODUCTS (FOR ORDER)
+    ========================= */
+
+    public function search(): void
+    {
+        $products = get_stock_products();
+        $this->success($products);
     }
 }

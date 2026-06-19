@@ -95,8 +95,8 @@
                 <!-- ĐƠN HÀNG -->
                 <li class="nav-item">
                     <a
-                        class="nav-link <?= active_menu('/admin/export') ?>"
-                        href="<?= url('/admin/export') ?>">
+                        class="nav-link <?= active_menu('/admin/export/create') ?>"
+                        href="<?= url('/admin/export/create') ?>">
                         Đơn hàng
                     </a>
                 </li>
@@ -190,3 +190,4 @@
 
     </div>
 </nav>
+
