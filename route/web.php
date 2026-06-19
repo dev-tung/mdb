@@ -10,7 +10,7 @@ return [
     // Product
     'product'        => ['path' => 'module/shop/product.php'],
     'product/{slug}' => [
-        'path'   => '/shop/product-detail.php',
+        'path'   => 'module/shop/product-detail.php',
         'params' => ['slug'],
     ],
 

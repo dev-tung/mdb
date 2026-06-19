@@ -5,16 +5,16 @@
 
             <ul class="navbar-nav">
 
-                <!-- SẢN PHẨM -->
+                <!-- SHOP -->
                 <li class="nav-item dropdown">
                     <a
-                        class="nav-link dropdown-toggle <?= active_menu('/admin/product') || active_menu('/admin/product-group') ? 'active' : '' ?>"
+                        class="nav-link dropdown-toggle <?= active_menu('/admin/product') || active_menu('/admin/product') ? 'active' : '' ?>"
                         href="#"
                         id="productDropdown"
                         role="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false">
-                        Sản phẩm
+                        Cửa hàng
                     </a>
 
                     <ul class="dropdown-menu">
@@ -22,130 +22,26 @@
                             <a
                                 class="dropdown-item <?= active_menu('/admin/product') ?>"
                                 href="<?= url('/admin/product') ?>">
-                                Danh sách
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                class="dropdown-item <?= active_menu('/admin/product-group') ?>"
-                                href="<?= url('/admin/product-group') ?>">
-                                Nhóm sản phẩm
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-                <!-- KHÁCH HÀNG -->
-                <li class="nav-item dropdown">
-                    <a
-                        class="nav-link dropdown-toggle <?= active_menu('/admin/customer') || active_menu('/admin/customer-group') ? 'active' : '' ?>"
-                        href="#"
-                        id="customerDropdown"
-                        role="button"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Khách hàng
-                    </a>
-
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a
-                                class="dropdown-item <?= active_menu('/admin/customer') ?>"
-                                href="<?= url('/admin/customer') ?>">
-                                Danh sách
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                class="dropdown-item <?= active_menu('/admin/customer-group') ?>"
-                                href="<?= url('/admin/customer-group') ?>">
-                                Nhóm khách hàng
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-                <!-- NHÀ CUNG CẤP -->
-                <li class="nav-item">
-                    <a
-                        class="nav-link <?= active_menu('/admin/supplier') ?>"
-                        href="<?= url('/admin/supplier') ?>">
-                        Nhà cung cấp
-                    </a>
-                </li>
-
-                <!-- CHI PHÍ -->
-                <li class="nav-item">
-                    <a
-                        class="nav-link <?= active_menu('/admin/expense') ?>"
-                        href="<?= url('/admin/expense') ?>">
-                        Chi phí
-                    </a>
-                </li>
-
-                <!-- NHẬP HÀNG -->
-                <li class="nav-item">
-                    <a
-                        class="nav-link <?= active_menu('/admin/import/create') ?>"
-                        href="<?= url('/admin/import/create') ?>">
-                        Nhập hàng
-                    </a>
-                </li>
-
-                <!-- ĐƠN HÀNG -->
-                <li class="nav-item">
-                    <a
-                        class="nav-link <?= active_menu('/admin/export/create') ?>"
-                        href="<?= url('/admin/export/create') ?>">
-                        Đơn hàng
-                    </a>
-                </li>
-
-                <!-- BÁO CÁO -->
-                <li class="nav-item dropdown">
-                    <a
-                        class="nav-link dropdown-toggle <?= active_menu('/admin/report') ?>"
-                        href="#"
-                        id="reportDropdown"
-                        role="button"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Báo cáo
-                    </a>
-
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a
-                                class="dropdown-item <?= active_menu('/admin/report/export') ?>"
-                                href="<?= url('/admin/report/export') ?>">
-                                Doanh thu
-                            </a>
-                        </li>
-
-                        <li>
-                            <a
-                                class="dropdown-item <?= active_menu('/admin/report/inventory') ?>"
-                                href="<?= url('/admin/report/inventory') ?>">
-                                Tồn kho
-                            </a>
-                        </li>
-
-                        <li>
-                            <a
-                                class="dropdown-item <?= active_menu('/admin/report/product') ?>"
-                                href="<?= url('/admin/report/product') ?>">
                                 Sản phẩm
                             </a>
                         </li>
-
                         <li>
                             <a
-                                class="dropdown-item <?= active_menu('/admin/report/customer') ?>"
-                                href="<?= url('/admin/report/customer') ?>">
-                                Khách hàng
+                                class="dropdown-item <?= active_menu('/admin/export/create') ?>"
+                                href="<?= url('/admin/export/create') ?>">
+                                Thêm đơn hàng
                             </a>
                         </li>
                     </ul>
+                </li>
+
+                <!-- Khách hàng -->
+                <li class="nav-item">
+                    <a
+                        class="nav-link <?= active_menu('/admin/customer') ?>"
+                        href="<?= url('/admin/customer') ?>">
+                        Khách hàng
+                    </a>
                 </li>
 
             </ul>
