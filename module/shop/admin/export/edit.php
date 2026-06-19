@@ -1,22 +1,17 @@
-
 <div class="container-fluid py-4 mt-5">
   <div class="card shadow-sm w-100">
     <div class="card-body">
-      <h3 class="card-title mb-4">Thêm đơn nhập hàng</h3>
+      <h3 class="card-title mb-4">Chỉnh sửa đơn hàng</h3>
 
-      <form id="import-add-form" novalidate>
+      <form id="export-edit-form" novalidate>
         <div class="row g-3">
-
-          <!-- Search nhà cung cấp -->
+          <!-- Search khách hàng -->
           <div class="col-md-6 position-relative">
-            <label class="form-label">Nhà cung cấp</label>
-            <input type="text" id="supplier_search" class="form-control" placeholder="Tìm nhà cung cấp..." autocomplete="off">
-            <input type="hidden" id="supplier_id">
-            <div id="supplier_suggestions"
-              class="list-group position-absolute w-100 d-none"
-              style="max-height:220px; overflow-y:auto; z-index:1050;">
-            </div>
-            <small class="text-danger d-none" id="error-supplier"></small>
+            <label class="form-label">Khách hàng</label>
+            <input type="text" id="customer_search" class="form-control" placeholder="Tìm khách hàng...">
+            <input type="hidden" id="customer_id">
+            <div id="customer_suggestions" class="list-group position-absolute w-100 d-none" style="max-height:220px; overflow-y:auto; z-index:1050;"></div>
+            <small class="text-danger d-none" id="error-customer"></small>
           </div>
 
           <!-- Description -->
@@ -46,17 +41,14 @@
             </select>
           </div>
 
-          <!-- Search sản phẩm -->
+          <!-- Sản phẩm -->
           <div class="col-12 position-relative mt-4">
             <label class="form-label">Sản phẩm</label>
             <input type="text" id="product_search" class="form-control" placeholder="Tìm sản phẩm...">
-            <div id="product_suggestions"
-              class="list-group position-absolute w-100 d-none"
-              style="max-height:250px; overflow-y:auto; z-index:1040;">
-            </div>
+            <div id="product_suggestions" class="list-group position-absolute w-100 d-none" style="max-height:250px; overflow-y:auto; z-index:1040;"></div>
           </div>
 
-          <!-- DANH SÁCH SẢN PHẨM ĐÃ CHỌN -->
+          <!-- Bảng sản phẩm -->
           <div class="col-12 mt-3">
             <div class="table-responsive rounded overflow-hidden">
               <table class="table table-sm table-striped table-borderless align-middle mb-0">
@@ -83,9 +75,8 @@
 
           <!-- Submit -->
           <div class="col-12">
-            <button type="submit" class="btn btn-secondary mt-3">Thêm đơn nhập hàng</button>
+            <button type="submit" class="btn btn-secondary mt-3">Cập nhật đơn hàng</button>
           </div>
-
         </div>
       </form>
     </div>
@@ -94,91 +85,135 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+  const exportId = "<?= $_GET['id'] ?? '' ?>"; // ID đơn hàng lấy từ URL hoặc PHP
+
+  let allCustomers = [], allProducts = [];
+  const customerInput = document.getElementById("customer_search");
+  const customerId = document.getElementById("customer_id");
+  const customerSuggestions = document.getElementById("customer_suggestions");
+  const productInput = document.getElementById("product_search");
+  const productSug = document.getElementById("product_suggestions");
+  const selectedTable = document.getElementById("selected_products");
+  let selectedProducts = {};
+
   // --------------------------
-  // LOAD NHÀ CUNG CẤP
+  // LOAD DANH SÁCH KHÁCH HÀNG
   // --------------------------
-  let allSuppliers = [];
-  fetch("/api/supplier/list")
+  fetch("/api/customer/list")
     .then(res => res.json())
-    .then(json => { allSuppliers = json.data.data || []; });
+    .then(json => { allCustomers = json.data || []; });
 
-  const supplierInput = document.getElementById("supplier_search");
-  const supplierId = document.getElementById("supplier_id");
-  const supplierSuggestions = document.getElementById("supplier_suggestions");
+  // --------------------------
+  // LOAD DANH SÁCH SẢN PHẨM
+  // --------------------------
+  fetch("/api/export/product")
+    .then(res => res.json())
+    .then(json => { allProducts = json.data || []; });
 
-  supplierInput.addEventListener("input", () => {
-    const keyword = supplierInput.value.toLowerCase();
-    supplierSuggestions.innerHTML = "";
-    supplierId.value = "";
+  // --------------------------
+  // LOAD DỮ LIỆU ĐƠN HÀNG
+  // --------------------------
+fetch(`/api/export/show?id=${exportId}`)
+  .then(res => res.json())
+  .then(json => {
+    if (!json.success || !json.data?.length) {
+      alert("Không tải được dữ liệu đơn xuất!");
+      return;
+    }
 
-    if (!keyword.trim()) return supplierSuggestions.classList.add("d-none");
+    const row = json.data[0]; // chỉ có 1 row duy nhất
 
-    const matches = allSuppliers.filter(c => c.name.toLowerCase().includes(keyword));
-    if (!matches.length) return supplierSuggestions.classList.add("d-none");
+    // Parse danh sách sản phẩm
+    const products = Array.isArray(row.products)
+      ? row.products
+      : JSON.parse(row.products || "[]");
 
+    // GÁN THÔNG TIN EXPORT
+    customerId.value = row.customer_id ?? "";
+    customerInput.value = row.customer_name ?? "";
+
+    document.getElementById("description").value = row.description ?? "";
+    document.getElementById("status").value = row.status ?? "pending";
+    document.getElementById("payment_status").value = row.payment_status ?? "unpaid";
+
+    // Load product vào selectedProducts
+    selectedProducts = {};
+
+    for (const p of products) {
+      selectedProducts[p.product_id] = {
+        id: p.product_id,
+        name: p.product_name,
+        price: Number(p.price) || 0,
+        quantity: Number(p.quantity) || 0,
+        discount: Number(p.discount) || 0,
+        is_gift: p.is_gift ? true : false,
+        import_product_id: p.import_product_id ?? null
+      };
+    }
+
+    renderProducts();
+  })
+  .catch(err => {
+    console.error(err);
+    alert("Lỗi khi tải dữ liệu đơn xuất!");
+  });
+
+    
+
+  // --------------------------
+  // SEARCH KHÁCH HÀNG
+  // --------------------------
+  customerInput.addEventListener("input", () => {
+    const keyword = customerInput.value.toLowerCase();
+    customerSuggestions.innerHTML = "";
+    customerId.value = "";
+    if (!keyword.trim()) return customerSuggestions.classList.add("d-none");
+    const matches = allCustomers.filter(c => c.name.toLowerCase().includes(keyword));
+    if (!matches.length) return customerSuggestions.classList.add("d-none");
     matches.forEach(c => {
       const item = document.createElement("button");
       item.type = "button";
       item.className = "list-group-item list-group-item-action";
-
-      item.textContent = `${c.name}`;
-
+      const group = c.group_name ? ` - ${c.group_name}` : "";
+      const address = c.address ? ` - ${c.address}` : "";
+      item.textContent = `${c.name}${group}${address}`;
       item.addEventListener("click", () => {
-        supplierInput.value = `${c.name}`;
-        supplierId.value = c.id;
-        supplierSuggestions.classList.add("d-none");
+        customerInput.value = `${c.name}${group}${address}`;
+        customerId.value = c.id;
+        customerSuggestions.classList.add("d-none");
       });
-
-      supplierSuggestions.appendChild(item);
+      customerSuggestions.appendChild(item);
     });
-
-    supplierSuggestions.classList.remove("d-none");
+    customerSuggestions.classList.remove("d-none");
   });
 
   document.addEventListener("click", e => {
-    if (!supplierInput.contains(e.target) && !supplierSuggestions.contains(e.target)) {
-      supplierSuggestions.classList.add("d-none");
+    if (!customerInput.contains(e.target) && !customerSuggestions.contains(e.target)) {
+      customerSuggestions.classList.add("d-none");
     }
   });
 
   // --------------------------
-  // LOAD & SEARCH SẢN PHẨM
+  // SEARCH SẢN PHẨM
   // --------------------------
-  let allProducts = [];
-  fetch("/api/product/list")
-    .then(res => res.json())
-    .then(json => { allProducts = json.data || []; });
-
-  const productInput = document.getElementById("product_search");
-  const productSug = document.getElementById("product_suggestions");
-  const selectedTable = document.getElementById("selected_products");
-
-  let selectedProducts = {};
-
   productInput.addEventListener("input", () => {
     const keyword = productInput.value.toLowerCase();
     productSug.innerHTML = "";
-
     if (!keyword.trim()) return productSug.classList.add("d-none");
-
     const matches = allProducts.filter(p => p.name.toLowerCase().includes(keyword));
     if (!matches.length) return productSug.classList.add("d-none");
-
     matches.forEach(p => {
       const item = document.createElement("button");
       item.type = "button";
       item.className = "list-group-item list-group-item-action";
-      item.textContent = p.name;
-
+      item.textContent = `${p.name} - Giá ${Number(p.price).toLocaleString()} đ - Tồn kho ${p.quantity}`;
       item.addEventListener("click", () => {
         addProduct(p);
         productInput.value = "";
         productSug.classList.add("d-none");
       });
-
       productSug.appendChild(item);
     });
-
     productSug.classList.remove("d-none");
   });
 
@@ -189,7 +224,7 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   // --------------------------
-  // THÊM SẢN PHẨM VÀO BẢNG
+  // THÊM SẢN PHẨM
   // --------------------------
   function addProduct(p) {
     if (selectedProducts[p.id]) return;
@@ -197,21 +232,22 @@ document.addEventListener("DOMContentLoaded", function() {
     selectedProducts[p.id] = {
       id: p.id,
       name: p.name,
-      price: 0,
+      price: parseInt(p.price),
       quantity: 1,
       discount: 0,
-      is_gift: false
+      is_gift: false,
+      import_product_id: p.import_product_id ?? null,
+      max_quantity: parseInt(p.quantity) // ✅ TỒN KHO
     };
 
     renderProducts();
   }
 
   // --------------------------
-  // RENDER DANH SÁCH SẢN PHẨM
+  // RENDER SẢN PHẨM
   // --------------------------
   function renderProducts() {
     selectedTable.innerHTML = "";
-
     Object.values(selectedProducts).forEach(prod => {
       const row = document.createElement("tr");
       row.innerHTML = `
@@ -225,22 +261,29 @@ document.addEventListener("DOMContentLoaded", function() {
       `;
       selectedTable.appendChild(row);
     });
-
     calculateTotal();
     bindEvents();
   }
 
   function bindEvents() {
-    // Số lượng
     document.querySelectorAll(".qty-input").forEach(inp => {
       inp.addEventListener("input", e => {
         const id = e.target.dataset.id;
-        selectedProducts[id].quantity = parseInt(e.target.value) || 1;
+        let val = parseInt(e.target.value) || 1;
+
+        const max = selectedProducts[id].max_quantity;
+
+        if (val > max) {
+          val = max;
+          e.target.value = max;
+          alert("Số lượng vượt quá tồn kho!");
+        }
+
+        selectedProducts[id].quantity = val;
         calculateTotal();
       });
     });
 
-    // Giá nhập
     document.querySelectorAll(".price-input").forEach(inp => {
       inp.addEventListener("input", e => {
         const id = e.target.dataset.id;
@@ -249,7 +292,6 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     });
 
-    // Giảm giá
     document.querySelectorAll(".discount-input").forEach(inp => {
       inp.addEventListener("input", e => {
         const id = e.target.dataset.id;
@@ -258,7 +300,6 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     });
 
-    // Quà tặng
     document.querySelectorAll(".gift-checkbox").forEach(cb => {
       cb.addEventListener("change", e => {
         const id = e.target.dataset.id;
@@ -267,7 +308,6 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     });
 
-    // Xóa sản phẩm
     document.querySelectorAll(".remove-btn").forEach(btn => {
       btn.addEventListener("click", e => {
         const id = e.target.dataset.id;
@@ -279,7 +319,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
   function calculateTotal() {
     let total = 0;
-
     Object.values(selectedProducts).forEach(p => {
       let itemTotal = 0;
       if (!p.is_gift) {
@@ -289,44 +328,46 @@ document.addEventListener("DOMContentLoaded", function() {
       document.querySelector(`.item-total[data-id="${p.id}"]`).textContent = itemTotal.toLocaleString();
       total += itemTotal;
     });
-
     document.getElementById("total_amount").textContent = total.toLocaleString();
   }
 
   // --------------------------
-  // SUBMIT FORM
+  // SUBMIT FORM EDIT
   // --------------------------
-  const form = document.getElementById("import-add-form");
-
+  const form = document.getElementById("export-edit-form");
   form.addEventListener("submit", async e => {
     e.preventDefault();
+    for (const p of Object.values(selectedProducts)) {
+      if (p.quantity > p.max_quantity) {
+        alert(`Sản phẩm "${p.name}" chỉ còn ${p.max_quantity} trong kho`);
+        return;
+      }
+    }
 
     const payload = {
-      supplier_id: supplierId.value,
+      id: exportId,
+      customer_id: customerId.value,
       description: document.getElementById("description").value,
       status: document.getElementById("status").value,
       payment_status: document.getElementById("payment_status").value,
       product: Object.values(selectedProducts)
     };
-
-    if (!payload.supplier_id) {
-      document.getElementById("error-supplier").textContent = "Vui lòng chọn nhà cung cấp.";
-      document.getElementById("error-supplier").classList.remove("d-none");
+    if (!payload.customer_id) {
+      document.getElementById("error-customer").textContent = "Vui lòng chọn khách hàng.";
+      document.getElementById("error-customer").classList.remove("d-none");
       return;
     }
-
-    const response = await fetch("/api/import/create", {
-      method: "POST",
+    const response = await fetch(`/api/export/update`, {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     });
-
     const result = await response.json();
     if (result.success) {
-      alert("Thêm đơn nhập hàng thành công!");
-      window.location.href = "/import";
+      alert("Cập nhật đơn hàng thành công!");
+      window.location.href = "/export";
     } else {
-      alert(result.message || "Thêm đơn nhập hàng thất bại!");
+      alert(result.message || "Cập nhật đơn hàng thất bại!");
     }
   });
 });

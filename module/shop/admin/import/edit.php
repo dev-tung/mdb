@@ -1,10 +1,9 @@
-
 <div class="container-fluid py-4 mt-5">
   <div class="card shadow-sm w-100">
     <div class="card-body">
-      <h3 class="card-title mb-4">Thêm đơn nhập hàng</h3>
+      <h3 class="card-title mb-4">Chỉnh sửa đơn nhập hàng</h3>
 
-      <form id="import-add-form" novalidate>
+      <form id="import-edit-form" novalidate>
         <div class="row g-3">
 
           <!-- Search nhà cung cấp -->
@@ -83,7 +82,7 @@
 
           <!-- Submit -->
           <div class="col-12">
-            <button type="submit" class="btn btn-secondary mt-3">Thêm đơn nhập hàng</button>
+            <button type="submit" class="btn btn-secondary mt-3">Cập nhật đơn nhập hàng</button>
           </div>
 
         </div>
@@ -94,41 +93,94 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-  // --------------------------
-  // LOAD NHÀ CUNG CẤP
-  // --------------------------
-  let allSuppliers = [];
-  fetch("/api/supplier/list")
-    .then(res => res.json())
-    .then(json => { allSuppliers = json.data.data || []; });
+  const importId = "<?= $_GET['id'] ?>";
 
+  let allSuppliers = [], allProducts = [];
   const supplierInput = document.getElementById("supplier_search");
   const supplierId = document.getElementById("supplier_id");
   const supplierSuggestions = document.getElementById("supplier_suggestions");
+  const productInput = document.getElementById("product_search");
+  const productSug = document.getElementById("product_suggestions");
+  const selectedTable = document.getElementById("selected_products");
+  let selectedProducts = {};
 
+  // --------------------------
+  // LOAD SUPPLIER LIST
+  // --------------------------
+  fetch("/api/supplier/list")
+    .then(res => res.json())
+    .then(json => { allSuppliers = json.data || []; });
+
+  // --------------------------
+  // LOAD PRODUCT LIST
+  // --------------------------
+  fetch("/api/product/list")
+    .then(res => res.json())
+    .then(json => { allProducts = json.data || []; });
+
+  // --------------------------
+  // LOAD IMPORT DATA
+  // --------------------------
+  fetch(`/api/import/show?id=${importId}`)
+    .then(res => res.json())
+    .then(json => {
+      if (!json.success) return alert("Không tải được dữ liệu đơn nhập!");
+
+      const row = json.data;
+
+      const products = Array.isArray(row.products) ? row.products : [];
+
+      // GÁN THÔNG TIN IMPORT
+      supplierId.value = row.supplier_id;
+      supplierInput.value = row.supplier_name || "";
+      document.getElementById("description").value = row.description || "";
+      document.getElementById("status").value = row.status;
+      document.getElementById("payment_status").value = row.payment_status;
+
+      // Load product vào selectedProducts
+      selectedProducts = {};
+
+      products.forEach(p => {
+        selectedProducts[p.product_id] = {
+          id: p.product_id,
+          name: p.product_name,
+          price: p.price,
+          quantity: p.quantity,
+          discount: p.discount,
+          is_gift: p.is_gift == 1
+        };
+      });
+
+      renderProducts();
+    });
+
+
+  // --------------------------
+  // SEARCH SUPPLIER
+  // --------------------------
   supplierInput.addEventListener("input", () => {
-    const keyword = supplierInput.value.toLowerCase();
+    const keyword = supplierInput.value.toLowerCase().trim();
     supplierSuggestions.innerHTML = "";
     supplierId.value = "";
 
-    if (!keyword.trim()) return supplierSuggestions.classList.add("d-none");
+    if (!keyword) return supplierSuggestions.classList.add("d-none");
 
-    const matches = allSuppliers.filter(c => c.name.toLowerCase().includes(keyword));
+    const matches = allSuppliers.filter(s =>
+      s.name.toLowerCase().includes(keyword)
+    );
+
     if (!matches.length) return supplierSuggestions.classList.add("d-none");
 
-    matches.forEach(c => {
+    matches.forEach(s => {
       const item = document.createElement("button");
       item.type = "button";
       item.className = "list-group-item list-group-item-action";
-
-      item.textContent = `${c.name}`;
-
+      item.textContent = `${s.name}`;
       item.addEventListener("click", () => {
-        supplierInput.value = `${c.name}`;
-        supplierId.value = c.id;
+        supplierInput.value = `${s.name}`;
+        supplierId.value = s.id;
         supplierSuggestions.classList.add("d-none");
       });
-
       supplierSuggestions.appendChild(item);
     });
 
@@ -142,26 +194,18 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   // --------------------------
-  // LOAD & SEARCH SẢN PHẨM
+  // SEARCH PRODUCT
   // --------------------------
-  let allProducts = [];
-  fetch("/api/product/list")
-    .then(res => res.json())
-    .then(json => { allProducts = json.data || []; });
-
-  const productInput = document.getElementById("product_search");
-  const productSug = document.getElementById("product_suggestions");
-  const selectedTable = document.getElementById("selected_products");
-
-  let selectedProducts = {};
-
   productInput.addEventListener("input", () => {
-    const keyword = productInput.value.toLowerCase();
+    const keyword = productInput.value.toLowerCase().trim();
     productSug.innerHTML = "";
 
-    if (!keyword.trim()) return productSug.classList.add("d-none");
+    if (!keyword) return productSug.classList.add("d-none");
 
-    const matches = allProducts.filter(p => p.name.toLowerCase().includes(keyword));
+    const matches = allProducts.filter(p =>
+      p.name.toLowerCase().includes(keyword)
+    );
+
     if (!matches.length) return productSug.classList.add("d-none");
 
     matches.forEach(p => {
@@ -169,13 +213,11 @@ document.addEventListener("DOMContentLoaded", function() {
       item.type = "button";
       item.className = "list-group-item list-group-item-action";
       item.textContent = p.name;
-
       item.addEventListener("click", () => {
         addProduct(p);
         productInput.value = "";
         productSug.classList.add("d-none");
       });
-
       productSug.appendChild(item);
     });
 
@@ -189,11 +231,10 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   // --------------------------
-  // THÊM SẢN PHẨM VÀO BẢNG
+  // ADD PRODUCT
   // --------------------------
   function addProduct(p) {
     if (selectedProducts[p.id]) return;
-
     selectedProducts[p.id] = {
       id: p.id,
       name: p.name,
@@ -202,12 +243,11 @@ document.addEventListener("DOMContentLoaded", function() {
       discount: 0,
       is_gift: false
     };
-
     renderProducts();
   }
 
   // --------------------------
-  // RENDER DANH SÁCH SẢN PHẨM
+  // RENDER PRODUCT TABLE
   // --------------------------
   function renderProducts() {
     selectedTable.innerHTML = "";
@@ -231,7 +271,6 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   function bindEvents() {
-    // Số lượng
     document.querySelectorAll(".qty-input").forEach(inp => {
       inp.addEventListener("input", e => {
         const id = e.target.dataset.id;
@@ -240,7 +279,6 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     });
 
-    // Giá nhập
     document.querySelectorAll(".price-input").forEach(inp => {
       inp.addEventListener("input", e => {
         const id = e.target.dataset.id;
@@ -249,7 +287,6 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     });
 
-    // Giảm giá
     document.querySelectorAll(".discount-input").forEach(inp => {
       inp.addEventListener("input", e => {
         const id = e.target.dataset.id;
@@ -258,7 +295,6 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     });
 
-    // Quà tặng
     document.querySelectorAll(".gift-checkbox").forEach(cb => {
       cb.addEventListener("change", e => {
         const id = e.target.dataset.id;
@@ -267,7 +303,6 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     });
 
-    // Xóa sản phẩm
     document.querySelectorAll(".remove-btn").forEach(btn => {
       btn.addEventListener("click", e => {
         const id = e.target.dataset.id;
@@ -282,26 +317,32 @@ document.addEventListener("DOMContentLoaded", function() {
 
     Object.values(selectedProducts).forEach(p => {
       let itemTotal = 0;
+
       if (!p.is_gift) {
         const priceAfterDiscount = Math.max(p.price - p.discount, 0);
         itemTotal = priceAfterDiscount * p.quantity;
       }
-      document.querySelector(`.item-total[data-id="${p.id}"]`).textContent = itemTotal.toLocaleString();
+
+      document.querySelector(`.item-total[data-id="${p.id}"]`).textContent =
+        itemTotal.toLocaleString();
+
       total += itemTotal;
     });
 
-    document.getElementById("total_amount").textContent = total.toLocaleString();
+    document
+      .getElementById("total_amount")
+      .textContent = total.toLocaleString();
   }
 
   // --------------------------
-  // SUBMIT FORM
+  // SAVE IMPORT
   // --------------------------
-  const form = document.getElementById("import-add-form");
-
+  const form = document.getElementById("import-edit-form");
   form.addEventListener("submit", async e => {
     e.preventDefault();
 
     const payload = {
+      id: importId,
       supplier_id: supplierId.value,
       description: document.getElementById("description").value,
       status: document.getElementById("status").value,
@@ -310,24 +351,27 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     if (!payload.supplier_id) {
-      document.getElementById("error-supplier").textContent = "Vui lòng chọn nhà cung cấp.";
+      document.getElementById("error-supplier").textContent =
+        "Vui lòng chọn nhà cung cấp.";
       document.getElementById("error-supplier").classList.remove("d-none");
       return;
     }
 
-    const response = await fetch("/api/import/create", {
-      method: "POST",
+    const response = await fetch(`/api/import/update`, {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     });
 
     const result = await response.json();
+
     if (result.success) {
-      alert("Thêm đơn nhập hàng thành công!");
+      alert("Cập nhật đơn nhập hàng thành công!");
       window.location.href = "/import";
     } else {
-      alert(result.message || "Thêm đơn nhập hàng thất bại!");
+      alert(result.message || "Cập nhật đơn nhập hàng thất bại!");
     }
   });
 });
 </script>
+

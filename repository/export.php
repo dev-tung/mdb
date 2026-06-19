@@ -87,3 +87,33 @@ function create_export(array $input): int
         throw $e;
     }
 }
+
+function get_exports(): array
+{
+    return DB::all(
+        "SELECT 
+            e.id,
+            e.customer_id,
+            c.name AS customer_name,
+            cg.name AS customer_group,  
+            c.address AS customer_address,
+            e.description,
+            e.status,
+            e.payment_status,
+            e.created_at,
+            e.updated_at,
+
+            -- Tổng tiền
+            IFNULL(SUM((ep.price - ep.discount) * ep.quantity), 0) AS total_amount,
+
+            -- Tổng SL
+            IFNULL(SUM(ep.quantity), 0) AS total_quantity
+
+        FROM shop_export e
+        LEFT JOIN customer c ON e.customer_id = c.id
+        LEFT JOIN customer_group cg ON c.group_id = cg.id
+        LEFT JOIN shop_export_product ep ON e.id = ep.export_id
+        GROUP BY e.id
+        ORDER BY e.created_at DESC"
+    );
+}

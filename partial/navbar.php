@@ -27,9 +27,30 @@
                         </li>
                         <li>
                             <a
+                                class="dropdown-item <?= active_menu('/admin/export') ?>"
+                                href="<?= url('/admin/export') ?>">
+                                Đơn hàng
+                            </a>
+                        </li>
+                        <li>
+                            <a
                                 class="dropdown-item <?= active_menu('/admin/export/create') ?>"
                                 href="<?= url('/admin/export/create') ?>">
                                 Thêm đơn hàng
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                class="dropdown-item <?= active_menu('/admin/import') ?>"
+                                href="<?= url('/admin/import') ?>">
+                                Phiếu mua
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                class="dropdown-item <?= active_menu('/admin/import/create') ?>"
+                                href="<?= url('/admin/import/create') ?>">
+                                Thêm phiếu mua
                             </a>
                         </li>
                     </ul>
