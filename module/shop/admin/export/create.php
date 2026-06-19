@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // LOAD & SEARCH SẢN PHẨM
   // --------------------------
   let allProducts = [];
-  fetch("/api/product/search")
+  fetch("/api/inventory/product")
     .then(res => res.json())
     .then(json => { allProducts = json.data || []; });
 

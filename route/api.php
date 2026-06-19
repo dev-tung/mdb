@@ -2,6 +2,7 @@
 require_once PATH_ROOT . 'api/BaseController.php';
 require_once PATH_ROOT . 'api/ProductController.php';
 require_once PATH_ROOT . 'api/CustomerController.php';
+require_once PATH_ROOT . 'api/InventoryController.php';
 
 return [
 
@@ -10,9 +11,9 @@ return [
         'action'     => 'list',
     ],
 
-    'api/product/search' => [
-        'controller' => ProductController::class,
-        'action'     => 'search',
+    'api/inventory/product' => [
+        'controller' => InventoryController::class,
+        'action'     => 'product',
     ],
 
     'api/customer/list' => [
