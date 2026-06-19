@@ -86,8 +86,8 @@
                 <!-- NHẬP HÀNG -->
                 <li class="nav-item">
                     <a
-                        class="nav-link <?= active_menu('/admin/import') ?>"
-                        href="<?= url('/admin/import') ?>">
+                        class="nav-link <?= active_menu('/admin/import/create') ?>"
+                        href="<?= url('/admin/import/create') ?>">
                         Nhập hàng
                     </a>
                 </li>

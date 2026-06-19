@@ -23,8 +23,16 @@ return [
         'path' => 'module/shop/admin/export/create.php',
     ],
 
+    'admin/import/create' => [
+        'path' => 'module/shop/admin/import/create.php',
+    ],
+
     'admin/customer' => [
         'path' => 'module/customer/admin/list.php',
+    ],
+
+    'admin/supplier' => [
+        'path' => 'module/shop/admin/supplier/list.php',
     ],
 
     // Crawler
