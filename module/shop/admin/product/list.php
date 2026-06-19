@@ -1,4 +1,4 @@
-<?php require_once PATH_ROOT . 'navbar.php'; ?>
+
 <?php require_once PATH_SHOP . 'service/product.php'; ?>
 
 <?php $result = product_service(); ?>

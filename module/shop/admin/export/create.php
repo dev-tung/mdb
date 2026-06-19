@@ -1,4 +1,5 @@
-<?php require_once PATH_ROOT . 'navbar.php'; ?>
+
+
 <div class="container-fluid py-4 mt-5">
   <div class="card shadow-sm w-100">
     <div class="card-body">
@@ -30,7 +31,9 @@
           <div class="col-md-6">
             <label for="status" class="form-label">Trạng thái đơn hàng</label>
             <select id="status" class="form-select">
-
+              <?php foreach (option('product_status') as $key => $label): ?>
+                <option value="<?= htmlspecialchars($key) ?>"><?= htmlspecialchars($label) ?></option>
+              <?php endforeach; ?>
             </select>
           </div>
 
@@ -38,7 +41,9 @@
           <div class="col-md-6">
             <label for="payment_status" class="form-label">Trạng thái thanh toán</label>
             <select id="payment_status" class="form-select">
-
+              <?php foreach (option('payment_status') as $key => $label): ?>
+                <option value="<?= htmlspecialchars($key) ?>"><?= htmlspecialchars($label) ?></option>
+              <?php endforeach; ?>
             </select>
           </div>
 

@@ -17,7 +17,7 @@
               </p>
 
               <div class="d-flex align-items-center">
-                  <img width="130" src="<?= URL_ROOT ?>/bocongthuong.png"
+                  <img width="130" src="<?= URL_ROOT ?>/image/bocongthuong.png"
                        alt="Đã thông báo Bộ Công Thương với Mạnh Dũng Sports">
               </div>
 

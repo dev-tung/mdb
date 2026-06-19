@@ -1,11 +1,10 @@
-<?php require_once PATH_ROOT . 'header.php'; ?>
+
 <?php require_once PATH_SHOP . 'service/product-detail.php'; ?>
 
 <?php
-$result  = product_detail_service();
-$product = $result['product'] ?? [];
-
-$price = (float)($product['price'] ?? 0);
+    $result  = product_detail_service();
+    $product = $result['product'] ?? [];
+    $price = (float)($product['price'] ?? 0);
 ?>
 
 <main class="container py-4">
@@ -114,4 +113,4 @@ $price = (float)($product['price'] ?? 0);
 
 </main>
 
-<?php require_once PATH_ROOT . 'footer.php'; ?>
+<?php require_once PATH_ROOT . 'partial/footer.php'; ?>

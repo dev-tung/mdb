@@ -1,4 +1,4 @@
-<?php require_once PATH_ROOT . 'navbar.php'; ?>
+
 <div class="container-fluid py-4 mt-5">
   <div class="d-flex justify-content-between mb-3">
     <input type="text" id="filter-name" class="form-control form-control-sm w-25" placeholder="Tìm theo tên nhà cung cấp">

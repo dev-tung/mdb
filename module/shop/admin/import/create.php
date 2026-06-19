@@ -1,4 +1,4 @@
-<?php require_once PATH_ROOT . 'navbar.php'; ?>
+
 <div class="container-fluid py-4 mt-5">
   <div class="card shadow-sm w-100">
     <div class="card-body">

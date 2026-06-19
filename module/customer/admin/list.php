@@ -1,4 +1,4 @@
-<?php require_once PATH_ROOT . 'navbar.php'; ?>
+
 <?php require_once PATH_CUSTOMER . 'service/customer.php'; ?>
 
 <?php $result = customer_service(); ?>
@@ -149,4 +149,4 @@
 
 </div>
 
-<?php require_once PATH_ROOT . 'end.php'; ?>
+<?php require_once PATH_ROOT . 'partial/end.php'; ?>

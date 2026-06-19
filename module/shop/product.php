@@ -1,4 +1,4 @@
-<?php require_once PATH_ROOT . 'header.php'; ?>
+
 <?php require_once PATH_SHOP . 'service/product.php'; ?>
 
 <?php $result = product_service(); ?>
@@ -202,4 +202,4 @@
 
 </main>
 
-<?php require_once PATH_ROOT . 'footer.php'; ?>
+<?php require_once PATH_ROOT . 'partial/footer.php'; ?>

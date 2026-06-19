@@ -1,13 +1,9 @@
-<?php require_once PATH_ROOT . 'header.php'; ?>
+
 <?php require_once PATH_SHOP . 'repository/product.php'; ?>
 <?php require_once PATH_SHOP . 'service/product.php'; ?>
 
-<?php
-    $categories = get_categories();
-    $featured_products = get_featured_products(6);
-?>
-
 <main class="container py-4">
+
     <div id="heroBanner" class="alert alert-dismissible fade show p-0 border-0 mb-5">
 
         <section
@@ -71,7 +67,7 @@
 
         <div class="row g-4">
 
-            <?php foreach ($categories as $category): ?>
+            <?php foreach (get_categories() as $category): ?>
 
                 <div class="col-6 col-md-4 col-lg-3">
 
@@ -128,7 +124,7 @@
 
         <div class="row g-3 g-md-4">
 
-            <?php foreach ($featured_products as $p): ?>
+            <?php foreach (get_featured_products(6) as $p): ?>
 
                 <div class="col-6 col-md-4 col-lg-2">
 
@@ -149,8 +145,7 @@
 
                         <div class="card-body d-flex flex-column p-3">
 
-                            <h6
-                                class="card-title mb-2 fs-6">
+                            <h6 class="card-title mb-2 fs-6">
 
                                 <a
                                     href="/product/<?= urlencode($p['slug']) ?>"
@@ -179,7 +174,6 @@
         </div>
 
     </section>
-
 
     <!-- GIỚI THIỆU SEO -->
     <div class="alert alert-dismissible fade show p-0 border-0 mb-0">
@@ -212,4 +206,4 @@
 
 </main>
 
-<?php require_once PATH_ROOT . 'footer.php'; ?>
+<?php require_once PATH_ROOT . 'partial/footer.php'; ?>

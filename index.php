@@ -34,7 +34,7 @@ function loadRoutes(): array
 
 function dispatchRoute(array $route): void
 {
-    // API Controller
+    // API
     if (isset($route['controller'])) {
 
         $controller = new $route['controller'];
@@ -46,12 +46,17 @@ function dispatchRoute(array $route): void
         return;
     }
 
-    // Web View
-    require_once __DIR__ . '/start.php';
+    // WEB
+    $request = resolveRequest();
 
+    $header = str_starts_with($request, 'admin')
+        ? 'navbar'
+        : 'header';
+
+    require_once __DIR__ . '/partial/start.php';
+    require_once __DIR__ . '/partial/' . $header . '.php';
     require_once __DIR__ . '/' . $route['path'];
-
-    require_once __DIR__ . '/end.php';
+    require_once __DIR__ . '/partial/end.php';
 }
 
 /* =========================

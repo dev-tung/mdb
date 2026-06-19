@@ -1,4 +1,4 @@
-<?php require_once PATH_ROOT . 'header.php'; ?>
+
 
 <main class="container py-4">
 
@@ -212,4 +212,4 @@
 
 </main>
 
-<?php require_once PATH_ROOT . 'footer.php'; ?>
+<?php require_once PATH_ROOT . 'partial/footer.php'; ?>
