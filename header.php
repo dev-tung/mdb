@@ -4,8 +4,8 @@
         <nav class="navbar navbar-expand-lg navbar-light py-3">
 
             <!-- Logo -->
-            <a class="navbar-brand fw-bold me-4" href="<?= URL_ROOT ?>">
-                <img src="<?= URL_ROOT ?>/logo-primary.png" alt="MDB Sports logo" width="150" height="40">
+            <a class="navbar-brand fw-bold me-4 text-success" href="<?= URL_ROOT ?>">
+                MDB SHOP
             </a>
 
             <!-- Toggle -->
