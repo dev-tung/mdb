@@ -1,6 +1,6 @@
 <?php
 
-function get_stock_products(): array
+function product_export(): array
 {
     return DB::all(
         "SELECT

@@ -55,6 +55,10 @@ return [
         'path' => 'module/shop/view/admin/import/create.php',
     ],
 
+    'admin/import/edit' => [
+        'path' => 'module/shop/view/admin/import/edit.php',
+    ],
+
     // Admin Supplier
     'admin/supplier' => [
         'path' => 'module/shop/view/admin/supplier/list.php',

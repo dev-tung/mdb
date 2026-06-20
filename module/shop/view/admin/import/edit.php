@@ -1,3 +1,4 @@
+<?php require_once PATH_SHOP. 'service/shop.php'; ?>
 <div class="container-fluid py-4 mt-5">
   <div class="card shadow-sm w-100">
     <div class="card-body">
@@ -29,7 +30,7 @@
           <div class="col-md-6">
             <label for="status" class="form-label">Trạng thái đơn hàng</label>
             <select id="status" class="form-select">
-              <?php foreach (option('product_status') as $key => $label): ?>
+              <?php foreach (shop_option('product_status') as $key => $label): ?>
                 <option value="<?= htmlspecialchars($key) ?>"><?= htmlspecialchars($label) ?></option>
               <?php endforeach; ?>
             </select>
@@ -39,7 +40,7 @@
           <div class="col-md-6">
             <label for="payment_status" class="form-label">Trạng thái thanh toán</label>
             <select id="payment_status" class="form-select">
-              <?php foreach (option('payment_status') as $key => $label): ?>
+              <?php foreach (shop_option('payment_status') as $key => $label): ?>
                 <option value="<?= htmlspecialchars($key) ?>"><?= htmlspecialchars($label) ?></option>
               <?php endforeach; ?>
             </select>
@@ -122,13 +123,22 @@ document.addEventListener("DOMContentLoaded", function() {
   // LOAD IMPORT DATA
   // --------------------------
   fetch(`/api/import/show?id=${importId}`)
-    .then(res => res.json())
-    .then(json => {
-      if (!json.success) return alert("Không tải được dữ liệu đơn nhập!");
+  .then(res => res.json())
+  .then(json => {
 
-      const row = json.data;
+      if (!json.success) {
+        return alert("Không tải được dữ liệu đơn nhập!");
+      }
 
-      const products = Array.isArray(row.products) ? row.products : [];
+      const row = json.data?.[0];
+
+      if (!row) {
+        return alert("Không tìm thấy dữ liệu đơn nhập!");
+      }
+
+      const products = Array.isArray(row.products)
+        ? row.products
+        : [];
 
       // GÁN THÔNG TIN IMPORT
       supplierId.value = row.supplier_id;
@@ -367,7 +377,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (result.success) {
       alert("Cập nhật đơn nhập hàng thành công!");
-      window.location.href = "/import";
+      window.location.href = "/admin/import";
     } else {
       alert(result.message || "Cập nhật đơn nhập hàng thất bại!");
     }

@@ -1,252 +1,322 @@
+<?php require_once PATH_SHOP . 'service/shop.php'; ?>
+<?php require_once PATH_SHOP . 'service/import.php'; ?>
+
+<?php $result = import_service(); ?>
+
 <div class="container-fluid py-4 mt-5">
-  <div class="d-flex justify-content-between mb-3 gap-2">
-    <div class="d-flex gap-2 w-50">
-      <input type="text" id="filter-name" class="form-control form-control-sm" placeholder="Tìm theo tên nhà cung cấp">
 
-      <div class="d-flex gap-2">
-        <input type="date" id="filter-date-from" class="form-control form-control-sm">
-        <input type="date" id="filter-date-to" class="form-control form-control-sm">
-      </div>
+    <form method="GET" class="d-flex justify-content-between align-items-center mb-3">
 
-      <!-- FILTER TRẠNG THÁI -->
-      <select id="filter-status" class="form-select form-select-sm w-auto">
-        <option value="">Trạng thái</option>
-        <?php foreach(option('product_status') as $key => $label): ?>
-          <option value="<?php echo $key; ?>"><?php echo $label; ?></option>
-        <?php endforeach; ?>
-      </select>
+        <div class="d-flex gap-2">
 
-      <!-- FILTER THANH TOÁN -->
-      <select id="filter-payment" class="form-select form-select-sm w-auto">
-        <option value="">Thanh toán</option>
-        <?php foreach(option('payment_status') as $key => $label): ?>
-          <option value="<?php echo $key; ?>"><?php echo $label; ?></option>
-        <?php endforeach; ?>
-      </select>
+            <input type="text"
+                   name="keyword"
+                   class="form-control form-control-sm"
+                   placeholder="Tìm theo tên nhà cung cấp"
+                   value="<?= htmlspecialchars($result['ctx']['keyword']) ?>">
+
+            <input type="date"
+                   name="from"
+                   class="form-control form-control-sm"
+                   value="<?= $result['ctx']['from'] ?>">
+
+            <input type="date"
+                   name="to"
+                   class="form-control form-control-sm"
+                   value="<?= $result['ctx']['to'] ?>">
+
+            <select name="status" class="form-select form-select-sm">
+
+                <option value="">Trạng thái</option>
+
+                <?php foreach (shop_option('product_status') as $key => $label): ?>
+                    <option value="<?= $key ?>"
+                        <?= $result['ctx']['status'] == $key ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($label) ?>
+                    </option>
+                <?php endforeach; ?>
+
+            </select>
+
+            <select name="payment" class="form-select form-select-sm">
+
+                <option value="">Thanh toán</option>
+
+                <?php foreach (shop_option('payment_status') as $key => $label): ?>
+                    <option value="<?= $key ?>"
+                        <?= $result['ctx']['payment'] == $key ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($label) ?>
+                    </option>
+                <?php endforeach; ?>
+
+            </select>
+
+            <button type="submit" class="btn btn-sm btn-secondary">
+                Lọc
+            </button>
+
+            <a href="<?= url('/admin/import') ?>"
+               class="btn btn-sm btn-outline-secondary">
+                Xóa
+            </a>
+
+        </div>
+
+        <a href="<?= url('/admin/import/create') ?>"
+           class="btn btn-sm btn-secondary">
+            Tạo đơn nhập hàng
+        </a>
+
+    </form>
+
+    <div class="mb-3">
+        <strong>
+            Tổng tiền
+            <?= number_format($result['totalAmount']) ?> ₫
+        </strong>
     </div>
 
-    <a href="<?php echo url('/import/create'); ?>" class="btn btn-sm btn-secondary">Tạo đơn nhập hàng</a>
-  </div>
+    <div class="table-responsive">
 
-  <!-- TỔNG TIỀN -->
-  <div class="mb-2">
-    <strong>Tổng tiền</strong>
-    <span id="total-amount">0 ₫</span>
-  </div>
+        <table class="table table-sm table-striped table-borderless align-middle mb-0">
 
-  <div class="table-responsive">
-    <table class="table table-sm table-striped table-borderless align-middle mb-0">
-      <thead class="table-light">
-        <tr>
-          <th>#</th>
-          <th>Nhà cung cấp</th>
-          <th>Địa chỉ</th>
-          <th>Tổng tiền</th>
-          <th>Trạng thái</th>
-          <th>Thanh toán</th>
-          <th>Ngày tạo</th>
-          <th>Hành động</th>
-        </tr>
-      </thead>
-      <tbody id="supplier-table-body"></tbody>
-    </table>
-  </div>
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Nhà cung cấp</th>
+                    <th>Địa chỉ</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái</th>
+                    <th>Thanh toán</th>
+                    <th>Ngày tạo</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
 
-  <nav aria-label="Phân trang" class="mt-3">
-    <ul class="pagination pagination-sm" id="pagination"></ul>
-  </nav>
+            <tbody>
+
+                <?php if (empty($result['imports'])): ?>
+
+                    <tr>
+                        <td colspan="8" class="text-center text-muted py-3">
+                            Không có dữ liệu
+                        </td>
+                    </tr>
+
+                <?php else: ?>
+
+                    <?php foreach ($result['imports'] as $index => $item): ?>
+
+                        <tr>
+
+                            <td>
+                                <?= (($result['page'] - 1) * 100) + $index + 1 ?>
+                            </td>
+
+                            <td>
+                                <?= htmlspecialchars($item['supplier_name']) ?>
+                            </td>
+
+                            <td>
+                                <?= htmlspecialchars($item['supplier_address'] ?? '-') ?>
+                            </td>
+
+                            <td>
+                                <?= number_format($item['total_amount']) ?> ₫
+                            </td>
+
+                            <td>
+                                <select
+                                    class="form-select form-select-sm update-status <?= $item['status'] !== 'completed' ? 'text-danger' : '' ?>"
+                                    data-id="<?= $item['id'] ?>"
+                                    style="min-width:150px">
+
+                                    <?php foreach (shop_option('product_status') as $key => $label): ?>
+                                        <option value="<?= $key ?>"
+                                            <?= $item['status'] === $key ? 'selected' : '' ?>>
+                                            <?= htmlspecialchars($label) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+
+                                </select>
+                            </td>
+
+                            <td>
+                                <select
+                                    class="form-select form-select-sm update-payment <?= $item['payment_status'] !== 'paid' ? 'text-danger' : '' ?>"
+                                    data-id="<?= $item['id'] ?>"
+                                    style="min-width:150px">
+
+                                    <?php foreach (shop_option('payment_status') as $key => $label): ?>
+                                        <option value="<?= $key ?>"
+                                            <?= $item['payment_status'] === $key ? 'selected' : '' ?>>
+                                            <?= htmlspecialchars($label) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+
+                                </select>
+                            </td>
+
+                            <td>
+                                <?= date('d/m/Y H:i', strtotime($item['created_at'])) ?>
+                            </td>
+
+                            <td>
+
+                                <a href="<?= url('/admin/import/edit?id=' . $item['id']) ?>"
+                                   class="btn btn-sm btn-outline-secondary">
+                                    Sửa
+                                </a>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-sm btn-outline-secondary btn-delete"
+                                    data-id="<?= $item['id'] ?>">
+                                    Xóa
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                    <?php endforeach; ?>
+
+                <?php endif; ?>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <?= pager([
+        'page'  => $result['page'],
+        'total' => $result['totalPages'],
+        'query' => $_GET
+    ]) ?>
+
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-  let allImports = [];
-  let currentPage = 1;
-  const itemsPerPage = 100;
+document.addEventListener('DOMContentLoaded', () => {
 
-  const STATUS_OPTIONS  = <?php echo json_encode(option('product_status')); ?>;
-  const PAYMENT_OPTIONS = <?php echo json_encode(option('payment_status')); ?>;
+    document.querySelectorAll('.update-status')
+        .forEach(select => {
 
-  async function loadImports() {
-    try {
-      const res = await fetch("/api/import/list");
-      const json = await res.json();
-      allImports = json.success ? json.data : [];
-      currentPage = 1;
-      renderTable(filteredImports());
-    } catch (err) {
-      console.error("Lỗi API:", err);
-      allImports = [];
-      renderTable([]);
-    }
-  }
+            select.addEventListener('change', async function () {
 
-  function filteredImports() {
-    const keyword   = document.getElementById("filter-name").value.toLowerCase();
-    const dateFrom  = document.getElementById("filter-date-from").value;
-    const dateTo    = document.getElementById("filter-date-to").value;
-    const statusFilter  = document.getElementById("filter-status").value;
-    const paymentFilter = document.getElementById("filter-payment").value;
+                try {
 
-    return allImports.filter(item => {
-      const supplierMatch = (item.supplier_name || '').toLowerCase().includes(keyword);
+                    const response = await fetch(
+                        '<?= url("/api/import/status") ?>?id=' + this.dataset.id,
+                        {
+                            method: 'PATCH',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                status: this.value
+                            })
+                        }
+                    );
 
-      let dateMatch = true;
-      if (dateFrom || dateTo) {
-        const createdDate = item.created_at ? item.created_at.substring(0, 10) : '';
-        if (dateFrom && createdDate < dateFrom) dateMatch = false;
-        if (dateTo && createdDate > dateTo) dateMatch = false;
-      }
+                    const result = await response.json();
 
-      const statusMatch  = !statusFilter  || item.status === statusFilter;
-      const paymentMatch = !paymentFilter || item.payment_status === paymentFilter;
+                    if (!result.success) {
+                        alert(result.message || 'Cập nhật thất bại');
+                        return;
+                    }
 
-      return supplierMatch && dateMatch && statusMatch && paymentMatch;
-    });
-  }
+                    this.classList.toggle(
+                        'text-danger',
+                        this.value !== 'completed'
+                    );
 
-  function formatVND(amount) {
-    return Number(amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-  }
+                } catch (e) {
+                    alert('Có lỗi xảy ra');
+                }
 
-  function renderTotalAmount(list) {
-    const total = list.reduce((sum, item) => {
-      return sum + Number(item.total_amount || 0);
-    }, 0);
+            });
 
-    document.getElementById("total-amount").innerText =
-      total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-  }
-
-  function renderTable(importsList) {
-    const tbody = document.getElementById("supplier-table-body");
-    tbody.innerHTML = "";
-
-    if (!importsList.length) {
-      tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted">Không có dữ liệu</td></tr>`;
-      renderPagination(0);
-      renderTotalAmount([]);
-      return;
-    }
-
-    renderTotalAmount(importsList);
-
-    const start = (currentPage - 1) * itemsPerPage;
-    const paginatedItems = importsList.slice(start, start + itemsPerPage);
-
-    paginatedItems.forEach((item, index) => {
-      const tr = document.createElement("tr");
-
-      function getStatusClass(value, type = 'status') {
-        if (type === 'status' && value !== 'completed') return 'text-danger';
-        if (type === 'payment' && value !== 'paid') return 'text-danger';
-        return '';
-      }
-
-      const statusDropdown = `
-        <select class="form-select form-select-sm update-status ${getStatusClass(item.status, 'status')}" data-id="${item.id}">
-          ${Object.entries(STATUS_OPTIONS).map(([key, label]) =>
-            `<option value="${key}" ${key === item.status ? 'selected' : ''}>${label}</option>`
-          ).join('')}
-        </select>
-      `;
-
-      const paymentDropdown = `
-        <select class="form-select form-select-sm update-payment ${getStatusClass(item.payment_status, 'payment')}" data-id="${item.id}">
-          ${Object.entries(PAYMENT_OPTIONS).map(([key, label]) =>
-            `<option value="${key}" ${key === item.payment_status ? 'selected' : ''}>${label}</option>`
-          ).join('')}
-        </select>
-      `;
-
-      tr.innerHTML = `
-        <th scope="row">${start + index + 1}</th>
-        <td>${item.supplier_name}</td>
-        <td>${(item.supplier_address ?? '').toString().trim() || '—'}</td>
-        <td>${formatVND(item.total_amount)}</td>
-        <td>${statusDropdown}</td>
-        <td>${paymentDropdown}</td>
-        <td>${item.created_at || '—'}</td>
-        <td>
-          <a href="/import/edit?id=${item.id}" class="btn btn-sm btn-outline-secondary">Sửa</a>
-          <button class="btn btn-sm btn-outline-secondary btn-delete" data-id="${item.id}">Xóa</button>
-        </td>
-      `;
-
-      tbody.appendChild(tr);
-    });
-
-    document.querySelectorAll(".update-status").forEach(select => {
-      select.addEventListener("change", async function() {
-        const res = await fetch(`/api/import/update-status?id=${this.dataset.id}`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ status: this.value })
         });
-        const result = await res.json();
-        if (!result.success) alert(result.message);
-        else loadImports();
-      });
-    });
 
-    document.querySelectorAll(".update-payment").forEach(select => {
-      select.addEventListener("change", async function() {
-        const res = await fetch(`/api/import/update-payment?id=${this.dataset.id}`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ payment_status: this.value })
+    document.querySelectorAll('.update-payment')
+        .forEach(select => {
+
+            select.addEventListener('change', async function () {
+
+                try {
+
+                    const response = await fetch(
+                        '<?= url("/api/import/payment") ?>?id=' + this.dataset.id,
+                        {
+                            method: 'PATCH',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                payment_status: this.value
+                            })
+                        }
+                    );
+
+                    const result = await response.json();
+
+                    if (!result.success) {
+                        alert(result.message || 'Cập nhật thất bại');
+                        return;
+                    }
+
+                    this.classList.toggle(
+                        'text-danger',
+                        this.value !== 'paid'
+                    );
+
+                } catch (e) {
+                    alert('Có lỗi xảy ra');
+                }
+
+            });
+
         });
-        const result = await res.json();
-        if (!result.success) alert(result.message);
-        else loadImports();
-      });
-    });
 
-    tbody.querySelectorAll(".btn-delete").forEach(btn => {
-      btn.addEventListener("click", async function() {
-        if (!confirm("Bạn có chắc chắn muốn xóa đơn hàng này?")) return;
-        const res = await fetch(`/api/import/delete?id=${this.dataset.id}`, { method: "DELETE" });
-        const result = await res.json();
-        alert(result.message);
-        if (result.success) loadImports();
-      });
-    });
+    document.querySelectorAll('.btn-delete')
+        .forEach(button => {
 
-    renderPagination(importsList.length);
-  }
+            button.addEventListener('click', async function () {
 
-  function renderPagination(totalItems) {
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
-    const pagination = document.getElementById("pagination");
-    pagination.innerHTML = "";
+                if (!confirm('Xóa đơn nhập hàng này?')) {
+                    return;
+                }
 
-    for (let i = 1; i <= totalPages; i++) {
-      const li = document.createElement("li");
-      li.className = `page-item ${i === currentPage ? "active" : ""}`;
-      li.innerHTML = `
-        <a class="page-link text-secondary ${i === currentPage ? "bg-light border-secondary" : ""}" href="#">
-          ${i}
-        </a>
-      `;
-      li.addEventListener("click", function(e) {
-        e.preventDefault();
-        currentPage = i;
-        renderTable(filteredImports());
-      });
-      pagination.appendChild(li);
-    }
-  }
+                try {
 
-  document.getElementById("filter-name").addEventListener("input", () => {
-    currentPage = 1;
-    renderTable(filteredImports());
-  });
+                    const response = await fetch(
+                        '<?= url("/api/import/delete") ?>?id=' + this.dataset.id,
+                        {
+                            method: 'DELETE'
+                        }
+                    );
 
-  ["filter-date-from","filter-date-to","filter-status","filter-payment"]
-    .forEach(id => document.getElementById(id).addEventListener("change", () => {
-      currentPage = 1;
-      renderTable(filteredImports());
-    }));
+                    const result = await response.json();
 
-  loadImports();
+                    if (!result.success) {
+                        alert(result.message || 'Xóa thất bại');
+                        return;
+                    }
+
+                    this.closest('tr')?.remove();
+
+                    alert('Xóa thành công');
+
+                } catch (e) {
+
+                    alert('Có lỗi xảy ra');
+                }
+
+            });
+
+        });
+
 });
 </script>

@@ -52,9 +52,21 @@ return [
         'action'     => 'payment',
     ],
 
+
+    // IMPORT
+    'api/import/list' => [
+        'controller' => ImportController::class,
+        'action'     => 'list',
+    ],
+
     'api/import/product' => [
         'controller' => ImportController::class,
         'action'     => 'product',
+    ],
+
+    'api/import/show' => [
+        'controller' => ImportController::class,
+        'action'     => 'show',
     ],
 
     'api/import/create' => [
@@ -62,11 +74,29 @@ return [
         'action'     => 'create',
     ],
 
+    'api/import/update' => [
+        'controller' => ImportController::class,
+        'action'     => 'update',
+    ],
+
+    'api/import/delete' => [
+        'controller' => ImportController::class,
+        'action'     => 'delete',
+    ],
+
+    'api/import/status' => [
+        'controller' => ImportController::class,
+        'action'     => 'status',
+    ],
+
+    'api/import/payment' => [
+        'controller' => ImportController::class,
+        'action'     => 'payment',
+    ],
+
+    // SUPPLIER
     'api/supplier/list' => [
         'controller' => SupplierController::class,
         'action'     => 'list',
     ],
-
-
-
 ];

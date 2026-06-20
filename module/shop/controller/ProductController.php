@@ -40,16 +40,4 @@ class ProductController
         ]);
     }
 
-    /* =========================
-       SEARCH PRODUCTS (FOR ORDER)
-    ========================= */
-
-    public function search(): void
-    {
-        $products = get_stock_products();
-
-        response_success([
-            'data' => $products
-        ]);
-    }
 }

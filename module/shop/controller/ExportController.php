@@ -8,7 +8,7 @@ class ExportController
     public function product(): void
     {
         response_success([
-            'data' => get_stock_products()
+            'data' => product_export()
         ]);
     }
 
