@@ -1,5 +1,5 @@
 
-<?php <?php require_once PATH_SHOP. 'repository/product.php'; ?> ?>
+<?php require_once PATH_SHOP. 'repository/product.php'; ?> ?>
 
 <?php
 
@@ -114,5 +114,3 @@ $products = $q
     </div>
 
 </main>
-
-<?php require_once PATH_VIEW . 'layout/website/footer.php'; ?>
