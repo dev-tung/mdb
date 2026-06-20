@@ -5,21 +5,11 @@
  * ================================================== */
 
 /**
- * Gộp nhiều mảng thành một mảng phẳng.
- *
- * Ví dụ:
- * [
- *   [1,2],
- *   [3,4]
- * ]
- *
- * =>
- * [1,2,3,4]
+ * Gộp nhiều mảng thành một.
  */
 function array_merge_flat(
     array $arrays
-): array
-{
+): array {
     return array_merge(
         ...array_values($arrays)
     );

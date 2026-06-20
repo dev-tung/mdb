@@ -10,13 +10,10 @@
 function json_response(
     $data = [],
     int $status = 200
-): void
-{
+): void {
     http_response_code($status);
 
-    header(
-        'Content-Type: application/json'
-    );
+    header('Content-Type: application/json');
 
     echo json_encode($data);
 
@@ -24,12 +21,11 @@ function json_response(
 }
 
 /**
- * Trả response thành công.
+ * Response thành công.
  */
 function response_success(
     array $data = []
-): void
-{
+): void {
     json_response([
         'success' => true,
         ...$data
@@ -37,13 +33,12 @@ function response_success(
 }
 
 /**
- * Trả response lỗi.
+ * Response lỗi.
  */
 function response_error(
     string $message,
     int $code = 400
-): void
-{
+): void {
     json_response([
         'success' => false,
         'message' => $message

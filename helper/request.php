@@ -6,14 +6,6 @@
 
 /**
  * Lấy toàn bộ dữ liệu request.
- *
- * Hỗ trợ:
- * - GET
- * - POST form-data
- * - POST JSON
- * - PUT JSON
- * - PATCH JSON
- * - DELETE JSON
  */
 function request_input(): array
 {
@@ -67,13 +59,7 @@ function request_input(): array
 }
 
 /**
- * Lấy giá trị từ query string.
- *
- * Ví dụ:
- * ?page=2
- *
- * get_query('page', 1)
- * => 2
+ * Lấy query string.
  */
 function get_query(string $key, $default = null)
 {
@@ -81,13 +67,7 @@ function get_query(string $key, $default = null)
 }
 
 /**
- * Lấy mảng từ query string.
- *
- * Ví dụ:
- * ?brand[]=1&brand[]=2
- *
- * get_array('brand')
- * => [1,2]
+ * Lấy query dạng mảng.
  */
 function get_array(string $key): array
 {

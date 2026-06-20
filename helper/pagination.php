@@ -11,8 +11,8 @@ function array_paginate(
     array $items,
     int $page,
     int $perPage
-): array
-{
+): array {
+
     $total = count($items);
 
     $totalPages = max(
