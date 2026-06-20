@@ -1,4 +1,9 @@
 <?php
+require_once PATH_FINANCE . 'controller/AccountController.php';
+require_once PATH_FINANCE . 'controller/CategoryController.php';
+require_once PATH_FINANCE . 'controller/TransactionController.php';
+require_once PATH_FINANCE . 'controller/DebtController.php';
+require_once PATH_FINANCE . 'controller/ReportController.php';
 
 return [
 
@@ -26,9 +31,9 @@ return [
         'action'     => 'delete',
     ],
 
-    'api/finance/account/detail' => [
+    'api/finance/account/show' => [
         'controller' => AccountController::class,
-        'action'     => 'detail',
+        'action'     => 'show',
     ],
 
     /* =========================
@@ -55,6 +60,11 @@ return [
         'action'     => 'delete',
     ],
 
+    'api/finance/category/show' => [
+        'controller' => CategoryController::class,
+        'action'     => 'show',
+    ],
+
     /* =========================
        TRANSACTION
     ========================= */
@@ -79,9 +89,9 @@ return [
         'action'     => 'delete',
     ],
 
-    'api/finance/transaction/detail' => [
+    'api/finance/transaction/show' => [
         'controller' => TransactionController::class,
-        'action'     => 'detail',
+        'action'     => 'show',
     ],
 
     /* =========================

@@ -86,27 +86,19 @@
 
           <?php foreach ($result['accounts'] as $index => $a): ?>
 
-            <tr>
+            <tr data-id="<?= $a['id'] ?>">
 
               <td>
                 <?= finance_account_index($result['page'], $index) ?>
               </td>
 
-              <td>
-                <?= htmlspecialchars($a['name'] ?? '') ?>
-              </td>
+              <td><?= htmlspecialchars($a['name'] ?? '') ?></td>
 
-              <td>
-                <?= htmlspecialchars($a['type'] ?? '') ?>
-              </td>
+              <td><?= htmlspecialchars($a['type'] ?? '') ?></td>
 
-              <td>
-                <?= number_format((float)($a['initial_balance'] ?? 0)) ?>
-              </td>
+              <td><?= number_format((float)($a['initial_balance'] ?? 0)) ?></td>
 
-              <td>
-                <?= htmlspecialchars($a['note'] ?? '') ?>
-              </td>
+              <td><?= htmlspecialchars($a['note'] ?? '') ?></td>
 
               <td>
                 <?php if (($a['status'] ?? 0) == 1): ?>
@@ -123,11 +115,12 @@
                   Sửa
                 </a>
 
-                <a href="<?= url('/admin/finance/account/delete?id=' . $a['id']) ?>"
-                   onclick="return confirm('Xóa tài khoản này?')"
-                   class="btn btn-sm btn-outline-secondary">
+                <!-- ✅ DELETE FETCH -->
+                <button type="button"
+                        class="btn btn-sm btn-outline-secondary btn-delete-account"
+                        data-id="<?= $a['id'] ?>">
                   Xóa
-                </a>
+                </button>
 
               </td>
 
@@ -153,3 +146,58 @@
   ?>
 
 </div>
+
+<!-- =========================
+     DELETE AJAX SCRIPT
+========================= -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  document.querySelectorAll(".btn-delete-account").forEach(btn => {
+
+    btn.addEventListener("click", async function () {
+
+      const id = this.dataset.id;
+
+      if (!confirm("Xóa tài khoản này?")) return;
+
+      this.disabled = true;
+
+      try {
+
+        const res = await fetch("<?= url('/api/finance/account/delete') ?>", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ id })
+        });
+
+        const json = await res.json();
+
+        if (json.success) {
+
+          // remove row realtime
+          this.closest("tr").remove();
+
+        } else {
+
+          alert(json.message || "Xóa thất bại!");
+          this.disabled = false;
+
+        }
+
+      } catch (err) {
+
+        console.error(err);
+        alert("Lỗi hệ thống!");
+        this.disabled = false;
+
+      }
+
+    });
+
+  });
+
+});
+</script>
