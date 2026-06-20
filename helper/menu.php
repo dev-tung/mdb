@@ -12,7 +12,7 @@ function active_menu(string $keyword): string
     $current = $_SERVER['REQUEST_URI'] ?? '';
 
     return str_contains($current, $keyword)
-        ? 'active fw-bold text-success'
+        ? 'active'
         : '';
 }
 
@@ -25,6 +25,6 @@ function active_menu_exact(string $url): string
     $url = rtrim($url, '/');
 
     return $current === $url
-        ? 'active fw-bold text-success'
+        ? 'active'
         : '';
 }

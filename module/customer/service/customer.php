@@ -1,5 +1,5 @@
 <?php
-require_once PATH_REPOSITORY. 'customer.php';
+require_once PATH_CUSTOMER. 'repository/customer.php';
 
 /* =========================
    SERVICE

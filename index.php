@@ -79,13 +79,13 @@ function dispatchRoute(array $route): void
     $request = resolveRequest();
 
     if( str_starts_with($request, 'admin') ){
-        require_once PATH_VIEW . '/layout/admin/header.php';
-        require_once PATH_ROOT . '/' . $route['path'];
-        require_once PATH_VIEW . '/layout/admin/footer.php';
+        require_once PATH_VIEW . 'layout/admin/header.php';
+        require_once PATH_ROOT .  $route['path'];
+        require_once PATH_VIEW . 'layout/admin/footer.php';
     }else{
-        require_once PATH_VIEW . '/layout/website/header.php';
-        require_once PATH_ROOT . '/' . $route['path'];
-        require_once PATH_VIEW . '/layout/website/footer.php';
+        require_once PATH_VIEW . 'layout/website/header.php';
+        require_once PATH_ROOT .  $route['path'];
+        require_once PATH_VIEW . 'layout/website/footer.php';
     }
 }
 

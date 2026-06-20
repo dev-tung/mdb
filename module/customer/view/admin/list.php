@@ -1,5 +1,5 @@
 
-<?php require_once PATH_ROOT . 'service/customer.php'; ?>
+<?php require_once PATH_CUSTOMER . 'service/customer.php'; ?>
 
 <?php $result = customer_service(); ?>
 
@@ -148,5 +148,3 @@
   ?>
 
 </div>
-
-<?php require_once PATH_ROOT . 'partial/end.php'; ?>
