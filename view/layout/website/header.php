@@ -25,42 +25,49 @@
 
                 <div class="collapse navbar-collapse" id="mainNavbar">
 
-                    <!-- NAV -->
-                    <?php $current = $_SERVER['REQUEST_URI']; ?>
-
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                         <li class="nav-item">
-                            <a class="nav-link <?= ($current == URL_ROOT) ? 'active fw-bold text-success' : '' ?>"
-                            href="<?= URL_ROOT ?>">
+                            <a
+                                class="nav-link <?= active_menu_exact('/') ?>"
+                                href="<?= URL_ROOT ?>"
+                            >
                                 Trang chủ
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link <?= (str_contains($current, 'product')) ? 'active fw-bold text-success' : '' ?>"
-                            href="<?= URL_ROOT ?>product">
+                            <a
+                                class="nav-link <?= active_menu('product') ?>"
+                                href="<?= URL_ROOT ?>product"
+                            >
                                 Sản phẩm
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link <?= (str_contains($current, 'string')) ? 'active fw-bold text-success' : '' ?>"
-                            href="<?= URL_ROOT ?>string">
+                            <a
+                                class="nav-link <?= active_menu('string') ?>"
+                                href="<?= URL_ROOT ?>string"
+                            >
                                 Căng cước
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link <?= (str_contains($current, 'affilate')) ? 'active fw-bold text-success' : '' ?>"
-                            href="<?= URL_ROOT ?>affilate">
+                            <a
+                                class="nav-link <?= active_menu('affilate') ?>"
+                                href="<?= URL_ROOT ?>affilate"
+                            >
                                 CTV
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link <?= (str_contains($current, 'recruitment')) ? 'active fw-bold text-success' : '' ?>"
-                            href="<?= URL_ROOT ?>recruitment">
+                            <a
+                                class="nav-link <?= active_menu('recruitment') ?>"
+                                href="<?= URL_ROOT ?>recruitment"
+                            >
                                 Tuyển dụng
                             </a>
                         </li>

@@ -7,16 +7,24 @@
 /**
  * Active menu theo URL hiện tại.
  */
-function active_menu(
-    string $path = ''
-): string {
+function active_menu(string $keyword): string
+{
+    $current = $_SERVER['REQUEST_URI'] ?? '';
 
-    $current = parse_url(
-        $_SERVER['REQUEST_URI'],
-        PHP_URL_PATH
-    );
+    return str_contains($current, $keyword)
+        ? 'active fw-bold text-success'
+        : '';
+}
 
-    return $current === $path
-        ? 'active'
+/**
+ * Active menu theo URL chính xác.
+ */
+function active_menu_exact(string $url): string
+{
+    $current = rtrim($_SERVER['REQUEST_URI'] ?? '/', '/');
+    $url = rtrim($url, '/');
+
+    return $current === $url
+        ? 'active fw-bold text-success'
         : '';
 }
