@@ -24,7 +24,7 @@ function export_service(): array
     $paged = array_paginate(
         $exports,
         $ctx['page'],
-        100
+        20
     );
 
     return [

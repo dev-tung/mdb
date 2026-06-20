@@ -62,7 +62,7 @@
 
         </div>
 
-        <a href="<?= url('/export/create') ?>"
+        <a href="<?= url('/admin/export/create') ?>"
            class="btn btn-sm btn-secondary">
             Tạo đơn bán hàng
         </a>
