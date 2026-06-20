@@ -1,12 +1,12 @@
 <?php
 
-define('URL_ROOT',         'http://localhost');
+define('URL_ROOT',         'http://localhost/');
+define('URL_PUBLIC',       URL_ROOT . 'public/');
 
 define('PATH_ROOT',        dirname(__FILE__) . '/');
 define('PATH_MODULE',      PATH_ROOT . 'module/');
-define('PATH_VALIDATE',    PATH_ROOT . 'validate/');
-define('PATH_REPOSITORY',  PATH_ROOT . 'repository/');
-define('PATH_SERVICE',     PATH_ROOT . 'service/');
+define('PATH_VIEW',        PATH_ROOT . 'view/');
+define('PATH_PUBLIC',      PATH_ROOT . 'public/');
 
 define('PATH_SHOP',        PATH_MODULE . 'shop/');
 define('PATH_CUSTOMER',    PATH_MODULE . 'customer/');

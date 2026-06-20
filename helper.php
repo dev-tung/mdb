@@ -217,42 +217,24 @@ if (!function_exists('pager')) {
     }
 }
 
-
-if (!function_exists('option')) {
-    /**
-     * Lấy hằng số từ config/option.php
-     *
-     * @param string|null $key
-     * @param mixed $default
-     * @return mixed
-     */
-    function option(?string $key = null, $default = null)
-    {
-        static $constants = null;
-
-        if ($constants === null) {
-            $constants = require __DIR__ . '/option.php';
-        }
-
-        if ($key === null) {
-            return $constants;
-        }
-
-        // Hỗ trợ key dạng "order_status.pending"
-        $keys = explode('.', $key);
-        $value = $constants;
-
-        foreach ($keys as $k) {
-            if (isset($value[$k])) {
-                $value = $value[$k];
-            } else {
-                return $default;
-            }
-        }
-
-        return $value;
-    }
+function response_success(array $data = []): void
+{
+    response_json([
+        'success' => true,
+        ...$data
+    ]);
 }
+
+function response_error(string $message, int $code = 400): void
+{
+    http_response_code($code);
+
+    response_json([
+        'success' => false,
+        'message' => $message
+    ]);
+}
+
 
 function array_merge_flat(array $arrays): array
 {

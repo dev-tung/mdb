@@ -17,7 +17,7 @@
               </p>
 
               <div class="d-flex align-items-center">
-                  <img width="130" src="<?= URL_ROOT ?>/image/bocongthuong.png"
+                  <img width="130" src="<?= URL_PUBLIC ?>image/bocongthuong.png"
                        alt="Đã thông báo Bộ Công Thương với Mạnh Dũng Sports">
               </div>
 
@@ -156,3 +156,6 @@
     </div>
 
 </footer>
+  <script src="<?= URL_PUBLIC ?>js/script.js"></script>
+</body>
+</html>

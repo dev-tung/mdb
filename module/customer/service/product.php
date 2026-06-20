@@ -1,5 +1,5 @@
 <?php
-require_once PATH_REPOSITORY. 'product.php';
+<?php require_once PATH_SHOP. 'repository/product.php'; ?>
 
 /* =========================
    SERVICE

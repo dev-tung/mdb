@@ -1,7 +1,8 @@
 <?php
-require_once PATH_REPOSITORY. 'product.php';
 
-class ProductController extends BaseController
+require_once PATH_SHOP . 'repository/product.php';
+
+class ProductController
 {
     /* =========================
        LIST PRODUCTS
@@ -10,7 +11,10 @@ class ProductController extends BaseController
     public function list(): void
     {
         $products = get_products();
-        $this->success($products);
+
+        response_success([
+            'data' => $products
+        ]);
     }
 
     /* =========================
@@ -19,15 +23,21 @@ class ProductController extends BaseController
 
     public function show(): void
     {
-        $slug = $_GET['slug'] ?? '';
+        $slug = trim($_GET['slug'] ?? '');
+
+        if ($slug === '') {
+            response_error('Product slug is required', 400);
+        }
 
         $product = get_product_by_slug($slug);
 
         if (!$product) {
-            $this->error('Product not found', 404);
+            response_error('Product not found', 404);
         }
 
-        $this->success($product);
+        response_success([
+            'data' => $product
+        ]);
     }
 
     /* =========================
@@ -37,6 +47,9 @@ class ProductController extends BaseController
     public function search(): void
     {
         $products = get_stock_products();
-        $this->success($products);
+
+        response_success([
+            'data' => $products
+        ]);
     }
 }

@@ -22,10 +22,39 @@ function resolveRequest(): string
 
 function loadRoutes(): array
 {
-    return array_merge(
-        require __DIR__ . '/route/web.php',
-        require __DIR__ . '/route/api.php'
-    );
+    $modules = [
+        'shop',
+        'customer',
+        'academy',
+        'booking',
+        'finance',
+        'human',
+        'legal',
+        'stringing',
+        'website'
+    ];
+
+    $routes = [];
+
+    foreach ($modules as $module) {
+        $path = PATH_ROOT . "/module/{$module}/route";
+
+        if (file_exists($path . '/web.php')) {
+            $routes = array_merge(
+                $routes,
+                require $path . '/web.php'
+            );
+        }
+
+        if (file_exists($path . '/api.php')) {
+            $routes = array_merge(
+                $routes,
+                require $path . '/api.php'
+            );
+        }
+    }
+
+    return $routes;
 }
 
 /* =========================
@@ -49,14 +78,15 @@ function dispatchRoute(array $route): void
     // WEB
     $request = resolveRequest();
 
-    $header = str_starts_with($request, 'admin')
-        ? 'navbar'
-        : 'header';
-
-    require_once __DIR__ . '/partial/start.php';
-    require_once __DIR__ . '/partial/' . $header . '.php';
-    require_once __DIR__ . '/' . $route['path'];
-    require_once __DIR__ . '/partial/end.php';
+    if( str_starts_with($request, 'admin') ){
+        require_once PATH_VIEW . '/layout/admin/header.php';
+        require_once PATH_ROOT . '/' . $route['path'];
+        require_once PATH_VIEW . '/layout/admin/footer.php';
+    }else{
+        require_once PATH_VIEW . '/layout/website/header.php';
+        require_once PATH_ROOT . '/' . $route['path'];
+        require_once PATH_VIEW . '/layout/website/footer.php';
+    }
 }
 
 /* =========================

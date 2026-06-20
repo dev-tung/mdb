@@ -1,10 +1,9 @@
 <?php
-require_once PATH_ROOT . 'controller/BaseController.php';
-require_once PATH_ROOT . 'controller/ProductController.php';
-require_once PATH_ROOT . 'controller/CustomerController.php';
-require_once PATH_ROOT . 'controller/ExportController.php';
-require_once PATH_ROOT . 'controller/ImportController.php';
-require_once PATH_ROOT . 'controller/SupplierController.php';
+
+require_once PATH_SHOP . 'controller/ProductController.php';
+require_once PATH_SHOP . 'controller/ExportController.php';
+require_once PATH_SHOP . 'controller/ImportController.php';
+require_once PATH_SHOP . 'controller/SupplierController.php';
 
 return [
 
@@ -61,11 +60,6 @@ return [
     'api/import/create' => [
         'controller' => ImportController::class,
         'action'     => 'create',
-    ],
-
-    'api/customer/list' => [
-        'controller' => CustomerController::class,
-        'action'     => 'list',
     ],
 
     'api/supplier/list' => [
