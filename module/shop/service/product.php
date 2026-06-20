@@ -6,7 +6,8 @@
 
 function product_service(): array
 {
-    $products   = get_products();
+    $products       = get_products();
+    $totalProducts  = count($products);
     $brands     = get_brands();
     $categories = get_categories();
     $ctx        = product_context();
@@ -25,6 +26,7 @@ function product_service(): array
         'categories' => $categories,
         'page'       => $paged['page'],
         'totalPages' => $paged['totalPages'],
+        'totalProducts' => $totalProducts,
         'filters'    => $ctx
     ];
 }

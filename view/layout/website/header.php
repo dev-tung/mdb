@@ -77,14 +77,14 @@
                     <!-- SEARCH (desktop compact) -->
                     <form class="d-flex flex-grow-1 mx-lg-4 mb-3 mb-lg-0 border border-success rounded overflow-hidden"
                         method="get"
-                        action="<?= URL_ROOT ?>search">
+                        action="<?= URL_ROOT ?>product">
 
                         <input
                             class="form-control border-0 shadow-none"
                             type="search"
-                            name="q"
+                            name="keyword"
                             placeholder="Tìm kiếm đồ cầu lông..."
-                            value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
+                            value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>">
 
                         <button class="btn btn-sm rounded-0 d-flex align-items-center justify-content-center px-3"
                                 type="submit">
