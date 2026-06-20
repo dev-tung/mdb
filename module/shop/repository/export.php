@@ -88,6 +88,55 @@ function create_export(array $input): int
     }
 }
 
+function update_export(int $exportId, array $input): void
+{
+    DB::beginTransaction();
+
+    try {
+
+        $now = date('Y-m-d H:i:s');
+
+        DB::update('shop_export', [
+            'customer_id'    => $input['customer_id'],
+            'description'    => $input['description'] ?? '',
+            'status'         => $input['status'],
+            'payment_status' => $input['payment_status'],
+            'updated_at'     => $now
+        ], [
+            'id' => $exportId
+        ]);
+
+        DB::delete('shop_export_product', [
+            'export_id' => $exportId
+        ]);
+
+        foreach ($input['product'] as $item) {
+
+            $isGift = !empty($item['is_gift']) && $item['is_gift'] !== '0';
+
+            DB::create('shop_export_product', [
+                'export_id'         => $exportId,
+                'product_id'        => $item['id'],
+                'quantity'          => $item['quantity'],
+                'price'             => $isGift ? 0 : $item['price'],
+                'discount'          => $isGift ? 0 : $item['discount'],
+                'is_gift'           => $isGift ? 1 : 0,
+                'import_product_id' => $item['import_product_id'] ?? null,
+                'created_at'        => $now,
+                'updated_at'        => $now
+            ]);
+        }
+
+        DB::commit();
+
+    } catch (Throwable $e) {
+
+        DB::rollback();
+
+        throw $e;
+    }
+}
+
 function get_exports(): array
 {
     return DB::all(

@@ -48,6 +48,39 @@ class ExportController
         }
     }
 
+    public function update(): void
+    {
+
+        $input = request_input();
+
+         $id = $input['id'] ?? 0;
+
+        $errors = validate_export($input);
+
+        if (export_validate_fails($errors)) {
+
+            response_error(
+                'Dữ liệu không hợp lệ',
+                422,
+                ['errors' => $errors]
+            );
+        }
+
+        try {
+
+            update_export($id, $input);
+
+            response_success(
+                [],
+                'Cập nhật đơn hàng thành công.'
+            );
+
+        } catch (Throwable $e) {
+
+            response_error($e->getMessage());
+        }
+    }
+
     public function show(): void
     {
         $input = request_input();

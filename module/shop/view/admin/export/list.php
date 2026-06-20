@@ -71,7 +71,7 @@
 
     <div class="mb-3">
         <strong>
-            Tổng tiền:
+            Tổng tiền
             <?= number_format($result['totalAmount']) ?> ₫
         </strong>
     </div>
@@ -163,16 +163,17 @@
 
                             <td>
 
-                                <a href="<?= url('/export/edit?id=' . $item['id']) ?>"
+                                <a href="<?= url('/admin/export/edit?id=' . $item['id']) ?>"
                                    class="btn btn-sm btn-outline-secondary">
                                     Sửa
                                 </a>
 
-                                <a href="<?= url('/export/delete?id=' . $item['id']) ?>"
-                                   onclick="return confirm('Xóa đơn hàng này?')"
-                                   class="btn btn-sm btn-outline-secondary">
+                                <button
+                                    type="button"
+                                    class="btn btn-sm btn-outline-secondary btn-delete"
+                                    data-id="<?= $item['id'] ?>">
                                     Xóa
-                                </a>
+                                </button>
 
                             </td>
 
@@ -271,6 +272,44 @@ document.addEventListener('DOMContentLoaded', () => {
                     );
 
                 } catch (e) {
+                    alert('Có lỗi xảy ra');
+                }
+
+            });
+
+        });
+
+        document.querySelectorAll('.btn-delete')
+        .forEach(button => {
+
+            button.addEventListener('click', async function () {
+
+                if (!confirm('Xóa đơn hàng này?')) {
+                    return;
+                }
+
+                try {
+
+                    const response = await fetch(
+                        '<?= url("/api/export/delete") ?>?id=' + this.dataset.id,
+                        {
+                            method: 'DELETE'
+                        }
+                    );
+
+                    const result = await response.json();
+
+                    if (!result.success) {
+                        alert(result.message || 'Xóa thất bại');
+                        return;
+                    }
+
+                    this.closest('tr')?.remove();
+
+                    alert('Xóa thành công');
+
+                } catch (e) {
+
                     alert('Có lỗi xảy ra');
                 }
 

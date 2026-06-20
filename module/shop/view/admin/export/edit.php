@@ -1,3 +1,4 @@
+<?php require_once PATH_SHOP. 'service/shop.php'; ?>
 <div class="container-fluid py-4 mt-5">
   <div class="card shadow-sm w-100">
     <div class="card-body">
@@ -25,7 +26,7 @@
           <div class="col-md-6">
             <label for="status" class="form-label">Trạng thái đơn hàng</label>
             <select id="status" class="form-select">
-              <?php foreach (option('product_status') as $key => $label): ?>
+              <?php foreach (shop_option('product_status') as $key => $label): ?>
                 <option value="<?= htmlspecialchars($key) ?>"><?= htmlspecialchars($label) ?></option>
               <?php endforeach; ?>
             </select>
@@ -35,7 +36,7 @@
           <div class="col-md-6">
             <label for="payment_status" class="form-label">Trạng thái thanh toán</label>
             <select id="payment_status" class="form-select">
-              <?php foreach (option('payment_status') as $key => $label): ?>
+              <?php foreach (shop_option('payment_status') as $key => $label): ?>
                 <option value="<?= htmlspecialchars($key) ?>"><?= htmlspecialchars($label) ?></option>
               <?php endforeach; ?>
             </select>
@@ -365,7 +366,7 @@ fetch(`/api/export/show?id=${exportId}`)
     const result = await response.json();
     if (result.success) {
       alert("Cập nhật đơn hàng thành công!");
-      window.location.href = "/export";
+      window.location.href = "/admin/export";
     } else {
       alert(result.message || "Cập nhật đơn hàng thất bại!");
     }
