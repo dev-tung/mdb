@@ -9,7 +9,9 @@ define('PATH_HELPER',      PATH_ROOT   . 'helper/');
 define('PATH_VIEW',        PATH_ROOT   . 'view/');
 define('PATH_PUBLIC',      PATH_ROOT   . 'public/');
 
+
 define('PATH_SHOP',        PATH_MODULE . 'shop/');
 define('PATH_CUSTOMER',    PATH_MODULE . 'customer/');
 define('PATH_STRINGING',   PATH_MODULE . 'stringing/');
 define('PATH_HUMAN',       PATH_MODULE . 'human/');
+define('PATH_FINANCE',     PATH_MODULE . 'finance/');

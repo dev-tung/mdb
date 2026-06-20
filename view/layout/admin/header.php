@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
   <link rel="stylesheet" href="<?= URL_PUBLIC ?>css/style.css">
-
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -15,10 +13,111 @@
 
             <ul class="navbar-nav">
 
+                <!-- Tài chính -->
+                <li class="nav-item dropdown">
+                    <a
+                        class="nav-link dropdown-toggle <?= active_menu('/admin/finance') ?>"
+                        href="#"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Tài chính
+                    </a>
+
+                    <ul class="dropdown-menu">
+
+                        <!-- Tài khoản -->
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="<?= url('/admin/finance/account') ?>">
+                                Tài khoản
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="<?= url('/admin/finance/account/create') ?>">
+                                Thêm tài khoản
+                            </a>
+                        </li>
+
+                        <li><hr class="dropdown-divider"></li>
+
+                        <!-- Danh mục -->
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="<?= url('/admin/finance/category') ?>">
+                                Danh mục
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="<?= url('/admin/finance/category/create') ?>">
+                                Thêm danh mục
+                            </a>
+                        </li>
+
+                        <li><hr class="dropdown-divider"></li>
+
+                        <!-- Giao dịch -->
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="<?= url('/admin/finance/transaction') ?>">
+                                Giao dịch
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="<?= url('/admin/finance/transaction/create') ?>">
+                                Thêm giao dịch
+                            </a>
+                        </li>
+
+                        <li><hr class="dropdown-divider"></li>
+
+                        <!-- Công nợ -->
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="<?= url('/admin/finance/debt') ?>">
+                                Công nợ
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="<?= url('/admin/finance/debt/create') ?>">
+                                Thêm công nợ
+                            </a>
+                        </li>
+
+                        <li><hr class="dropdown-divider"></li>
+
+                        <!-- Báo cáo -->
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="<?= url('/admin/finance/report') ?>">
+                                Báo cáo
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
                 <!-- SHOP -->
                 <li class="nav-item dropdown">
                     <a
-                        class="nav-link dropdown-toggle <?= active_menu('/admin/product') || active_menu('/admin/product') ? 'active' : '' ?>"
+                        class="nav-link dropdown-toggle <?= active_menu('/admin/product') || active_menu('/admin/export') || active_menu('/admin/import') ? 'active' : '' ?>"
                         href="#"
                         id="productDropdown"
                         role="button"
@@ -28,6 +127,8 @@
                     </a>
 
                     <ul class="dropdown-menu">
+
+                        <!-- Sản phẩm -->
                         <li>
                             <a
                                 class="dropdown-item <?= active_menu('/admin/product') ?>"
@@ -35,6 +136,18 @@
                                 Sản phẩm
                             </a>
                         </li>
+
+                        <li>
+                            <a
+                                class="dropdown-item <?= active_menu('/admin/product/create') ?>"
+                                href="<?= url('/admin/product/create') ?>">
+                                Thêm sản phẩm
+                            </a>
+                        </li>
+
+                        <li><hr class="dropdown-divider"></li>
+
+                        <!-- Đơn hàng -->
                         <li>
                             <a
                                 class="dropdown-item <?= active_menu('/admin/export') ?>"
@@ -42,6 +155,7 @@
                                 Đơn hàng
                             </a>
                         </li>
+
                         <li>
                             <a
                                 class="dropdown-item <?= active_menu('/admin/export/create') ?>"
@@ -49,6 +163,10 @@
                                 Thêm đơn hàng
                             </a>
                         </li>
+
+                        <li><hr class="dropdown-divider"></li>
+
+                        <!-- Phiếu mua -->
                         <li>
                             <a
                                 class="dropdown-item <?= active_menu('/admin/import') ?>"
@@ -56,6 +174,7 @@
                                 Phiếu mua
                             </a>
                         </li>
+
                         <li>
                             <a
                                 class="dropdown-item <?= active_menu('/admin/import/create') ?>"
@@ -63,6 +182,7 @@
                                 Thêm phiếu mua
                             </a>
                         </li>
+
                     </ul>
                 </li>
 
