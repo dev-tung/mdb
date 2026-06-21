@@ -3,36 +3,56 @@
 class ProductModel
 {
     protected string $table = 'products';
+    protected string $alias = 'p';
 
     /**
-     * Lấy danh sách sản phẩm (có filter + pagination)
+     * WHERE BUILDER (CHỈ BUILD WHERE, KHÔNG FROM)
      */
-    public function getList(array $conditions = [], int $limit = 0, int $offset = 0): array
+    private function buildWhere(array $conditions, array &$params): string
     {
-        $sql = "SELECT * FROM {$this->table} WHERE 1=1";
-        $params = [];
+        $sql = " WHERE 1=1 ";
 
-        // STATUS (fix lỗi status = 0)
+        // STATUS
         if (isset($conditions['status']) && $conditions['status'] !== '') {
-            $sql .= " AND status = :status";
+            $sql .= " AND {$this->alias}.status = :status";
             $params['status'] = $conditions['status'];
         }
 
         // CATEGORY
         if (isset($conditions['category_id']) && $conditions['category_id'] !== '') {
-            $sql .= " AND category_id = :category_id";
+            $sql .= " AND {$this->alias}.category_id = :category_id";
             $params['category_id'] = $conditions['category_id'];
         }
 
         // KEYWORD
         if (!empty($conditions['keyword'])) {
-            $sql .= " AND name LIKE :keyword";
+            $sql .= " AND {$this->alias}.name LIKE :keyword";
             $params['keyword'] = '%' . $conditions['keyword'] . '%';
         }
 
-        $sql .= " ORDER BY id DESC";
+        return $sql;
+    }
 
-        // PAGINATION
+    /**
+     * GET LIST
+     */
+    public function getList(array $conditions = [], int $limit = 0, int $offset = 0): array
+    {
+        $params = [];
+
+        $sql = "
+            SELECT 
+                {$this->alias}.*,
+                c.name AS category_name
+            FROM {$this->table} {$this->alias}
+            LEFT JOIN categories c 
+                ON c.id = {$this->alias}.category_id
+        ";
+
+        $sql .= $this->buildWhere($conditions, $params);
+
+        $sql .= " ORDER BY {$this->alias}.id DESC";
+
         if ($limit > 0) {
             $sql .= " LIMIT {$limit} OFFSET {$offset}";
         }
@@ -41,25 +61,37 @@ class ProductModel
     }
 
     /**
-     * Lấy 1 sản phẩm theo ID
+     * COUNT
+     */
+    public function count(array $conditions = []): int
+    {
+        $params = [];
+
+        $sql = "
+            SELECT COUNT(*) as total
+            FROM {$this->table} {$this->alias}
+        ";
+
+        $sql .= $this->buildWhere($conditions, $params);
+
+        $row = Database::first($sql, $params);
+
+        return (int) ($row['total'] ?? 0);
+    }
+
+    /**
+     * FIND BY ID
      */
     public function findById(int $id): ?array
     {
-        $sql = "SELECT * FROM {$this->table} WHERE id = :id LIMIT 1";
-        return Database::first($sql, ['id' => $id]);
+        return Database::first(
+            "SELECT * FROM {$this->table} WHERE id = :id LIMIT 1",
+            ['id' => $id]
+        );
     }
 
     /**
-     * Lấy sản phẩm theo slug
-     */
-    public function findBySlug(string $slug): ?array
-    {
-        $sql = "SELECT * FROM {$this->table} WHERE slug = :slug LIMIT 1";
-        return Database::first($sql, ['slug' => $slug]);
-    }
-
-    /**
-     * Thêm sản phẩm
+     * CREATE
      */
     public function create(array $data): int
     {
@@ -74,7 +106,7 @@ class ProductModel
     }
 
     /**
-     * Update theo ID
+     * UPDATE
      */
     public function updateById(int $id, array $data): int
     {
@@ -84,50 +116,21 @@ class ProductModel
             $set[] = "{$key} = :{$key}";
         }
 
-        $sql = "UPDATE {$this->table} SET " . implode(', ', $set) . " WHERE id = :id";
-
         $data['id'] = $id;
+
+        $sql = "UPDATE {$this->table} SET " . implode(', ', $set) . " WHERE id = :id";
 
         return Database::update($sql, $data);
     }
 
     /**
-     * Xoá theo ID
+     * DELETE
      */
     public function deleteById(int $id): int
     {
-        $sql = "DELETE FROM {$this->table} WHERE id = :id";
-        return Database::delete($sql, ['id' => $id]);
-    }
-
-    /**
-     * Đếm tổng (phục vụ pagination)
-     */
-    public function count(array $conditions = []): int
-    {
-        $sql = "SELECT COUNT(*) as total FROM {$this->table} WHERE 1=1";
-        $params = [];
-
-        // STATUS
-        if (isset($conditions['status']) && $conditions['status'] !== '') {
-            $sql .= " AND status = :status";
-            $params['status'] = $conditions['status'];
-        }
-
-        // CATEGORY
-        if (isset($conditions['category_id']) && $conditions['category_id'] !== '') {
-            $sql .= " AND category_id = :category_id";
-            $params['category_id'] = $conditions['category_id'];
-        }
-
-        // KEYWORD (nếu muốn đồng bộ với list)
-        if (!empty($conditions['keyword'])) {
-            $sql .= " AND name LIKE :keyword";
-            $params['keyword'] = '%' . $conditions['keyword'] . '%';
-        }
-
-        $row = Database::first($sql, $params);
-
-        return (int) ($row['total'] ?? 0);
+        return Database::delete(
+            "DELETE FROM {$this->table} WHERE id = :id",
+            ['id' => $id]
+        );
     }
 }

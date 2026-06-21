@@ -2,24 +2,31 @@
 
 class ProductEndpoint
 {
-    public function index()
+    protected ProductModel $productModel;
+
+    public function __construct()
+    {
+        $this->productModel   = new ProductModel();
+    }
+
+    public function apiList()
     {
         header('Content-Type: application/json');
 
-        $data = [
-            [
-                'id' => 1,
-                'name' => 'Yonex Astrox 99'
-            ],
-            [
-                'id' => 2,
-                'name' => 'Yonex Duora Z Strike'
-            ]
-        ];
+        $page = max(1, (int)($_GET['page'] ?? 1));
+        $limit = 10;
+        $offset = ($page - 1) * $limit;
+
+        $filters = request_filters(['keyword', 'category_id', 'status']);
+
+        $products = $this->productModel->getList($filters, $limit, $offset);
+        $total    = $this->productModel->count($filters);
 
         echo json_encode([
-            'status' => 'success',
-            'data' => $data
+            'data'       => $products,
+            'page'       => $page,
+            'total'      => $total,
+            'totalPages' => ceil($total / $limit)
         ]);
     }
 }

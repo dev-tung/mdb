@@ -3,31 +3,23 @@
 class ProductController
 {
     protected ProductModel $productModel;
+    protected CategoryModel $categoryModel;
 
     public function __construct()
     {
-        $this->productModel = new ProductModel();
+        $this->productModel   = new ProductModel();
+        $this->categoryModel  = new CategoryModel();
     }
 
+    /**
+     * VIEW (UI shell - không load data products nếu dùng fetch)
+     */
     public function index(): void
     {
-        $page = (int)($_GET['page'] ?? 1);
-        $limit = 10;
-        $offset = ($page - 1) * $limit;
-
-        $filters = request_filters(['keyword', 'category_id', 'status']);
-
-        $products = $this->productModel->getList($filters, $limit, $offset);
-        $total    = $this->productModel->count($filters);
-
-        $totalPages = (int) ceil($total / $limit);
+        $categories = $this->categoryModel->getAll();
 
         View::render('product/index', [
-            'products'   => $products,
-            'page'       => $page,
-            'totalPages' => $totalPages,
-            'total'      => $total,
-            'limit'      => $limit
+            'categories' => $categories
         ]);
     }
 

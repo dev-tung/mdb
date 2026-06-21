@@ -10,6 +10,7 @@ class Autoload
                 BASE_PATH . '/app/core/' . $class . '.php',
                 BASE_PATH . '/app/modules/*/models/' . $class . '.php',
                 BASE_PATH . '/app/modules/*/controllers/' . $class . '.php',
+                BASE_PATH . '/app/modules/*/endpoints/' . $class . '.php',
             ];
 
             foreach ($paths as $pattern) {
