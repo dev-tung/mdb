@@ -5,59 +5,26 @@ class ProductModel
     protected string $table = 'products';
 
     /**
-     * Lấy danh sách sản phẩm theo điều kiện
-     *
-     * @param array $conditions [
-     *      'status' => int|null,
-     *      'category_id' => int|null,
-     *      'keyword' => string|null
-     * ]
-     * @param int $limit
-     * @param int $offset
-     *
-     * @return array Danh sách sản phẩm
-     *
-     * SAMPLE RETURN:
-     * [
-     *   [
-     *     "id" => 1,
-     *     "name" => "Yonex Astrox 100ZZ",
-     *     "category_id" => 2,
-     *     "price" => 4500000,
-     *     "sale_price" => 4200000,
-     *     "description" => "Vợt cao cấp",
-     *     "status" => 1,
-     *     "created_at" => "2026-06-21 10:00:00",
-     *     "updated_at" => "2026-06-21 10:00:00"
-     *   ],
-     *   [
-     *     "id" => 2,
-     *     "name" => "Yonex BG80 String",
-     *     "category_id" => 3,
-     *     "price" => 120000,
-     *     "sale_price" => 100000,
-     *     "description" => "Cước căng vợt",
-     *     "status" => 1,
-     *     "created_at" => "2026-06-21 10:05:00",
-     *     "updated_at" => "2026-06-21 10:05:00"
-     *   ]
-     * ]
+     * Lấy danh sách sản phẩm (có filter + pagination)
      */
-    public function getAll(array $conditions = [], int $limit = 0, int $offset = 0): array
+    public function getList(array $conditions = [], int $limit = 0, int $offset = 0): array
     {
         $sql = "SELECT * FROM {$this->table} WHERE 1=1";
         $params = [];
 
-        if (!empty($conditions['status'])) {
+        // STATUS (fix lỗi status = 0)
+        if (isset($conditions['status']) && $conditions['status'] !== '') {
             $sql .= " AND status = :status";
             $params['status'] = $conditions['status'];
         }
 
-        if (!empty($conditions['category_id'])) {
+        // CATEGORY
+        if (isset($conditions['category_id']) && $conditions['category_id'] !== '') {
             $sql .= " AND category_id = :category_id";
             $params['category_id'] = $conditions['category_id'];
         }
 
+        // KEYWORD
         if (!empty($conditions['keyword'])) {
             $sql .= " AND name LIKE :keyword";
             $params['keyword'] = '%' . $conditions['keyword'] . '%';
@@ -65,12 +32,9 @@ class ProductModel
 
         $sql .= " ORDER BY id DESC";
 
+        // PAGINATION
         if ($limit > 0) {
-            $sql .= " LIMIT {$limit}";
-
-            if ($offset > 0) {
-                $sql .= " OFFSET {$offset}";
-            }
+            $sql .= " LIMIT {$limit} OFFSET {$offset}";
         }
 
         return Database::get($sql, $params);
@@ -78,22 +42,6 @@ class ProductModel
 
     /**
      * Lấy 1 sản phẩm theo ID
-     *
-     * @param int $id
-     * @return array|null
-     *
-     * SAMPLE RETURN:
-     * [
-     *   "id" => 1,
-     *   "name" => "Yonex Astrox 100ZZ",
-     *   "category_id" => 2,
-     *   "price" => 4500000,
-     *   "sale_price" => 4200000,
-     *   "description" => "Vợt cao cấp",
-     *   "status" => 1,
-     *   "created_at" => "2026-06-21 10:00:00",
-     *   "updated_at" => "2026-06-21 10:00:00"
-     * ]
      */
     public function findById(int $id): ?array
     {
@@ -103,17 +51,6 @@ class ProductModel
 
     /**
      * Lấy sản phẩm theo slug
-     *
-     * @param string $slug
-     * @return array|null
-     *
-     * SAMPLE RETURN:
-     * [
-     *   "id" => 1,
-     *   "name" => "Yonex Astrox 100ZZ",
-     *   "slug" => "yonex-astrox-100zz",
-     *   "price" => 4500000
-     * ]
      */
     public function findBySlug(string $slug): ?array
     {
@@ -122,20 +59,7 @@ class ProductModel
     }
 
     /**
-     * Thêm sản phẩm mới
-     *
-     * @param array $data
-     * @return int ID sản phẩm vừa tạo
-     *
-     * SAMPLE INPUT:
-     * [
-     *   "name" => "Yonex Astrox 100ZZ",
-     *   "category_id" => 2,
-     *   "price" => 4500000,
-     *   "sale_price" => 4200000,
-     *   "description" => "Vợt cao cấp",
-     *   "status" => 1
-     * ]
+     * Thêm sản phẩm
      */
     public function create(array $data): int
     {
@@ -150,16 +74,7 @@ class ProductModel
     }
 
     /**
-     * Cập nhật sản phẩm theo ID
-     *
-     * @param int $id
-     * @param array $data
-     *
-     * SAMPLE INPUT:
-     * [
-     *   "name" => "Yonex Astrox 88D",
-     *   "price" => 5000000
-     * ]
+     * Update theo ID
      */
     public function updateById(int $id, array $data): int
     {
@@ -169,7 +84,7 @@ class ProductModel
             $set[] = "{$key} = :{$key}";
         }
 
-        $sql = "UPDATE {$this->table} SET " . implode(',', $set) . " WHERE id = :id";
+        $sql = "UPDATE {$this->table} SET " . implode(', ', $set) . " WHERE id = :id";
 
         $data['id'] = $id;
 
@@ -177,10 +92,7 @@ class ProductModel
     }
 
     /**
-     * Xoá sản phẩm theo ID
-     *
-     * @param int $id
-     * @return int
+     * Xoá theo ID
      */
     public function deleteById(int $id): int
     {
@@ -189,27 +101,29 @@ class ProductModel
     }
 
     /**
-     * Đếm sản phẩm theo điều kiện
-     *
-     * @param array $conditions
-     * @return int
-     *
-     * SAMPLE RETURN:
-     * 25
+     * Đếm tổng (phục vụ pagination)
      */
     public function count(array $conditions = []): int
     {
         $sql = "SELECT COUNT(*) as total FROM {$this->table} WHERE 1=1";
         $params = [];
 
-        if (!empty($conditions['status'])) {
+        // STATUS
+        if (isset($conditions['status']) && $conditions['status'] !== '') {
             $sql .= " AND status = :status";
             $params['status'] = $conditions['status'];
         }
 
-        if (!empty($conditions['category_id'])) {
+        // CATEGORY
+        if (isset($conditions['category_id']) && $conditions['category_id'] !== '') {
             $sql .= " AND category_id = :category_id";
             $params['category_id'] = $conditions['category_id'];
+        }
+
+        // KEYWORD (nếu muốn đồng bộ với list)
+        if (!empty($conditions['keyword'])) {
+            $sql .= " AND name LIKE :keyword";
+            $params['keyword'] = '%' . $conditions['keyword'] . '%';
         }
 
         $row = Database::first($sql, $params);

@@ -11,11 +11,24 @@ class ProductController
 
     public function index(): void
     {
-        $products = $this->productModel->getAll(
-            request_filters(['keyword', 'category_id', 'status'])
-        );
+        $page = (int)($_GET['page'] ?? 1);
+        $limit = 10;
+        $offset = ($page - 1) * $limit;
 
-        View::render('product/index', compact('products'));
+        $filters = request_filters(['keyword', 'category_id', 'status']);
+
+        $products = $this->productModel->getList($filters, $limit, $offset);
+        $total    = $this->productModel->count($filters);
+
+        $totalPages = (int) ceil($total / $limit);
+
+        View::render('product/index', [
+            'products'   => $products,
+            'page'       => $page,
+            'totalPages' => $totalPages,
+            'total'      => $total,
+            'limit'      => $limit
+        ]);
     }
 
     public function create(): void
