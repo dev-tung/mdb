@@ -11,22 +11,27 @@ class ProductEndpoint
 
     public function apiList()
     {
-        header('Content-Type: application/json');
-
-        $page = max(1, (int)($_GET['page'] ?? 1));
-        $limit = 10;
-        $offset = ($page - 1) * $limit;
+        $page  = max(1, (int)($_GET['page'] ?? 1));
+        $limit = Config::get('pagination', 'default_per_page');
 
         $filters = request_filters(['keyword', 'category_id', 'status']);
 
-        $products = $this->productModel->getList($filters, $limit, $offset);
-        $total    = $this->productModel->count($filters);
+        $products = $this->productModel->getList(
+            $filters,
+            $limit,
+            ($page - 1) * $limit
+        );
 
-        echo json_encode([
-            'data'       => $products,
-            'page'       => $page,
-            'total'      => $total,
-            'totalPages' => ceil($total / $limit)
+        $total = $this->productModel->count($filters);
+
+        return Response::json([
+            'data' => $products,
+            'meta' => [
+                'page'       => $page,
+                'total'      => $total,
+                'totalPages' => ceil($total / $limit),
+                'perPage'    => $limit
+            ]
         ]);
     }
 }

@@ -104,7 +104,6 @@
     </ul>
   </nav>
 </div>
-
 <script>
 let currentPage = 1;
 let lastPage = 1;
@@ -168,7 +167,7 @@ async function loadProducts(page = 1) {
         json.data.forEach((p, index) => {
             tbody.innerHTML += `
             <tr>
-                <td>${(currentPage - 1) * (json.perPage || 10) + index + 1}</td>
+                <td>${(json.meta.page - 1) * json.meta.perPage + index + 1}</td>
                 <td>${p.name}</td>
                 <td>${p.category_name ?? '---'}</td>
                 <td>${Number(p.price).toLocaleString()} ₫</td>
@@ -188,13 +187,13 @@ async function loadProducts(page = 1) {
         });
     }
 
-    document.getElementById('total-amount').innerText = json.total;
+    document.getElementById('total-amount').innerText = json.meta.total;
 
-    lastPage = json.totalPages;
-    prevPage = Math.max(1, page - 1);
-    nextPage = Math.min(lastPage, page + 1);
+    lastPage = json.meta.totalPages;
+    prevPage = Math.max(1, json.meta.page - 1);
+    nextPage = Math.min(lastPage, json.meta.page + 1);
 
-    renderPages(json.page, json.totalPages);
+    renderPages(json.meta.page, json.meta.totalPages);
 }
 
 /* =========================
