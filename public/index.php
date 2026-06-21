@@ -18,6 +18,10 @@ require_once BASE_PATH . '/app/core/Session.php';
 require_once BASE_PATH . '/app/core/Auth.php';
 require_once BASE_PATH . '/app/core/Middleware.php';
 
+require_once BASE_PATH . '/app/core/Autoload.php';
+
+Autoload::register();
+
 /**
  * Boot App
  */

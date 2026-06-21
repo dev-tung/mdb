@@ -91,8 +91,6 @@ class Router
     {
         [$controller, $action] = explode('@', $handler);
 
-        require_once $file;
-
         if (!class_exists($controller)) {
             die("Class not found: {$controller}");
         }

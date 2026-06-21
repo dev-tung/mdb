@@ -2,9 +2,20 @@
 
 class ProductController
 {
+    protected ProductModel $productModel;
+
+    public function __construct()
+    {
+        $this->productModel = new ProductModel();
+    }
+
     public function index(): void
     {
-        View::render('product/index');
+        $products = $this->productModel->getAll(
+            request_filters(['keyword', 'category_id', 'status'])
+        );
+
+        View::render('product/index', compact('products'));
     }
 
     public function create(): void
@@ -14,8 +25,9 @@ class ProductController
 
     public function edit($id): void
     {
-        View::render('product/edit', [
-            'id' => $id
-        ]);
+        $product = $this->productModel->findById((int)$id)
+            or die('Product not found');
+
+        View::render('product/edit', compact('id', 'product'));
     }
 }

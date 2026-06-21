@@ -14,7 +14,7 @@ app/
 │   └── helpers.php
 │
 ├── modules/
-
+│
 │   ├── shop/
 │   │   ├── routes/
 │   │   │   ├── web.php
@@ -38,9 +38,23 @@ app/
 │   │   │   ├── PurchaseEndpoint.php
 │   │   │   └── OrderEndpoint.php
 │   │   │
-│   │   ├── services/
-│   │   ├── repositories/
+│   │   ├── models/
+│   │   │   ├── ProductModel.php
+│   │   │   ├── CategoryModel.php
+│   │   │   ├── BrandModel.php
+│   │   │   ├── InventoryModel.php
+│   │   │   ├── SupplierModel.php
+│   │   │   ├── PurchaseModel.php
+│   │   │   └── OrderModel.php
+│   │   │
 │   │   ├── validators/
+│   │   │   ├── ProductValidator.php
+│   │   │   ├── CategoryValidator.php
+│   │   │   ├── BrandValidator.php
+│   │   │   ├── InventoryValidator.php
+│   │   │   ├── SupplierValidator.php
+│   │   │   ├── PurchaseValidator.php
+│   │   │   └── OrderValidator.php
 │   │   │
 │   │   └── views/
 │   │       ├── product/
@@ -51,91 +65,166 @@ app/
 │   │       ├── purchase/
 │   │       └── order/
 │
-
-│   ├── website/
-│   │   ├── config/
-│   │   │   └── module.php
-│   │
+│   ├── crm/
 │   │   ├── routes/
-│   │   │   └── web.php
+│   │   │   ├── web.php
+│   │   │   └── api.php
 │   │   │
 │   │   ├── controllers/
-│   │   │   ├── HomeController.php
-│   │   │   ├── PageController.php
-│   │   │   ├── ShopController.php
-│   │   │   ├── CartController.php
-│   │   │   └── AuthController.php
+│   │   │   ├── CustomerController.php
+│   │   │   ├── GroupController.php
+│   │   │   ├── ContactController.php
+│   │   │   ├── InteractionController.php
+│   │   │   ├── NoteController.php
+│   │   │   └── LoyaltyController.php
 │   │   │
-│   │   ├── services/
-│   │   │   ├── HomeService.php
-│   │   │   ├── PageService.php
-│   │   │   ├── ShopService.php
-│   │   │   ├── CartService.php
-│   │   │   └── AuthService.php
+│   │   ├── endpoints/
+│   │   │   ├── CustomerEndpoint.php
+│   │   │   ├── GroupEndpoint.php
+│   │   │   ├── ContactEndpoint.php
+│   │   │   ├── InteractionEndpoint.php
+│   │   │   ├── NoteEndpoint.php
+│   │   │   └── LoyaltyEndpoint.php
 │   │   │
-│   │   ├── middlewares/
-│   │   │   └── AuthMiddleware.php
+│   │   ├── models/
+│   │   │   ├── CustomerModel.php
+│   │   │   ├── GroupModel.php
+│   │   │   ├── ContactModel.php
+│   │   │   ├── InteractionModel.php
+│   │   │   ├── NoteModel.php
+│   │   │   └── LoyaltyModel.php
+│   │   │
+│   │   ├── validators/
+│   │   │   ├── CustomerValidator.php
+│   │   │   ├── GroupValidator.php
+│   │   │   ├── ContactValidator.php
+│   │   │   ├── InteractionValidator.php
+│   │   │   ├── NoteValidator.php
+│   │   │   └── LoyaltyValidator.php
 │   │   │
 │   │   └── views/
-│   │       │
-│   │       ├── layouts/
-│   │       │   ├── master.php
-│   │       │   ├── header.php
-│   │       │   └── footer.php
-│   │       │
-│   │       ├── components/
-│   │       │   ├── product-card.php
-│   │       │   ├── cart-item.php
-│   │       │   ├── pagination.php
-│   │       │   ├── breadcrumbs.php
-│   │       │   └── flash.php
-│   │       │
-│   │       ├── home/
-│   │       │   └── index.php
-│   │       │
-│   │       ├── pages/
-│   │       │   ├── career.php
-│   │       │   ├── string.php
-│   │       │   └── affiliate.php
-│   │       │
-│   │       ├── shop/
-│   │       │   ├── index.php
-│   │       │   ├── show.php
-│   │       │   ├── category.php
-│   │       │   └── search.php
-│   │       │
-│   │       ├── cart/
-│   │       │   ├── index.php
-│   │       │   └── checkout.php
-│   │       │
-│   │       ├── auth/
-│   │       │   ├── login.php
-│   │       │   ├── register.php
-│   │       │   └── forgot-password.php
-│   │       │
-│   │       └── errors/
-│   │           ├── 404.php
-│   │           └── 500.php
+│   │       ├── customer/
+│   │       ├── group/
+│   │       ├── contact/
+│   │       ├── interaction/
+│   │       ├── note/
+│   │       └── loyalty/
 │
 │   ├── booking/
-│   │
+│   │   ├── routes/
+│   │   ├── controllers/
+│   │   ├── endpoints/
+│   │   ├── models/
+│   │   ├── validators/
+│   │   └── views/
+│
 │   ├── academy/
-│   │
-│   ├── customer/
-│   │
+│   │   ├── routes/
+│   │   ├── controllers/
+│   │   ├── endpoints/
+│   │   ├── models/
+│   │   ├── validators/
+│   │   └── views/
+│
 │   ├── staff/
-│   │
+│   │   ├── routes/
+│   │   ├── controllers/
+│   │   ├── endpoints/
+│   │   ├── models/
+│   │   ├── validators/
+│   │   └── views/
+│
 │   ├── location/
-│   │
+│   │   ├── routes/
+│   │   ├── controllers/
+│   │   ├── endpoints/
+│   │   ├── models/
+│   │   ├── validators/
+│   │   └── views/
+│
 │   ├── payment/
-│   │
+│   │   ├── routes/
+│   │   ├── controllers/
+│   │   ├── endpoints/
+│   │   ├── models/
+│   │   ├── validators/
+│   │   └── views/
+│
 │   ├── report/
-│   │
+│   │   ├── routes/
+│   │   ├── controllers/
+│   │   ├── endpoints/
+│   │   ├── models/
+│   │   ├── validators/
+│   │   └── views/
+│
 │   ├── notification/
-│   │
+│   │   ├── routes/
+│   │   ├── controllers/
+│   │   ├── endpoints/
+│   │   ├── models/
+│   │   ├── validators/
+│   │   └── views/
+│
 │   ├── audit/
-│   │
-│   └── crawler/
+│   │   ├── routes/
+│   │   ├── controllers/
+│   │   ├── endpoints/
+│   │   ├── models/
+│   │   ├── validators/
+│   │   └── views/
+│
+│   ├── crawler/
+│   │   ├── routes/
+│   │   ├── controllers/
+│   │   ├── endpoints/
+│   │   ├── models/
+│   │   ├── validators/
+│   │   └── views/
+│
+│   └── website/
+│       ├── routes/
+│       │   └── web.php
+│       │
+│       ├── controllers/
+│       │   ├── HomeController.php
+│       │   ├── PageController.php
+│       │   ├── ShopController.php
+│       │   ├── CartController.php
+│       │   └── AuthController.php
+│       │
+│       ├── models/
+│       │   ├── HomeModel.php
+│       │   ├── PageModel.php
+│       │   ├── ShopModel.php
+│       │   ├── CartModel.php
+│       │   └── AuthModel.php
+│       │
+│       ├── validators/
+│       │   └── AuthValidator.php
+│       │
+│       ├── middlewares/
+│       │   └── AuthMiddleware.php
+│       │
+│       └── views/
+│           ├── layouts/
+│           │   ├── master.php
+│           │   ├── header.php
+│           │   └── footer.php
+│           │
+│           ├── components/
+│           │   ├── product-card.php
+│           │   ├── cart-item.php
+│           │   ├── pagination.php
+│           │   ├── breadcrumbs.php
+│           │   └── flash.php
+│           │
+│           ├── home/
+│           ├── pages/
+│           ├── shop/
+│           ├── cart/
+│           ├── auth/
+│           └── errors/
 │
 ├── common/
 │   ├── tools/
