@@ -1,0 +1,32 @@
+<?php
+
+function base_url(string $path = ''): string
+{
+    return rtrim(BASE_URL, '/') . '/' . ltrim($path, '/');
+}
+
+function current_url(): string
+{
+    return $_SERVER['REQUEST_URI'] ?? '/';
+}
+
+function asset(string $path): string
+{
+    return base_url('assets/' . ltrim($path, '/'));
+}
+
+function route(string $path = ''): string
+{
+    return base_url($path);
+}
+
+function redirect_url(string $url): void
+{
+    header("Location: {$url}");
+    exit;
+}
+
+function previous_url(string $default = '/'): string
+{
+    return $_SERVER['HTTP_REFERER'] ?? $default;
+}
