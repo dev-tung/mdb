@@ -2,13 +2,20 @@
 
 class ProductController
 {
-    public function index()
+    public function index(): void
     {
-        echo "Product list";
+        View::render('product/index');
     }
 
-    public function show($id)
+    public function create(): void
     {
-        echo "Product ID: " . $id;
+        View::render('product/create');
+    }
+
+    public function edit($id): void
+    {
+        View::render('product/edit', [
+            'id' => $id
+        ]);
     }
 }

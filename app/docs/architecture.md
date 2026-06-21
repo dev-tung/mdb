@@ -14,7 +14,44 @@ app/
 │   └── helpers.php
 │
 ├── modules/
+
+│   ├── shop/
+│   │   ├── routes/
+│   │   │   ├── web.php
+│   │   │   └── api.php
+│   │   │
+│   │   ├── controllers/
+│   │   │   ├── ProductController.php
+│   │   │   ├── CategoryController.php
+│   │   │   ├── BrandController.php
+│   │   │   ├── InventoryController.php
+│   │   │   ├── SupplierController.php
+│   │   │   ├── PurchaseController.php
+│   │   │   └── OrderController.php
+│   │   │
+│   │   ├── endpoints/
+│   │   │   ├── ProductEndpoint.php
+│   │   │   ├── CategoryEndpoint.php
+│   │   │   ├── BrandEndpoint.php
+│   │   │   ├── InventoryEndpoint.php
+│   │   │   ├── SupplierEndpoint.php
+│   │   │   ├── PurchaseEndpoint.php
+│   │   │   └── OrderEndpoint.php
+│   │   │
+│   │   ├── services/
+│   │   ├── repositories/
+│   │   ├── validators/
+│   │   │
+│   │   └── views/
+│   │       ├── product/
+│   │       ├── category/
+│   │       ├── brand/
+│   │       ├── inventory/
+│   │       ├── supplier/
+│   │       ├── purchase/
+│   │       └── order/
 │
+
 │   ├── website/
 │   │   ├── config/
 │   │   │   └── module.php
@@ -79,42 +116,6 @@ app/
 │   │       └── errors/
 │   │           ├── 404.php
 │   │           └── 500.php
-│
-│   ├── shop/
-│   │   ├── routes/
-│   │   │   ├── web.php
-│   │   │   └── api.php
-│   │   │
-│   │   ├── controllers/
-│   │   │   ├── ProductController.php
-│   │   │   ├── CategoryController.php
-│   │   │   ├── BrandController.php
-│   │   │   ├── InventoryController.php
-│   │   │   ├── SupplierController.php
-│   │   │   ├── PurchaseController.php
-│   │   │   └── OrderController.php
-│   │   │
-│   │   ├── endpoints/
-│   │   │   ├── ProductEndpoint.php
-│   │   │   ├── CategoryEndpoint.php
-│   │   │   ├── BrandEndpoint.php
-│   │   │   ├── InventoryEndpoint.php
-│   │   │   ├── SupplierEndpoint.php
-│   │   │   ├── PurchaseEndpoint.php
-│   │   │   └── OrderEndpoint.php
-│   │   │
-│   │   ├── services/
-│   │   ├── repositories/
-│   │   ├── validators/
-│   │   │
-│   │   └── views/
-│   │       ├── product/
-│   │       ├── category/
-│   │       ├── brand/
-│   │       ├── inventory/
-│   │       ├── supplier/
-│   │       ├── purchase/
-│   │       └── order/
 │
 │   ├── booking/
 │   │
