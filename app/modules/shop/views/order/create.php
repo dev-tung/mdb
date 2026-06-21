@@ -144,7 +144,7 @@
                             <tr>
 
                                 <th>
-                                    Sản phẩm
+                                    Tên
                                 </th>
 
                                 <th>
@@ -226,7 +226,7 @@
                     </table>
 
                 </div>
-                <div class="col-12 text-end mt-3">
+                <div class="col-12 text-start mt-3">
 
                     <h5 class="mb-0">
                         Tổng tiền
