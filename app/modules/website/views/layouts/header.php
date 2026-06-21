@@ -65,8 +65,8 @@
 
                     <li class="nav-item">
                         <a
-                            class="nav-link <?= active_menu('affilate') ?>"
-                            href="<?= route('affilate') ?>"
+                            class="nav-link <?= active_menu('affiliate') ?>"
+                            href="<?= route('affiliate') ?>"
                         >
                             CTV
                         </a>
@@ -74,8 +74,8 @@
 
                     <li class="nav-item">
                         <a
-                            class="nav-link <?= active_menu('recruitment') ?>"
-                            href="<?= route('recruitment') ?>"
+                            class="nav-link <?= active_menu('career') ?>"
+                            href="<?= route('career') ?>"
                         >
                             Tuyển dụng
                         </a>

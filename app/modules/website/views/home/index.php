@@ -46,543 +46,245 @@
 
     </div>
 
-<!-- DANH MỤC -->
-<section class="mb-5">
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-
-        <h2 class="fw-bold mb-0">
+    <section class="mb-5">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="fw-bold mb-0">
             Danh mục sản phẩm
-        </h2>
-
-        <a href="<?= route('product') ?>"
-           class="text-decoration-none text-success">
-            Xem tất cả →
-        </a>
-
-    </div>
-
-    <div class="row g-4">
-
-        <div class="col-6 col-md-4 col-lg-3">
-
-            <a href="<?= route('product') ?>?category=1"
-               class="text-decoration-none text-dark">
-
+          </h2>
+          <a href="/product" class="text-decoration-none text-success">
+          Xem tất cả →
+          </a>
+      </div>
+      <div class="row g-4">
+          <div class="col-6 col-md-4 col-lg-3">
+            <a href="/product?category=2" class="text-decoration-none text-dark">
                 <div class="card border-0 shadow-sm h-100">
-
-                    <div class="ratio ratio-4x3 bg-light">
-
-                        <img
-                            src="<?= asset('website/image/category/racket.png') ?>"
-                            alt="Vợt cầu lông"
-                            class="w-100 h-100"
-                            style="object-fit:contain;padding:20px;">
-
-                    </div>
-
-                    <div class="card-body text-center">
-
-                        <h6 class="mb-0 fw-semibold">
-                            Vợt cầu lông
-                        </h6>
-
-                    </div>
-
+                  <div class="ratio ratio-4x3 bg-light">
+                      <img src="https://manhdungsports.com//module/shop/image/yonex_product_detail/bg65/1.png" alt="Cước cầu lông" class="w-100 h-100" style="object-fit:contain;padding:20px;">
+                  </div>
+                  <div class="card-body text-center">
+                      <h6 class="mb-0 fw-semibold">
+                        Cước cầu lông                                
+                      </h6>
+                  </div>
                 </div>
-
             </a>
-
-        </div>
-
-        <div class="col-6 col-md-4 col-lg-3">
-
-            <a href="<?= route('product') ?>?category=2"
-               class="text-decoration-none text-dark">
-
+          </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <a href="/product?category=6" class="text-decoration-none text-dark">
                 <div class="card border-0 shadow-sm h-100">
-
-                    <div class="ratio ratio-4x3 bg-light">
-
-                        <img
-                            src="<?= asset('website/image/category/string.png') ?>"
-                            alt="Cước cầu lông"
-                            class="w-100 h-100"
-                            style="object-fit:contain;padding:20px;">
-
-                    </div>
-
-                    <div class="card-body text-center">
-
-                        <h6 class="mb-0 fw-semibold">
-                            Cước cầu lông
-                        </h6>
-
-                    </div>
-
+                  <div class="ratio ratio-4x3 bg-light">
+                      <img src="https://manhdungsports.com//module/shop/image/yonex_product_detail/power-cushion-65-z-women/1.jpg" alt="Giày cầu lông" class="w-100 h-100" style="object-fit:contain;padding:20px;">
+                  </div>
+                  <div class="card-body text-center">
+                      <h6 class="mb-0 fw-semibold">
+                        Giày cầu lông                                
+                      </h6>
+                  </div>
                 </div>
-
             </a>
-
-        </div>
-
-        <div class="col-6 col-md-4 col-lg-3">
-
-            <a href="<?= route('product') ?>?category=3"
-               class="text-decoration-none text-dark">
-
+          </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <a href="/product?category=3" class="text-decoration-none text-dark">
                 <div class="card border-0 shadow-sm h-100">
-
-                    <div class="ratio ratio-4x3 bg-light">
-
-                        <img
-                            src="<?= asset('website/image/category/machine.png') ?>"
-                            alt="Máy đan vợt"
-                            class="w-100 h-100"
-                            style="object-fit:contain;padding:20px;">
-
-                    </div>
-
-                    <div class="card-body text-center">
-
-                        <h6 class="mb-0 fw-semibold">
-                            Máy đan vợt
-                        </h6>
-
-                    </div>
-
+                  <div class="ratio ratio-4x3 bg-light">
+                      <img src="https://manhdungsports.com//module/shop/image/yonex_product_detail/precision-9-0/1.png" alt="Máy đan vợt" class="w-100 h-100" style="object-fit:contain;padding:20px;">
+                  </div>
+                  <div class="card-body text-center">
+                      <h6 class="mb-0 fw-semibold">
+                        Máy đan vợt                                
+                      </h6>
+                  </div>
                 </div>
-
             </a>
-
-        </div>
-
-        <div class="col-6 col-md-4 col-lg-3">
-
-            <a href="<?= route('product') ?>?category=4"
-               class="text-decoration-none text-dark">
-
+          </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <a href="/product?category=8" class="text-decoration-none text-dark">
                 <div class="card border-0 shadow-sm h-100">
-
-                    <div class="ratio ratio-4x3 bg-light">
-
-                        <img
-                            src="<?= asset('website/image/category/shuttlecock.png') ?>"
-                            alt="Quả cầu lông"
-                            class="w-100 h-100"
-                            style="object-fit:contain;padding:20px;">
-
-                    </div>
-
-                    <div class="card-body text-center">
-
-                        <h6 class="mb-0 fw-semibold">
-                            Quả cầu lông
-                        </h6>
-
-                    </div>
-
+                  <div class="ratio ratio-4x3 bg-light">
+                      <img src="https://manhdungsports.com//module/shop/image/yonex_product_detail/strong-grap/1.png" alt="Phụ kiện cầu lông" class="w-100 h-100" style="object-fit:contain;padding:20px;">
+                  </div>
+                  <div class="card-body text-center">
+                      <h6 class="mb-0 fw-semibold">
+                        Phụ kiện cầu lông                                
+                      </h6>
+                  </div>
                 </div>
-
             </a>
-
-        </div>
-
-        <div class="col-6 col-md-4 col-lg-3">
-
-            <a href="<?= route('product') ?>?category=5"
-               class="text-decoration-none text-dark">
-
+          </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <a href="/product?category=4" class="text-decoration-none text-dark">
                 <div class="card border-0 shadow-sm h-100">
-
-                    <div class="ratio ratio-4x3 bg-light">
-
-                        <img
-                            src="<?= asset('website/image/category/clothes.png') ?>"
-                            alt="Quần áo cầu lông"
-                            class="w-100 h-100"
-                            style="object-fit:contain;padding:20px;">
-
-                    </div>
-
-                    <div class="card-body text-center">
-
-                        <h6 class="mb-0 fw-semibold">
-                            Quần áo cầu lông
-                        </h6>
-
-                    </div>
-
+                  <div class="ratio ratio-4x3 bg-light">
+                      <img src="https://manhdungsports.com//module/shop/image/yonex_product_detail/mavis-600/1.png" alt="Quả cầu lông" class="w-100 h-100" style="object-fit:contain;padding:20px;">
+                  </div>
+                  <div class="card-body text-center">
+                      <h6 class="mb-0 fw-semibold">
+                        Quả cầu lông                                
+                      </h6>
+                  </div>
                 </div>
-
             </a>
-
-        </div>
-
-        <div class="col-6 col-md-4 col-lg-3">
-
-            <a href="<?= route('product') ?>?category=6"
-               class="text-decoration-none text-dark">
-
+          </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <a href="/product?category=5" class="text-decoration-none text-dark">
                 <div class="card border-0 shadow-sm h-100">
-
-                    <div class="ratio ratio-4x3 bg-light">
-
-                        <img
-                            src="<?= asset('website/image/category/shoes.png') ?>"
-                            alt="Giày cầu lông"
-                            class="w-100 h-100"
-                            style="object-fit:contain;padding:20px;">
-
-                    </div>
-
-                    <div class="card-body text-center">
-
-                        <h6 class="mb-0 fw-semibold">
-                            Giày cầu lông
-                        </h6>
-
-                    </div>
-
+                  <div class="ratio ratio-4x3 bg-light">
+                      <img src="https://manhdungsports.com//module/shop/image/yonex_product_detail/crew-neck-shirt/1.jpg" alt="Quần áo cầu lông" class="w-100 h-100" style="object-fit:contain;padding:20px;">
+                  </div>
+                  <div class="card-body text-center">
+                      <h6 class="mb-0 fw-semibold">
+                        Quần áo cầu lông                                
+                      </h6>
+                  </div>
                 </div>
-
             </a>
-
-        </div>
-
-        <div class="col-6 col-md-4 col-lg-3">
-
-            <a href="<?= route('product') ?>?category=7"
-               class="text-decoration-none text-dark">
-
+          </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <a href="/product?category=7" class="text-decoration-none text-dark">
                 <div class="card border-0 shadow-sm h-100">
-
-                    <div class="ratio ratio-4x3 bg-light">
-
-                        <img
-                            src="<?= asset('website/image/category/bag.png') ?>"
-                            alt="Túi cầu lông"
-                            class="w-100 h-100"
-                            style="object-fit:contain;padding:20px;">
-
-                    </div>
-
-                    <div class="card-body text-center">
-
-                        <h6 class="mb-0 fw-semibold">
-                            Túi cầu lông
-                        </h6>
-
-                    </div>
-
+                  <div class="ratio ratio-4x3 bg-light">
+                      <img src="https://manhdungsports.com//module/shop/image/yonex_product_detail/compact-boston-bag/1.png" alt="Túi cầu lông" class="w-100 h-100" style="object-fit:contain;padding:20px;">
+                  </div>
+                  <div class="card-body text-center">
+                      <h6 class="mb-0 fw-semibold">
+                        Túi cầu lông                                
+                      </h6>
+                  </div>
                 </div>
-
             </a>
-
-        </div>
-
-        <div class="col-6 col-md-4 col-lg-3">
-
-            <a href="<?= route('product') ?>?category=8"
-               class="text-decoration-none text-dark">
-
+          </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <a href="/product?category=1" class="text-decoration-none text-dark">
                 <div class="card border-0 shadow-sm h-100">
-
-                    <div class="ratio ratio-4x3 bg-light">
-
-                        <img
-                            src="<?= asset('website/image/category/accessory.png') ?>"
-                            alt="Phụ kiện cầu lông"
-                            class="w-100 h-100"
-                            style="object-fit:contain;padding:20px;">
-
-                    </div>
-
-                    <div class="card-body text-center">
-
-                        <h6 class="mb-0 fw-semibold">
-                            Phụ kiện cầu lông
-                        </h6>
-
-                    </div>
-
+                  <div class="ratio ratio-4x3 bg-light">
+                      <img src="https://manhdungsports.com//module/shop/image/yonex_product_detail/astrox-99-game/1.png" alt="Vợt cầu lông" class="w-100 h-100" style="object-fit:contain;padding:20px;">
+                  </div>
+                  <div class="card-body text-center">
+                      <h6 class="mb-0 fw-semibold">
+                        Vợt cầu lông                                
+                      </h6>
+                  </div>
                 </div>
-
             </a>
+          </div>
+      </div>
+    </section>
 
-        </div>
-
-    </div>
-
-</section>
-
-<!-- SẢN PHẨM NỔI BẬT -->
-<section class="mb-5">
-
-    <header class="d-flex justify-content-between align-items-center mb-4">
-
-        <h2 class="fw-bold mb-0 fs-3">
+    <section class="mb-5">
+      <header class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="fw-bold mb-0 fs-3">
             Sản phẩm nổi bật
-        </h2>
-
-        <a href="<?= route('product') ?>"
-           class="text-decoration-none text-success fw-semibold">
-            Xem tất cả →
-        </a>
-
-    </header>
-
-    <div class="row g-3 g-md-4">
-
-        <div class="col-6 col-md-4 col-lg-2">
-
+          </h2>
+          <a href="/product" class="text-decoration-none text-success fw-semibold">
+          Xem tất cả →
+          </a>
+      </header>
+      <div class="row g-3 g-md-4">
+          <div class="col-6 col-md-4 col-lg-2">
             <article class="card h-100 shadow border position-relative overflow-hidden">
-
-                <div
-                    class="w-100 bg-light d-flex align-items-center justify-content-center"
-                    style="height:180px;">
-
-                    <img
-                        src="<?= asset('website/image/product/astrox-88d-pro.jpg') ?>"
-                        alt="Yonex Astrox 88D Pro"
-                        class="w-100 h-100 p-2"
-                        style="object-fit:contain;"
-                        loading="lazy">
-
+                <div class="w-100 bg-light d-flex align-items-center justify-content-center" style="height:180px;">
+                  <img src="https://manhdungsports.com//module/shop/image/yonex_product/racquets/astrox-99-tour.png" alt="Vợt cầu lông ASTROX 99 TOUR" class="w-100 h-100 p-2" style="object-fit:contain;" loading="lazy">
                 </div>
-
                 <div class="card-body d-flex flex-column p-3">
-
-                    <h6 class="card-title mb-2 fs-6">
-
-                        <a
-                            href="<?= route('product/yonex-astrox-88d-pro') ?>"
-                            class="text-decoration-none text-dark stretched-link">
-
-                            Yonex Astrox 88D Pro
-
-                        </a>
-
-                    </h6>
-
-                    <div class="text-danger fw-bold mt-auto">
-                        4.990.000₫
-                    </div>
-
+                  <h6 class="card-title mb-2 fs-6">
+                      <a href="/product/astrox-99-tour" class="text-decoration-none text-dark stretched-link">
+                      Vợt cầu lông ASTROX 99 TOUR
+                      </a>
+                  </h6>
+                  <div class="text-danger fw-bold mt-auto">
+                      Liên hệ
+                  </div>
                 </div>
-
             </article>
-
-        </div>
-
-        <div class="col-6 col-md-4 col-lg-2">
-
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
             <article class="card h-100 shadow border position-relative overflow-hidden">
-
-                <div
-                    class="w-100 bg-light d-flex align-items-center justify-content-center"
-                    style="height:180px;">
-
-                    <img
-                        src="<?= asset('website/image/product/axforce-100.jpg') ?>"
-                        alt="Lining Axforce 100"
-                        class="w-100 h-100 p-2"
-                        style="object-fit:contain;"
-                        loading="lazy">
-
+                <div class="w-100 bg-light d-flex align-items-center justify-content-center" style="height:180px;">
+                  <img src="https://manhdungsports.com//module/shop/image/yonex_product/racquets/astrox-99-pro.png" alt="Vợt cầu lông ASTROX 99 PRO" class="w-100 h-100 p-2" style="object-fit:contain;" loading="lazy">
                 </div>
-
                 <div class="card-body d-flex flex-column p-3">
-
-                    <h6 class="card-title mb-2 fs-6">
-
-                        <a
-                            href="<?= route('product/lining-axforce-100') ?>"
-                            class="text-decoration-none text-dark stretched-link">
-
-                            Lining Axforce 100
-
-                        </a>
-
-                    </h6>
-
-                    <div class="text-danger fw-bold mt-auto">
-                        5.290.000₫
-                    </div>
-
+                  <h6 class="card-title mb-2 fs-6">
+                      <a href="/product/astrox-99-pro" class="text-decoration-none text-dark stretched-link">
+                      Vợt cầu lông ASTROX 99 PRO
+                      </a>
+                  </h6>
+                  <div class="text-danger fw-bold mt-auto">
+                      Liên hệ
+                  </div>
                 </div>
-
             </article>
-
-        </div>
-
-        <div class="col-6 col-md-4 col-lg-2">
-
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
             <article class="card h-100 shadow border position-relative overflow-hidden">
-
-                <div
-                    class="w-100 bg-light d-flex align-items-center justify-content-center"
-                    style="height:180px;">
-
-                    <img
-                        src="<?= asset('website/image/product/thruster-f-ultra.jpg') ?>"
-                        alt="Victor Thruster F Ultra"
-                        class="w-100 h-100 p-2"
-                        style="object-fit:contain;"
-                        loading="lazy">
-
+                <div class="w-100 bg-light d-flex align-items-center justify-content-center" style="height:180px;">
+                  <img src="https://manhdungsports.com//module/shop/image/yonex_product/racquets/nanoflare-700-pro.png" alt="Vợt cầu lông NANOFLARE 700 PRO" class="w-100 h-100 p-2" style="object-fit:contain;" loading="lazy">
                 </div>
-
                 <div class="card-body d-flex flex-column p-3">
-
-                    <h6 class="card-title mb-2 fs-6">
-
-                        <a
-                            href="<?= route('product/victor-thruster-f-ultra') ?>"
-                            class="text-decoration-none text-dark stretched-link">
-
-                            Victor Thruster F Ultra
-
-                        </a>
-
-                    </h6>
-
-                    <div class="text-danger fw-bold mt-auto">
-                        4.790.000₫
-                    </div>
-
+                  <h6 class="card-title mb-2 fs-6">
+                      <a href="/product/nanoflare-700-pro" class="text-decoration-none text-dark stretched-link">
+                      Vợt cầu lông NANOFLARE 700 PRO
+                      </a>
+                  </h6>
+                  <div class="text-danger fw-bold mt-auto">
+                      Liên hệ
+                  </div>
                 </div>
-
             </article>
-
-        </div>
-
-        <div class="col-6 col-md-4 col-lg-2">
-
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
             <article class="card h-100 shadow border position-relative overflow-hidden">
-
-                <div
-                    class="w-100 bg-light d-flex align-items-center justify-content-center"
-                    style="height:180px;">
-
-                    <img
-                        src="<?= asset('website/image/product/aeronaut-9000.jpg') ?>"
-                        alt="Lining Aeronaut 9000"
-                        class="w-100 h-100 p-2"
-                        style="object-fit:contain;"
-                        loading="lazy">
-
+                <div class="w-100 bg-light d-flex align-items-center justify-content-center" style="height:180px;">
+                  <img src="https://manhdungsports.com//module/shop/image/yonex_product/racquets/arcsaber-7-pro.png" alt="Vợt cầu lông ARCSABER 7 PRO" class="w-100 h-100 p-2" style="object-fit:contain;" loading="lazy">
                 </div>
-
                 <div class="card-body d-flex flex-column p-3">
-
-                    <h6 class="card-title mb-2 fs-6">
-
-                        <a
-                            href="<?= route('product/lining-aeronaut-9000') ?>"
-                            class="text-decoration-none text-dark stretched-link">
-
-                            Lining Aeronaut 9000
-
-                        </a>
-
-                    </h6>
-
-                    <div class="text-danger fw-bold mt-auto">
-                        3.990.000₫
-                    </div>
-
+                  <h6 class="card-title mb-2 fs-6">
+                      <a href="/product/arcsaber-7-pro" class="text-decoration-none text-dark stretched-link">
+                      Vợt cầu lông ARCSABER 7 PRO
+                      </a>
+                  </h6>
+                  <div class="text-danger fw-bold mt-auto">
+                      Liên hệ
+                  </div>
                 </div>
-
             </article>
-
-        </div>
-
-        <div class="col-6 col-md-4 col-lg-2">
-
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
             <article class="card h-100 shadow border position-relative overflow-hidden">
-
-                <div
-                    class="w-100 bg-light d-flex align-items-center justify-content-center"
-                    style="height:180px;">
-
-                    <img
-                        src="<?= asset('website/image/product/arcsaber-11-pro.jpg') ?>"
-                        alt="Yonex Arcsaber 11 Pro"
-                        class="w-100 h-100 p-2"
-                        style="object-fit:contain;"
-                        loading="lazy">
-
+                <div class="w-100 bg-light d-flex align-items-center justify-content-center" style="height:180px;">
+                  <img src="https://manhdungsports.com//module/shop/image/yonex_product/racquets/astrox-77-pro.png" alt="Vợt cầu lông ASTROX 77 PRO" class="w-100 h-100 p-2" style="object-fit:contain;" loading="lazy">
                 </div>
-
                 <div class="card-body d-flex flex-column p-3">
-
-                    <h6 class="card-title mb-2 fs-6">
-
-                        <a
-                            href="<?= route('product/yonex-arcsaber-11-pro') ?>"
-                            class="text-decoration-none text-dark stretched-link">
-
-                            Yonex Arcsaber 11 Pro
-
-                        </a>
-
-                    </h6>
-
-                    <div class="text-danger fw-bold mt-auto">
-                        5.190.000₫
-                    </div>
-
+                  <h6 class="card-title mb-2 fs-6">
+                      <a href="/product/astrox-77-pro" class="text-decoration-none text-dark stretched-link">
+                      Vợt cầu lông ASTROX 77 PRO
+                      </a>
+                  </h6>
+                  <div class="text-danger fw-bold mt-auto">
+                      Liên hệ
+                  </div>
                 </div>
-
             </article>
-
-        </div>
-
-        <div class="col-6 col-md-4 col-lg-2">
-
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
             <article class="card h-100 shadow border position-relative overflow-hidden">
-
-                <div
-                    class="w-100 bg-light d-flex align-items-center justify-content-center"
-                    style="height:180px;">
-
-                    <img
-                        src="<?= asset('website/image/product/nanoray-light.jpg') ?>"
-                        alt="Yonex Nanoray Light"
-                        class="w-100 h-100 p-2"
-                        style="object-fit:contain;"
-                        loading="lazy">
-
+                <div class="w-100 bg-light d-flex align-items-center justify-content-center" style="height:180px;">
+                  <img src="https://manhdungsports.com//module/shop/image/yonex_product/racquets/nanoflare-700-play.jpg" alt="Vợt cầu lông NANOFLARE 700 PLAY" class="w-100 h-100 p-2" style="object-fit:contain;" loading="lazy">
                 </div>
-
                 <div class="card-body d-flex flex-column p-3">
-
-                    <h6 class="card-title mb-2 fs-6">
-
-                        <a
-                            href="<?= route('product/yonex-nanoray-light') ?>"
-                            class="text-decoration-none text-dark stretched-link">
-
-                            Yonex Nanoray Light
-
-                        </a>
-
-                    </h6>
-
-                    <div class="text-danger fw-bold mt-auto">
-                        1.590.000₫
-                    </div>
-
+                  <h6 class="card-title mb-2 fs-6">
+                      <a href="/product/nanoflare-700-play" class="text-decoration-none text-dark stretched-link">
+                      Vợt cầu lông NANOFLARE 700 PLAY
+                      </a>
+                  </h6>
+                  <div class="text-danger fw-bold mt-auto">
+                      Liên hệ
+                  </div>
                 </div>
-
             </article>
-
-        </div>
-
-    </div>
-
-</section>
+          </div>
+      </div>
+    </section>
 
     <!-- GIỚI THIỆU SEO -->
     <div class="alert alert-dismissible fade show p-0 border-0 mb-0">
