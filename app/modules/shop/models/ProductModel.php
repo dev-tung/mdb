@@ -56,7 +56,7 @@ class ProductModel
         if ($limit > 0) {
             $sql .= " LIMIT {$limit} OFFSET {$offset}";
         }
-
+        
         return Database::get($sql, $params);
     }
 

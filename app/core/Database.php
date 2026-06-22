@@ -120,4 +120,26 @@ class Database
     {
         return self::connect();
     }
+
+    public static function ddSql(string $sql, array $params = []): string
+    {
+        foreach ($params as $key => $value) {
+
+            if ($value === null) {
+                $value = 'NULL';
+            } elseif (is_string($value)) {
+                $value = "'" . addslashes($value) . "'";
+            } elseif (is_bool($value)) {
+                $value = $value ? 1 : 0;
+            }
+
+            $sql = preg_replace(
+                '/:' . preg_quote($key, '/') . '\b/',
+                (string)$value,
+                $sql
+            );
+        }
+
+        dd($sql);
+    }
 }
