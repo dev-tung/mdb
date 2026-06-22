@@ -182,7 +182,7 @@ async function loadProducts(page = 1) {
                 <td>
                     <a href="/admin/products/edit/${p.id}" class="btn btn-sm btn-outline-secondary">Sửa</a>
 
-                    <button class="btn btn-sm btn-outline-danger"
+                    <button class="btn btn-sm btn-outline-secondary"
                             onclick="deleteProduct(${p.id})">
                         Xóa
                     </button>
