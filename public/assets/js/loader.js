@@ -10,7 +10,7 @@
         position: fixed;
         inset: 0;
         background: rgba(2, 6, 23, 0.57);
-        display: flex;
+        display: none;
         justify-content: center;
         align-items: center;
         z-index: 999999;
@@ -43,7 +43,7 @@
     document.head.appendChild(style);
 
     // =========================
-    // SHOW / HIDE
+    // SHOW / HIDE (FIXED STABLE VERSION)
     // =========================
     function showLoader() {
         loader.style.display = "flex";
@@ -54,46 +54,67 @@
     }
 
     // =========================
-    // SHOW IMMEDIATELY ON PAGE LOAD START
+    // SHOW ON PAGE LOAD
     // =========================
     showLoader();
 
-    // =========================
-    // HIDE WHEN PAGE FULLY LOADED
-    // =========================
     window.addEventListener("load", function () {
         setTimeout(() => {
             hideLoader();
-        }, 300);
+        }, 200);
     });
 
     // =========================
-    // FETCH INTERCEPT
+    // FETCH INTERCEPT (FIXED STABLE)
     // =========================
     const originalFetch = window.fetch;
 
     window.fetch = function (...args) {
+
         activeRequests++;
+
         showLoader();
 
         return originalFetch(...args)
-            .finally(() => {
+            .then(res => {
                 activeRequests--;
-                if (activeRequests <= 0) hideLoader();
+
+                if (activeRequests <= 0) {
+                    activeRequests = 0;
+                    hideLoader();
+                }
+
+                return res;
+            })
+            .catch(err => {
+                activeRequests--;
+
+                if (activeRequests <= 0) {
+                    activeRequests = 0;
+                    hideLoader();
+                }
+
+                throw err;
             });
     };
 
     // =========================
-    // XHR INTERCEPT
+    // XHR INTERCEPT (FIXED)
     // =========================
     const originalOpen = XMLHttpRequest.prototype.open;
 
     XMLHttpRequest.prototype.open = function (...args) {
+
         activeRequests++;
 
         this.addEventListener("loadend", () => {
+
             activeRequests--;
-            if (activeRequests <= 0) hideLoader();
+
+            if (activeRequests <= 0) {
+                activeRequests = 0;
+                hideLoader();
+            }
         });
 
         return originalOpen.apply(this, args);
