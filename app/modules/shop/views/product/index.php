@@ -105,168 +105,168 @@
   </nav>
 </div>
 <script>
-let currentPage = 1;
-let lastPage = 1;
-let prevPage = 1;
-let nextPage = 1;
+    let currentPage = 1;
+    let lastPage = 1;
+    let prevPage = 1;
+    let nextPage = 1;
 
-/* =========================
-  LOAD CATEGORY
-========================= */
-async function loadCategories() {
-    const res = await fetch('/api/categories');
-    const json = await res.json();
+    /* =========================
+      LOAD CATEGORY
+    ========================= */
+    async function loadCategories() {
+        const res = await fetch('/api/categories');
+        const json = await res.json();
 
-    const select = document.getElementById('filter-category');
-    select.innerHTML = `<option value="">Danh mục</option>`;
+        const select = document.getElementById('filter-category');
+        select.innerHTML = `<option value="">Danh mục</option>`;
 
-    json.data.forEach(c => {
-        select.innerHTML += `
-            <option value="${c.id}">${c.name}</option>
-        `;
-    });
-}
-
-/* =========================
-  LOAD PRODUCTS
-========================= */
-async function loadProducts(page = 1) {
-
-    currentPage = page;
-
-    const keyword = document.getElementById('filter-name').value;
-    const status = document.getElementById('filter-status').value;
-    const category = document.getElementById('filter-category').value;
-    const dateFrom = document.getElementById('filter-date-from').value;
-    const dateTo = document.getElementById('filter-date-to').value;
-
-    const query = new URLSearchParams({
-        page,
-        keyword,
-        status,
-        category_id: category,
-        date_from: dateFrom,
-        date_to: dateTo
-    });
-
-    const res = await fetch(`/api/products?${query.toString()}`);
-    const json = await res.json();
-
-    const tbody = document.getElementById('product-table-body');
-    tbody.innerHTML = '';
-
-    if (!json.data || json.data.length === 0) {
-        tbody.innerHTML = `
-        <tr>
-            <td colspan="8" class="text-center text-muted">
-                Không có sản phẩm nào
-            </td>
-        </tr>`;
-    } else {
-
-        json.data.forEach((p, index) => {
-            tbody.innerHTML += `
-            <tr>
-                <td>${(json.meta.page - 1) * json.meta.perPage + index + 1}</td>
-                <td>${p.name}</td>
-                <td>${p.category_name ?? '---'}</td>
-                <td>${Number(p.price).toLocaleString()} ₫</td>
-                <td>${p.stock ?? 0}</td>
-                <td>
-                    <select class="form-select form-select-sm">
-                        <option ${p.status == 'active' ? 'selected' : ''}>Đang bán</option>
-                        <option ${p.status == 'inactive' ? 'selected' : ''}>Ngừng bán</option>
-                    </select>
-                </td>
-                <td>${p.created_at ?? ''}</td>
-                <td>
-                    <a href="/admin/products/edit/${p.id}" class="btn btn-sm btn-outline-secondary">Sửa</a>
-
-                    <button class="btn btn-sm btn-outline-secondary"
-                            onclick="deleteProduct(${p.id})">
-                        Xóa
-                    </button>
-                </td>
-            </tr>`;
+        json.data.forEach(c => {
+            select.innerHTML += `
+                <option value="${c.id}">${c.name}</option>
+            `;
         });
     }
 
-    document.getElementById('total-amount').innerText = json.meta.total;
+    /* =========================
+      LOAD PRODUCTS
+    ========================= */
+    async function loadProducts(page = 1) {
 
-    lastPage = json.meta.totalPages;
-    prevPage = Math.max(1, json.meta.page - 1);
-    nextPage = Math.min(lastPage, json.meta.page + 1);
+        currentPage = page;
 
-    renderPages(json.meta.page, json.meta.totalPages);
-}
+        const keyword = document.getElementById('filter-name').value;
+        const status = document.getElementById('filter-status').value;
+        const category = document.getElementById('filter-category').value;
+        const dateFrom = document.getElementById('filter-date-from').value;
+        const dateTo = document.getElementById('filter-date-to').value;
 
-/* =========================
-  DELETE PRODUCT
-========================= */
-async function deleteProduct(id) {
-    if (!confirm('Bạn có chắc muốn xóa sản phẩm này?')) return;
+        const query = new URLSearchParams({
+            page,
+            keyword,
+            status,
+            category_id: category,
+            date_from: dateFrom,
+            date_to: dateTo
+        });
 
-    const formData = new FormData();
-    formData.append('id', id);
+        const res = await fetch(`/api/products?${query.toString()}`);
+        const json = await res.json();
 
-    const res = await fetch('/api/products/delete', {
-        method: 'POST',
-        body: formData
-    });
+        const tbody = document.getElementById('product-table-body');
+        tbody.innerHTML = '';
 
-    const json = await res.json();
+        if (!json.data || json.data.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="8" class="text-center text-muted">
+                        Không có sản phẩm nào
+                    </td>
+                </tr>`;
+        } else {
 
-    if (json.success) {
-        alert('Xóa thành công');
-        loadProducts(currentPage);
-    } else {
-        alert(json.message || 'Xóa thất bại');
+            json.data.forEach((p, index) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${(json.meta.page - 1) * json.meta.perPage + index + 1}</td>
+                        <td>${p.name}</td>
+                        <td>${p.category_name ?? '---'}</td>
+                        <td>${Number(p.price).toLocaleString()} ₫</td>
+                        <td>${p.stock ?? 0}</td>
+                        <td>
+                            <select class="form-select form-select-sm">
+                                <option ${p.status == 'active' ? 'selected' : ''}>Đang bán</option>
+                                <option ${p.status == 'inactive' ? 'selected' : ''}>Ngừng bán</option>
+                            </select>
+                        </td>
+                        <td>${p.created_at ?? ''}</td>
+                        <td>
+                            <a href="/admin/products/edit/${p.id}" class="btn btn-sm btn-outline-secondary">Sửa</a>
+
+                            <button class="btn btn-sm btn-outline-secondary"
+                                    onclick="deleteProduct(${p.id})">
+                                Xóa
+                            </button>
+                        </td>
+                    </tr>`;
+            });
+        }
+
+        document.getElementById('total-amount').innerText = json.meta.total;
+
+        lastPage = json.meta.totalPages;
+        prevPage = Math.max(1, json.meta.page - 1);
+        nextPage = Math.min(lastPage, json.meta.page + 1);
+
+        renderPages(json.meta.page, json.meta.totalPages);
     }
-}
 
-/* =========================
-  PAGINATION
-========================= */
-function goToPage(page) {
-    loadProducts(page);
-}
+    /* =========================
+      DELETE PRODUCT
+    ========================= */
+    async function deleteProduct(id) {
+        if (!confirm('Bạn có chắc muốn xóa sản phẩm này?')) return;
 
-function renderPages(page, totalPages) {
+        const formData = new FormData();
+        formData.append('id', id);
 
-    const container = document.getElementById('pagination-pages');
-    container.innerHTML = '';
+        const res = await fetch('/api/products/delete', {
+            method: 'POST',
+            body: formData
+        });
 
-    for (let i = 1; i <= totalPages; i++) {
+        const json = await res.json();
 
-        if (i === 1 || i === totalPages || (i >= page - 2 && i <= page + 2)) {
-
-            container.innerHTML += `
-            <li class="page-item ${i === page ? 'active' : ''}">
-                <a class="page-link text-secondary ${i === page ? 'bg-light border-secondary' : ''}"
-                   href="javascript:void(0)"
-                   onclick="goToPage(${i})">
-                    ${i}
-                </a>
-            </li>`;
+        if (json.success) {
+            alert('Xóa thành công');
+            loadProducts(currentPage);
+        } else {
+            alert(json.message || 'Xóa thất bại');
         }
     }
-}
 
-/* =========================
-  FILTER EVENTS
-========================= */
-document.querySelectorAll(
-    '#filter-name, #filter-status, #filter-category, #filter-date-from, #filter-date-to'
-).forEach(el => {
-    el.addEventListener('input', () => loadProducts(1));
-    el.addEventListener('change', () => loadProducts(1));
-});
+    /* =========================
+      PAGINATION
+    ========================= */
+    function goToPage(page) {
+        loadProducts(page);
+    }
 
-/* =========================
-  INIT
-========================= */
-(async function init() {
-    await loadCategories();
-    await loadProducts(1);
-})();
-</script>
+    function renderPages(page, totalPages) {
+
+        const container = document.getElementById('pagination-pages');
+        container.innerHTML = '';
+
+        for (let i = 1; i <= totalPages; i++) {
+
+            if (i === 1 || i === totalPages || (i >= page - 2 && i <= page + 2)) {
+
+                container.innerHTML += `
+                    <li class="page-item ${i === page ? 'active' : ''}">
+                        <a class="page-link text-secondary ${i === page ? 'bg-light border-secondary' : ''}"
+                           href="javascript:void(0)"
+                           onclick="goToPage(${i})">
+                            ${i}
+                        </a>
+                    </li>`;
+            }
+        }
+    }
+
+    /* =========================
+      FILTER EVENTS
+    ========================= */
+    document.querySelectorAll(
+        '#filter-name, #filter-status, #filter-category, #filter-date-from, #filter-date-to'
+    ).forEach(el => {
+        el.addEventListener('input', () => loadProducts(1));
+        el.addEventListener('change', () => loadProducts(1));
+    });
+
+    /* =========================
+      INIT
+    ========================= */
+    (async function init() {
+        await loadCategories();
+        await loadProducts(1);
+    })();
+</script> 

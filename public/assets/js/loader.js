@@ -1,71 +1,102 @@
-      (function () {
-      let activeRequests = 0;
+(function () {
 
-      // ---------- CREATE LOADER ----------
-      const loader = document.createElement("div");
-      loader.style.position = "fixed";
-      loader.style.top = "0";
-      loader.style.left = "0";
-      loader.style.width = "100vw";
-      loader.style.height = "100vh";
-      loader.style.background = "rgba(2, 6, 23, 0.85)";
-      loader.style.display = "flex";
-      loader.style.justifyContent = "center";
-      loader.style.alignItems = "center";
-      loader.style.zIndex = "9999";
-      loader.style.visibility = "hidden";
+    let activeRequests = 0;
 
-      const spinner = document.createElement("div");
-      spinner.style.width = "60px";
-      spinner.style.height = "60px";
-      spinner.style.border = "6px solid #383838ff";
-      spinner.style.borderTop = "6px solid #a0a0a0ff";
-      spinner.style.borderRadius = "50%";
-      spinner.style.animation = "spin 1s linear infinite";
+    // =========================
+    // CREATE LOADER
+    // =========================
+    const loader = document.createElement("div");
+    loader.style.cssText = `
+        position: fixed;
+        inset: 0;
+        background: rgba(2, 6, 23, 0.57);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 999999;
+    `;
 
-      loader.appendChild(spinner);
-      document.body.appendChild(loader);
+    loader.innerHTML = `
+        <div style="
+            width:60px;
+            height:60px;
+            border:6px solid #444;
+            border-top:6px solid #aaa;
+            border-radius:50%;
+            animation: spin 1s linear infinite;
+        "></div>
+    `;
 
-      const style = document.createElement("style");
-      style.innerHTML = `
-          @keyframes spin {
-          to { transform: rotate(360deg); }
-          }
-      `;
-      document.head.appendChild(style);
+    document.addEventListener("DOMContentLoaded", () => {
+        document.body.appendChild(loader);
+    });
 
-      function showLoader() {
-          loader.style.visibility = "visible";
-      }
+    // =========================
+    // SPINNER CSS
+    // =========================
+    const style = document.createElement("style");
+    style.innerHTML = `
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(style);
 
-      function hideLoader() {
-          loader.style.visibility = "hidden";
-      }
+    // =========================
+    // SHOW / HIDE
+    // =========================
+    function showLoader() {
+        loader.style.display = "flex";
+    }
 
-      // ---------- FETCH INTERCEPT ----------
-      const originalFetch = window.fetch;
-      window.fetch = function (...args) {
-          activeRequests++;
-          showLoader();
+    function hideLoader() {
+        loader.style.display = "none";
+    }
 
-          return originalFetch(...args)
-          .finally(() => {
-              activeRequests--;
-              if (activeRequests === 0) hideLoader();
-          });
-      };
+    // =========================
+    // SHOW IMMEDIATELY ON PAGE LOAD START
+    // =========================
+    showLoader();
 
-      // ---------- XHR INTERCEPT ----------
-      const originalOpen = XMLHttpRequest.prototype.open;
-      XMLHttpRequest.prototype.open = function (...args) {
-          activeRequests++;
-          showLoader();
+    // =========================
+    // HIDE WHEN PAGE FULLY LOADED
+    // =========================
+    window.addEventListener("load", function () {
+        setTimeout(() => {
+            hideLoader();
+        }, 300);
+    });
 
-          this.addEventListener("loadend", () => {
-          activeRequests--;
-          if (activeRequests === 0) hideLoader();
-          });
+    // =========================
+    // FETCH INTERCEPT
+    // =========================
+    const originalFetch = window.fetch;
 
-          originalOpen.apply(this, args);
-      };
-      })();
+    window.fetch = function (...args) {
+        activeRequests++;
+        showLoader();
+
+        return originalFetch(...args)
+            .finally(() => {
+                activeRequests--;
+                if (activeRequests <= 0) hideLoader();
+            });
+    };
+
+    // =========================
+    // XHR INTERCEPT
+    // =========================
+    const originalOpen = XMLHttpRequest.prototype.open;
+
+    XMLHttpRequest.prototype.open = function (...args) {
+        activeRequests++;
+
+        this.addEventListener("loadend", () => {
+            activeRequests--;
+            if (activeRequests <= 0) hideLoader();
+        });
+
+        return originalOpen.apply(this, args);
+    };
+
+})();
