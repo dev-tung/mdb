@@ -75,9 +75,11 @@ class Router
     // =========================
     protected static function convertUriToRegex(string $uri): string
     {
-        $pattern = preg_replace(
-            '#\{[a-zA-Z_]+\}#',
-            '([a-zA-Z0-9_-]+)',
+        $pattern = preg_replace_callback(
+            '#\{([a-zA-Z_]+)\}#',
+            function () {
+                return '([a-zA-Z0-9_-]+)';
+            },
             $uri
         );
 

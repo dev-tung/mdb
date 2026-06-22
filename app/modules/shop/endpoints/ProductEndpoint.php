@@ -6,9 +6,12 @@ class ProductEndpoint
 
     public function __construct()
     {
-        $this->productModel   = new ProductModel();
+        $this->productModel = new ProductModel();
     }
 
+    // =========================
+    // LIST
+    // =========================
     public function apiList()
     {
         $page  = max(1, (int)($_GET['page'] ?? 1));
@@ -35,6 +38,157 @@ class ProductEndpoint
         ]);
     }
 
+    // =========================
+    // SHOW
+    // =========================
+    public function apiShow()
+    {
+        $id = (int)($_GET['id'] ?? 0);
+
+        if ($id <= 0) {
+            return Response::json([
+                'success' => false,
+                'message' => 'ID không hợp lệ'
+            ]);
+        }
+
+        $product = $this->productModel->findById($id);
+
+        if (!$product) {
+            return Response::json([
+                'success' => false,
+                'message' => 'Không tìm thấy sản phẩm'
+            ]);
+        }
+
+        return Response::json([
+            'success' => true,
+            'data' => $product
+        ]);
+    }
+
+    // =========================
+    // CREATE
+    // =========================
+    public function apiCreate()
+    {
+        $data = [
+            'name'        => trim($_POST['name'] ?? ''),
+            'description' => trim($_POST['description'] ?? ''),
+            'category_id' => (int)($_POST['category_id'] ?? 0),
+            'status'      => (int)($_POST['status'] ?? 1),
+            'thumbnail'   => null
+        ];
+
+        if ($data['name'] === '') {
+            return Response::json([
+                'success' => false,
+                'message' => 'Tên sản phẩm không được để trống'
+            ]);
+        }
+
+        // UPLOAD THUMBNAIL
+        if (!empty($_FILES['thumbnail']['name'])) {
+
+            $file = $_FILES['thumbnail'];
+
+            $allowed = ['image/jpeg', 'image/png', 'image/webp'];
+
+            if (in_array($file['type'], $allowed)) {
+
+                $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+                $fileName = uniqid('thumb_') . '.' . $ext;
+
+                $uploadDir = PATH_ROOT . '/public/uploads/products/';
+
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+
+                $targetPath = $uploadDir . $fileName;
+
+                if (move_uploaded_file($file['tmp_name'], $targetPath)) {
+                    $data['thumbnail'] = '/uploads/products/' . $fileName;
+                }
+            }
+        }
+
+        $id = $this->productModel->create($data);
+
+        return Response::json([
+            'success' => $id > 0,
+            'message' => $id ? 'Tạo sản phẩm thành công' : 'Tạo thất bại',
+            'id'      => $id
+        ]);
+    }
+
+    // =========================
+    // UPDATE (FIXED + THUMBNAIL SUPPORT)
+    // =========================
+    public function apiUpdate()
+    {
+        $id = (int)($_POST['id'] ?? 0);
+
+        if ($id <= 0) {
+            return Response::json([
+                'success' => false,
+                'message' => 'ID không hợp lệ'
+            ]);
+        }
+
+        $data = [
+            'name'        => trim($_POST['name'] ?? ''),
+            'description' => trim($_POST['description'] ?? ''),
+            'category_id' => (int)($_POST['category_id'] ?? 0),
+            'status'      => (int)($_POST['status'] ?? 1),
+        ];
+
+        if ($data['name'] === '') {
+            return Response::json([
+                'success' => false,
+                'message' => 'Tên sản phẩm không được để trống'
+            ]);
+        }
+
+        // =========================
+        // UPLOAD THUMBNAIL (UPDATE)
+        // =========================
+        if (!empty($_FILES['thumbnail']['name'])) {
+
+            $file = $_FILES['thumbnail'];
+
+            $allowed = ['image/jpeg', 'image/png', 'image/webp'];
+
+            if (in_array($file['type'], $allowed)) {
+
+                $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+                $fileName = uniqid('thumb_') . '.' . $ext;
+
+                $uploadDir = PATH_ROOT . '/public/uploads/products/';
+
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+
+                $targetPath = $uploadDir . $fileName;
+
+                if (move_uploaded_file($file['tmp_name'], $targetPath)) {
+                    $data['thumbnail'] = '/uploads/products/' . $fileName;
+                }
+            }
+        }
+
+        $updated = $this->productModel->updateById($id, $data);
+
+        return Response::json([
+            'success' => $updated > 0,
+            'message' => $updated > 0 ? 'Cập nhật thành công' : 'Không có thay đổi'
+        ]);
+    }
+
+    // =========================
+    // DELETE
+    // =========================
     public function apiDelete()
     {
         $id = (int)($_POST['id'] ?? 0);

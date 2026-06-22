@@ -41,7 +41,7 @@
 
     </div>
 
-    <a href="#" class="btn btn-sm btn-outline-secondary">
+    <a href="<?= route('/admin/products/create') ?>" class="btn btn-sm btn-outline-secondary">
       Thêm sản phẩm
     </a>
 
@@ -180,7 +180,7 @@ async function loadProducts(page = 1) {
                 </td>
                 <td>${p.created_at ?? ''}</td>
                 <td>
-                    <a href="/product/edit?id=${p.id}" class="btn btn-sm btn-outline-secondary">Sửa</a>
+                    <a href="/admin/products/edit/${p.id}" class="btn btn-sm btn-outline-secondary">Sửa</a>
 
                     <button class="btn btn-sm btn-outline-danger"
                             onclick="deleteProduct(${p.id})">

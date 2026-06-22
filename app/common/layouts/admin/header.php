@@ -12,10 +12,11 @@
   <div class="container-fluid">
     <div class="collapse navbar-collapse d-flex align-items-center" id="navbarNav">
         <ul class="navbar-nav">
+
         <!-- SẢN PHẨM DROPDOWN -->
         <li class="nav-item dropdown">
             <a
-            class="nav-link dropdown-toggle <?= active_menu('/product') || active_menu('/product-group') ? 'active' : '' ?>"
+            class="nav-link dropdown-toggle <?= active_menu('/products') || active_menu('/products/groups') ? 'active' : '' ?>"
             href="#"
             id="productDropdown"
             role="button"
@@ -27,14 +28,14 @@
 
             <ul class="dropdown-menu">
             <li>
-                <a class="dropdown-item <?= active_menu('/product') ?>"
-                href="<?= route('/product') ?>">
+                <a class="dropdown-item <?= active_menu('/products') ?>"
+                href="<?= route('/admin/products') ?>">
                 Danh sách
                 </a>
             </li>
             <li>
-                <a class="dropdown-item <?= active_menu('/product-group') ?>"
-                href="<?= route('/product-group') ?>">
+                <a class="dropdown-item <?= active_menu('/products/groups') ?>"
+                href="<?= route('/admin/products/groups') ?>">
                 Nhóm sản phẩm
                 </a>
             </li>
@@ -44,7 +45,7 @@
         <!-- KHÁCH HÀNG DROPDOWN -->
         <li class="nav-item dropdown">
             <a
-            class="nav-link dropdown-toggle <?= active_menu('/customer') || active_menu('/customer-group') ? 'active' : '' ?>"
+            class="nav-link dropdown-toggle <?= active_menu('/customers') || active_menu('/customers/groups') ? 'active' : '' ?>"
             href="#"
             id="customerDropdown"
             role="button"
@@ -56,14 +57,14 @@
 
             <ul class="dropdown-menu">
             <li>
-                <a class="dropdown-item <?= active_menu('/customer') ?>"
-                href="<?= route('/customer') ?>">
+                <a class="dropdown-item <?= active_menu('/customers') ?>"
+                href="<?= route('/admin/customers') ?>">
                 Danh sách
                 </a>
             </li>
             <li>
-                <a class="dropdown-item <?= active_menu('/customer-group') ?>"
-                href="<?= route('/customer-group') ?>">
+                <a class="dropdown-item <?= active_menu('/customers/groups') ?>"
+                href="<?= route('/admin/customers/groups') ?>">
                 Nhóm khách hàng
                 </a>
             </li>
@@ -72,25 +73,25 @@
 
         <!-- MENU ĐƠN -->
         <li class="nav-item">
-            <a class="nav-link <?= active_menu('/supplier') ?>" href="<?= route('/supplier') ?>">
+            <a class="nav-link <?= active_menu('/suppliers') ?>" href="<?= route('/admin/suppliers') ?>">
             Nhà cung cấp
             </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link <?= active_menu('/expense') ?>" href="<?= route('/expense') ?>">
+            <a class="nav-link <?= active_menu('/expenses') ?>" href="<?= route('/admin/expenses') ?>">
             Chi phí
             </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link <?= active_menu('/import') ?>" href="<?= route('/import') ?>">
+            <a class="nav-link <?= active_menu('/imports') ?>" href="<?= route('/admin/imports') ?>">
             Nhập hàng
             </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link <?= active_menu('/export') ?>" href="<?= route('/export') ?>">
+            <a class="nav-link <?= active_menu('/exports') ?>" href="<?= route('/admin/exports') ?>">
             Đơn hàng
             </a>
         </li>
@@ -98,7 +99,7 @@
         <!-- BÁO CÁO DROPDOWN -->
         <li class="nav-item dropdown">
             <a
-            class="nav-link dropdown-toggle <?= active_menu('/report') ?>"
+            class="nav-link dropdown-toggle <?= active_menu('/reports') ? 'active' : '' ?>"
             href="#"
             id="reportDropdown"
             role="button"
@@ -110,31 +111,32 @@
 
             <ul class="dropdown-menu">
             <li>
-                <a class="dropdown-item <?= active_menu('/report/export') ?>"
-                href="<?= route('/report/export') ?>">
+                <a class="dropdown-item <?= active_menu('/reports/revenue') ?>"
+                href="<?= route('/admin/reports/revenue') ?>">
                 Doanh thu
                 </a>
             </li>
             <li>
-                <a class="dropdown-item <?= active_menu('/report/inventory') ?>"
-                href="<?= route('/report/inventory') ?>">
+                <a class="dropdown-item <?= active_menu('/reports/inventory') ?>"
+                href="<?= route('/admin/reports/inventory') ?>">
                 Tồn kho
                 </a>
             </li>
             <li>
-                <a class="dropdown-item <?= active_menu('/report/product') ?>"
-                href="<?= route('/report/product') ?>">
+                <a class="dropdown-item <?= active_menu('/reports/products') ?>"
+                href="<?= route('/admin/reports/products') ?>">
                 Sản phẩm
                 </a>
             </li>
             <li>
-                <a class="dropdown-item <?= active_menu('/report/customer') ?>"
-                href="<?= route('/report/customer') ?>">
+                <a class="dropdown-item <?= active_menu('/reports/customers') ?>"
+                href="<?= route('/admin/reports/customers') ?>">
                 Khách hàng
                 </a>
             </li>
             </ul>
         </li>
+
         </ul>
 
       <ul class="navbar-nav ms-auto align-items-center">
@@ -158,7 +160,7 @@
 
 
         <li class="nav-item">
-            <a class="nav-link pe-0" href="<?php echo route('/logout'); ?>"
+            <a class="nav-link pe-0" href="<?php echo route('/admin/logout'); ?>"
               onclick="return confirm('Bạn có chắc muốn đăng xuất không?');">
               Logout
             </a>
