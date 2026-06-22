@@ -30,6 +30,7 @@ class PurchaseEndpoint
         $total = $this->purchaseModel->count($filters);
 
         return Response::json([
+            'success' => true,
             'data' => $data,
             'meta' => [
                 'page'       => $page,
@@ -41,10 +42,12 @@ class PurchaseEndpoint
     }
 
     // =========================
-    // SHOW
+    // SHOW (FIXED FOR FRONTEND)
     // =========================
     public function apiShow($id)
     {
+        $id = (int)$id;
+
         if ($id <= 0) {
             return Response::json([
                 'success' => false,
@@ -63,11 +66,32 @@ class PurchaseEndpoint
 
         $items = $this->purchaseItemModel->getByPurchaseId($id);
 
+        // normalize items -> frontend format
+        $products = [];
+
+        foreach ($items as $item) {
+            $products[] = [
+                'product_id' => $item['product_id'],
+                'name'       => $item['product_name'] ?? '',
+                'price'      => (float)$item['unit_price'],
+                'quantity'   => (int)$item['quantity']
+            ];
+        }
+
         return Response::json([
             'success' => true,
             'data' => [
-                'purchase' => $purchase,
-                'items'    => $items
+                'supplier_id'  => $purchase['supplier_id'],
+                'warehouse_id' => $purchase['warehouse_id'],
+                'status'       => $purchase['status'],
+                'description'  => $purchase['description'] ?? '',
+
+                // optional display
+                'supplier' => [
+                    'name' => $purchase['supplier_name'] ?? ''
+                ],
+
+                'products' => $products
             ]
         ]);
     }
@@ -83,6 +107,7 @@ class PurchaseEndpoint
         $warehouse_id = (int)($input['warehouse_id'] ?? 0);
         $status       = $input['status'] ?? 'draft';
         $items        = $input['products'] ?? [];
+        $description  = $input['description'];
 
         if ($supplier_id <= 0) {
             return Response::json([
@@ -98,24 +123,19 @@ class PurchaseEndpoint
             ]);
         }
 
-        // =========================
-        // CREATE PURCHASE
-        // =========================
         $purchaseId = $this->purchaseModel->create([
             'supplier_id'  => $supplier_id,
             'warehouse_id' => $warehouse_id,
             'status'       => $status,
-            'total_cost'   => 0
+            'total_cost'   => 0,
+            'description'  => $description
         ]);
 
         $total = 0;
 
-        // =========================
-        // CREATE ITEMS
-        // =========================
         foreach ($items as $item) {
 
-            $product_id = (int)($item['id'] ?? 0);
+            $product_id = (int)($item['product_id'] ?? 0);
             $qty        = (int)($item['quantity'] ?? 1);
             $price      = (float)($item['price'] ?? 0);
 
@@ -123,8 +143,7 @@ class PurchaseEndpoint
                 continue;
             }
 
-            $lineTotal = $qty * $price;
-            $total += $lineTotal;
+            $total += $qty * $price;
 
             $this->purchaseItemModel->create([
                 'purchase_id' => $purchaseId,
@@ -134,7 +153,6 @@ class PurchaseEndpoint
             ]);
         }
 
-        // update total
         $this->purchaseModel->updateById($purchaseId, [
             'total_cost' => $total
         ]);
@@ -147,7 +165,7 @@ class PurchaseEndpoint
     }
 
     // =========================
-    // UPDATE
+    // UPDATE (FULL EDIT SUPPORT)
     // =========================
     public function apiUpdate()
     {
@@ -162,15 +180,54 @@ class PurchaseEndpoint
             ]);
         }
 
-        $updated = $this->purchaseModel->updateById($id, [
-            'supplier_id'  => (int)($input['supplier_id'] ?? 0),
-            'warehouse_id' => (int)($input['warehouse_id'] ?? 0),
-            'status'       => $input['status'] ?? 'draft'
+        $supplier_id  = (int)($input['supplier_id'] ?? 0);
+        $warehouse_id = (int)($input['warehouse_id'] ?? 0);
+        $status       = $input['status'] ?? 'draft';
+        $items        = $input['products'] ?? [];
+        $description  = $input['description'];
+
+        // update header
+        $this->purchaseModel->updateById($id, [
+            'supplier_id'  => $supplier_id,
+            'warehouse_id' => $warehouse_id,
+            'status'       => $status,
+            'description'  => $description
+        ]);
+
+        // delete old items
+        $this->purchaseItemModel->deleteByPurchaseId($id);
+
+        $total = 0;
+
+        // reinsert items
+        foreach ($items as $item) {
+
+            $product_id = (int)($item['product_id'] ?? 0);
+            $qty        = (int)($item['quantity'] ?? 1);
+            $price      = (float)($item['price'] ?? 0);
+
+            if ($product_id <= 0 || $qty <= 0) {
+                continue;
+            }
+
+            $total += $qty * $price;
+
+            $this->purchaseItemModel->create([
+                'purchase_id' => $id,
+                'product_id'  => $product_id,
+                'quantity'    => $qty,
+                'unit_price'  => $price
+            ]);
+        }
+
+        // update total
+        $this->purchaseModel->updateById($id, [
+            'total_cost' => $total
         ]);
 
         return Response::json([
-            'success' => $updated > 0,
-            'message' => $updated > 0 ? 'Cập nhật thành công' : 'Không có thay đổi'
+            'success' => true,
+            'message' => 'Cập nhật thành công'
         ]);
     }
 
@@ -188,9 +245,7 @@ class PurchaseEndpoint
             ]);
         }
 
-        // delete items first (safe)
         $this->purchaseItemModel->deleteByPurchaseId($id);
-
         $deleted = $this->purchaseModel->deleteById($id);
 
         return Response::json([

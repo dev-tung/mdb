@@ -50,10 +50,11 @@ class PurchaseModel
     public function findById(int $id): ?array
     {
         return Database::first(
-            "SELECT *
-             FROM {$this->table}
-             WHERE id = :id
-             LIMIT 1",
+            "SELECT t.*, s.name as supplier_name
+            FROM {$this->table} t
+            LEFT JOIN suppliers s ON s.id = t.supplier_id
+            WHERE t.id = :id
+            LIMIT 1",
             ['id' => $id]
         );
     }
