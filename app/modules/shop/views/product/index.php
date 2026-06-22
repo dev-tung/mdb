@@ -56,16 +56,16 @@
     <table class="table table-sm align-middle">
 
       <thead>
-        <tr>
-          <th>#</th>
-          <th>Sản phẩm</th>
-          <th>Danh mục</th>
-          <th>Giá bán</th>
-          <th>Tồn kho</th>
-          <th>Trạng thái</th>
-          <th>Ngày tạo</th>
-          <th>Hành động</th>
-        </tr>
+          <tr>
+              <th>#</th>
+              <th>Sản phẩm</th>
+              <th>Danh mục</th>
+              <th>Giá bán</th>
+              <th>Tồn kho</th>
+              <th>Trạng thái</th>
+              <th>Ngày tạo</th>
+              <th>Hành động</th>
+          </tr>
       </thead>
 
       <tbody id="product-table-body">
@@ -156,39 +156,59 @@
         tbody.innerHTML = '';
 
         if (!json.data || json.data.length === 0) {
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="8" class="text-center text-muted">
-                        Không có sản phẩm nào
-                    </td>
-                </tr>`;
+          tbody.innerHTML = `
+              <tr>
+                  <td colspan="8" class="text-center text-muted">
+                      Không có sản phẩm nào
+                  </td>
+              </tr>`;
         } else {
 
-            json.data.forEach((p, index) => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${(json.meta.page - 1) * json.meta.perPage + index + 1}</td>
-                        <td>${p.name}</td>
-                        <td>${p.category_name ?? '---'}</td>
-                        <td>${Number(p.price).toLocaleString()} ₫</td>
-                        <td>${p.stock ?? 0}</td>
-                        <td>
-                            <select class="form-select form-select-sm">
-                                <option ${p.status == 'active' ? 'selected' : ''}>Đang bán</option>
-                                <option ${p.status == 'inactive' ? 'selected' : ''}>Ngừng bán</option>
-                            </select>
-                        </td>
-                        <td>${p.created_at ?? ''}</td>
-                        <td>
-                            <a href="/admin/products/edit/${p.id}" class="btn btn-sm btn-outline-secondary">Sửa</a>
+          json.data.forEach((p, index) => {
+              tbody.innerHTML += `
+                  <tr>
+                      <td>${(json.meta.page - 1) * json.meta.perPage + index + 1}</td>
 
-                            <button class="btn btn-sm btn-outline-secondary"
-                                    onclick="deleteProduct(${p.id})">
-                                Xóa
-                            </button>
-                        </td>
-                    </tr>`;
-            });
+                      <td>
+                          <div class="d-flex align-items-center gap-2">
+                              <img
+                                  src="${p.thumbnail || 'https://placehold.co/50x50?text=No+Image'}"
+                                  alt="${p.name}"
+                                  width="20"
+                                  height="20"
+                                  class="rounded border"
+                                  style="object-fit:cover">
+
+                              <div>${p.name}</div>
+                          </div>
+                      </td>
+
+                      <td>${p.category_name ?? '---'}</td>
+                      <td>${Number(p.price).toLocaleString()} ₫</td>
+                      <td>${p.stock ?? 0}</td>
+
+                      <td>
+                          <select class="form-select form-select-sm">
+                              <option ${p.status == 'active' ? 'selected' : ''}>Đang bán</option>
+                              <option ${p.status == 'inactive' ? 'selected' : ''}>Ngừng bán</option>
+                          </select>
+                      </td>
+
+                      <td>${p.created_at ?? ''}</td>
+
+                      <td>
+                          <a href="/admin/products/edit/${p.id}" class="btn btn-sm btn-outline-secondary">
+                              Sửa
+                          </a>
+
+                          <button
+                              class="btn btn-sm btn-outline-secondary"
+                              onclick="deleteProduct(${p.id})">
+                              Xóa
+                          </button>
+                      </td>
+                  </tr>`;
+          });
         }
 
         document.getElementById('total-amount').innerText = json.meta.total;
