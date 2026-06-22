@@ -253,4 +253,32 @@ class PurchaseEndpoint
             'message' => $deleted > 0 ? 'Xóa thành công' : 'Không tìm thấy phiếu nhập'
         ]);
     }
+
+    // =========================
+    // UPDATE STATUS
+    // =========================
+    public function apiStatus()
+    {
+        $id = (int)($_POST['id'] ?? 0);
+        $status = trim($_POST['status'] ?? '');
+
+        // validate ID
+        if ($id <= 0) {
+            return Response::json([
+                'success' => false,
+                'message' => 'ID không hợp lệ'
+            ]);
+        }
+
+        // update status
+        $updated = $this->purchaseModel->updateById($id, [
+            'status' => $status,
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
+
+        return Response::json([
+            'success' => $updated > 0,
+            'message' => $updated > 0 ? 'Cập nhật trạng thái thành công' : 'Không tìm thấy phiếu nhập'
+        ]);
+    }
 }

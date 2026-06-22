@@ -195,7 +195,7 @@ async function updateStatus(id, status) {
     formData.append('id', id);
     formData.append('status', status);
 
-    const res = await fetch('/api/purchases/update-status', {
+    const res = await fetch('/api/purchases/status', {
         method: 'POST',
         body: formData
     });
