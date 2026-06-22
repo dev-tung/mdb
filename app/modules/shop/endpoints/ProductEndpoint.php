@@ -41,10 +41,8 @@ class ProductEndpoint
     // =========================
     // SHOW
     // =========================
-    public function apiShow()
+    public function apiShow($id )
     {
-        $id = (int)($_GET['id'] ?? 0);
-
         if ($id <= 0) {
             return Response::json([
                 'success' => false,
