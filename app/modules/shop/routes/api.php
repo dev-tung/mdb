@@ -46,6 +46,15 @@ Router::post('/api/suppliers/update', 'SupplierEndpoint@apiUpdate');
 Router::post('/api/suppliers/delete', 'SupplierEndpoint@apiDelete');
 
 // =========================
+// WAREHOUSE
+// =========================
+Router::get('/api/warehouses', 'WarehouseEndpoint@apiList');
+Router::post('/api/warehouses', 'WarehouseEndpoint@apiCreate');
+Router::get('/api/warehouses/show/{id}', 'WarehouseEndpoint@apiShow');
+Router::post('/api/warehouses/update', 'WarehouseEndpoint@apiUpdate');
+Router::post('/api/warehouses/delete', 'WarehouseEndpoint@apiDelete');
+
+// =========================
 // PURCHASE
 // =========================
 Router::get('/api/purchases', 'PurchaseEndpoint@apiList');

@@ -1,32 +1,44 @@
 <?php
 
-class SupplierModel
+class WarehouseModel
 {
-    protected string $table = 'suppliers';
+    protected string $table = 'warehouses';
 
     /**
-     * Lấy danh sách supplier
+     * Lấy danh sách kho
      */
-    public function getAll(array $conditions = []): array
+    public function getAll(array $conditions = [], int $limit = 0, int $offset = 0): array
     {
         $sql = "SELECT * FROM {$this->table} WHERE 1=1";
         $params = [];
 
-        // KEYWORD SEARCH
+        // SEARCH KEYWORD
         if (!empty($conditions['keyword'])) {
             $sql .= " AND (
                 name LIKE :keyword
+                OR address LIKE :keyword
             )";
+
             $params['keyword'] = '%' . $conditions['keyword'] . '%';
         }
 
+        // STATUS FILTER
+        if (!empty($conditions['status'])) {
+            $sql .= " AND status = :status";
+            $params['status'] = $conditions['status'];
+        }
+
         $sql .= " ORDER BY id DESC";
+
+        if ($limit > 0) {
+            $sql .= " LIMIT {$limit} OFFSET {$offset}";
+        }
 
         return Database::get($sql, $params);
     }
 
     /**
-     * Lấy 1 supplier theo ID
+     * Lấy 1 warehouse theo ID
      */
     public function findById(int $id): ?array
     {
@@ -37,7 +49,7 @@ class SupplierModel
     }
 
     /**
-     * Thêm supplier
+     * Thêm warehouse
      */
     public function create(array $data): int
     {
@@ -53,7 +65,7 @@ class SupplierModel
     }
 
     /**
-     * Cập nhật supplier
+     * Cập nhật warehouse
      */
     public function updateById(int $id, array $data): int
     {
@@ -73,7 +85,7 @@ class SupplierModel
     }
 
     /**
-     * Xoá supplier
+     * Xoá warehouse
      */
     public function deleteById(int $id): int
     {
@@ -84,7 +96,7 @@ class SupplierModel
     }
 
     /**
-     * Đếm supplier (pagination)
+     * Đếm warehouse (pagination)
      */
     public function count(array $conditions = []): int
     {
@@ -94,11 +106,15 @@ class SupplierModel
         if (!empty($conditions['keyword'])) {
             $sql .= " AND (
                 name LIKE :keyword
-                OR phone LIKE :keyword
-                OR email LIKE :keyword
+                OR address LIKE :keyword
             )";
 
             $params['keyword'] = '%' . $conditions['keyword'] . '%';
+        }
+
+        if (!empty($conditions['status'])) {
+            $sql .= " AND status = :status";
+            $params['status'] = $conditions['status'];
         }
 
         $row = Database::first($sql, $params);

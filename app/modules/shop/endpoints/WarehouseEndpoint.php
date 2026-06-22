@@ -1,16 +1,16 @@
 <?php
 
-class SupplierEndpoint
+class WarehouseEndpoint
 {
-    protected SupplierModel $supplierModel;
+    protected WarehouseModel $warehouseModel;
 
     public function __construct()
     {
-        $this->supplierModel = new SupplierModel();
+        $this->warehouseModel = new WarehouseModel();
     }
 
     // =========================
-    // LIST
+    // LIST (dropdown / full list)
     // =========================
     public function apiList()
     {
@@ -24,10 +24,10 @@ class SupplierEndpoint
             $filters['keyword'] = $keyword;
         }
 
-        $suppliers = $this->supplierModel->getAll($filters);
+        $warehouses = $this->warehouseModel->getAll($filters);
 
         echo json_encode([
-            'data' => $suppliers
+            'data' => $warehouses
         ]);
     }
 
@@ -46,19 +46,19 @@ class SupplierEndpoint
             return;
         }
 
-        $supplier = $this->supplierModel->findById($id);
+        $warehouse = $this->warehouseModel->findById($id);
 
-        if (!$supplier) {
+        if (!$warehouse) {
             echo json_encode([
                 'success' => false,
-                'message' => 'Không tìm thấy nhà cung cấp'
+                'message' => 'Không tìm thấy kho'
             ]);
             return;
         }
 
         echo json_encode([
             'success' => true,
-            'data' => $supplier
+            'data' => $warehouse
         ]);
     }
 
@@ -70,28 +70,26 @@ class SupplierEndpoint
         header('Content-Type: application/json');
 
         $data = [
-            'name'        => trim($_POST['name'] ?? ''),
-            'phone'       => trim($_POST['phone'] ?? ''),
-            'email'       => trim($_POST['email'] ?? ''),
-            'address'     => trim($_POST['address'] ?? ''),
-            'description' => trim($_POST['description'] ?? ''),
-            'created_at'  => date('Y-m-d H:i:s'),
-            'updated_at'  => date('Y-m-d H:i:s'),
+            'name'       => trim($_POST['name'] ?? ''),
+            'address'    => trim($_POST['address'] ?? ''),
+            'status'     => $_POST['status'] ?? 1,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
         ];
 
         if ($data['name'] === '') {
             echo json_encode([
                 'success' => false,
-                'message' => 'Tên nhà cung cấp không được để trống'
+                'message' => 'Tên kho không được để trống'
             ]);
             return;
         }
 
-        $id = $this->supplierModel->create($data);
+        $id = $this->warehouseModel->create($data);
 
         echo json_encode([
             'success' => $id > 0,
-            'message' => $id ? 'Tạo nhà cung cấp thành công' : 'Tạo thất bại',
+            'message' => $id ? 'Tạo kho thành công' : 'Tạo thất bại',
             'id'      => $id
         ]);
     }
@@ -114,15 +112,13 @@ class SupplierEndpoint
         }
 
         $data = [
-            'name'        => trim($_POST['name'] ?? ''),
-            'phone'       => trim($_POST['phone'] ?? ''),
-            'email'       => trim($_POST['email'] ?? ''),
-            'address'     => trim($_POST['address'] ?? ''),
-            'description' => trim($_POST['description'] ?? ''),
-            'updated_at'  => date('Y-m-d H:i:s'),
+            'name'       => trim($_POST['name'] ?? ''),
+            'address'    => trim($_POST['address'] ?? ''),
+            'status'     => $_POST['status'] ?? 1,
+            'updated_at' => date('Y-m-d H:i:s'),
         ];
 
-        $updated = $this->supplierModel->updateById($id, $data);
+        $updated = $this->warehouseModel->updateById($id, $data);
 
         echo json_encode([
             'success' => $updated > 0,
@@ -147,11 +143,11 @@ class SupplierEndpoint
             return;
         }
 
-        $deleted = $this->supplierModel->deleteById($id);
+        $deleted = $this->warehouseModel->deleteById($id);
 
         echo json_encode([
             'success' => $deleted > 0,
-            'message' => $deleted > 0 ? 'Xóa thành công' : 'Không tìm thấy nhà cung cấp'
+            'message' => $deleted > 0 ? 'Xóa thành công' : 'Không tìm thấy kho'
         ]);
     }
 }

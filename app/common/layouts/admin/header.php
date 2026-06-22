@@ -85,13 +85,13 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link <?= active_menu('/imports') ?>" href="<?= route('/admin/imports') ?>">
+            <a class="nav-link <?= active_menu('/purchases') ?>" href="<?= route('/admin/purchases') ?>">
             Nhập hàng
             </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link <?= active_menu('/exports') ?>" href="<?= route('/admin/exports') ?>">
+            <a class="nav-link <?= active_menu('/orders') ?>" href="<?= route('/admin/orders') ?>">
             Đơn hàng
             </a>
         </li>
