@@ -4,60 +4,66 @@
 
     <form id="product-edit-form" novalidate>
 
-        <div class="row g-3">
+        <div class="row">
+          <div class="col-6">
+            <div class="row g-3">
+                <div class="col-md-12">
+                    <label class="form-label">Tên sản phẩm</label>
+                    <input type="text" id="name" class="form-control" placeholder="Nhập tên sản phẩm">
+                </div>
 
-            <div class="col-md-6">
-                <label class="form-label">Tên sản phẩm</label>
-                <input type="text" id="name" class="form-control" placeholder="Nhập tên sản phẩm">
+                <div class="col-md-12">
+                    <label class="form-label">Giá</label>
+                    <input type="number" id="price" class="form-control" placeholder="Nhập giá">
+                </div>
+
+                <div class="col-md-12">
+                    <label class="form-label">Mô tả</label>
+                    <textarea
+                        id="description"
+                        rows="5"
+                        class="form-control"
+                        placeholder="Nhập mô tả"
+                    ></textarea>
+                </div>
             </div>
+          </div>
 
-            <div class="col-md-6">
-                <label class="form-label">Giá</label>
-                <input type="number" id="price" class="form-control" placeholder="Nhập giá">
+          <div class="col-6">
+            <div class="row g-3">
+                <div class="col-md-12">
+                    <label class="form-label">Danh mục</label>
+
+                    <select id="category_id" class="form-select">
+                        <option value="">-- Chọn danh mục --</option>
+                    </select>
+                </div>
+
+                <div class="col-md-12">
+                    <label class="form-label">Ảnh sản phẩm</label>
+
+                    <input type="file" id="thumbnail" class="form-control mb-2">
+
+                    <img
+                        id="thumbnail-preview"
+                        src=""
+                        alt=""
+                        class="img-thumbnail"
+                        style="max-height:120px"
+                    >
+                </div>
             </div>
+          </div>
 
-            <div class="col-md-6">
-                <label class="form-label">Danh mục</label>
+        </div>
 
-                <select id="category_id" class="form-select">
-                    <option value="">-- Chọn danh mục --</option>
-                </select>
-            </div>
-
-            <div class="col-md-6">
-                <label class="form-label">Ảnh sản phẩm</label>
-
-                <input type="file" id="thumbnail" class="form-control mb-2">
-
-                <img
-                    id="thumbnail-preview"
-                    src=""
-                    alt=""
-                    class="img-thumbnail"
-                    style="max-height:120px"
-                >
-            </div>
-
-            <div class="col-12">
-                <label class="form-label">Mô tả</label>
-
-                <textarea
-                    id="description"
-                    rows="5"
-                    class="form-control"
-                    placeholder="Nhập mô tả"
-                ></textarea>
-            </div>
-
-            <div class="col-12">
-                <button
-                    type="submit"
-                    class="btn btn-outline-secondary mt-3"
-                >
-                    Cập nhật sản phẩm
-                </button>
-            </div>
-
+        <div class="col-12">
+            <button
+                type="submit"
+                class="btn btn-outline-secondary mt-3"
+            >
+                Cập nhật sản phẩm
+            </button>
         </div>
 
     </form>
