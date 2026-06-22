@@ -34,4 +34,23 @@ class ProductEndpoint
             ]
         ]);
     }
+
+    public function apiDelete()
+    {
+        $id = (int)($_POST['id'] ?? 0);
+
+        if ($id <= 0) {
+            return Response::json([
+                'success' => false,
+                'message' => 'ID không hợp lệ'
+            ]);
+        }
+
+        $deleted = $this->productModel->deleteById($id);
+
+        return Response::json([
+            'success' => $deleted > 0,
+            'message' => $deleted > 0 ? 'Xóa thành công' : 'Không tìm thấy sản phẩm'
+        ]);
+    }
 }

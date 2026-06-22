@@ -111,7 +111,7 @@ let prevPage = 1;
 let nextPage = 1;
 
 /* =========================
-   LOAD CATEGORY
+  LOAD CATEGORY
 ========================= */
 async function loadCategories() {
     const res = await fetch('/api/categories');
@@ -128,7 +128,7 @@ async function loadCategories() {
 }
 
 /* =========================
-   LOAD PRODUCTS
+  LOAD PRODUCTS
 ========================= */
 async function loadProducts(page = 1) {
 
@@ -181,7 +181,11 @@ async function loadProducts(page = 1) {
                 <td>${p.created_at ?? ''}</td>
                 <td>
                     <a href="/product/edit?id=${p.id}" class="btn btn-sm btn-outline-secondary">Sửa</a>
-                    <button class="btn btn-sm btn-outline-secondary">Xóa</button>
+
+                    <button class="btn btn-sm btn-outline-danger"
+                            onclick="deleteProduct(${p.id})">
+                        Xóa
+                    </button>
                 </td>
             </tr>`;
         });
@@ -197,7 +201,31 @@ async function loadProducts(page = 1) {
 }
 
 /* =========================
-   PAGINATION
+  DELETE PRODUCT
+========================= */
+async function deleteProduct(id) {
+    if (!confirm('Bạn có chắc muốn xóa sản phẩm này?')) return;
+
+    const formData = new FormData();
+    formData.append('id', id);
+
+    const res = await fetch('/api/products/delete', {
+        method: 'POST',
+        body: formData
+    });
+
+    const json = await res.json();
+
+    if (json.success) {
+        alert('Xóa thành công');
+        loadProducts(currentPage);
+    } else {
+        alert(json.message || 'Xóa thất bại');
+    }
+}
+
+/* =========================
+  PAGINATION
 ========================= */
 function goToPage(page) {
     loadProducts(page);
@@ -225,7 +253,7 @@ function renderPages(page, totalPages) {
 }
 
 /* =========================
-   FILTER EVENTS
+  FILTER EVENTS
 ========================= */
 document.querySelectorAll(
     '#filter-name, #filter-status, #filter-category, #filter-date-from, #filter-date-to'
@@ -235,7 +263,7 @@ document.querySelectorAll(
 });
 
 /* =========================
-   INIT
+  INIT
 ========================= */
 (async function init() {
     await loadCategories();
