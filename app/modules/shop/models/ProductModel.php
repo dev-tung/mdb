@@ -76,7 +76,7 @@ class ProductModel
                     WHERE pi2.product_id = {$this->alias}.id
                     ORDER BY pi2.id DESC
                     LIMIT 1
-                ) AS purchase_product_id,
+                ) AS purchase_item_id,
 
                 COALESCE(SUM(pi.quantity), 0) AS stock_in,
                 COALESCE(SUM(oi.quantity), 0) AS stock_out,

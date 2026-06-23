@@ -180,7 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 price: Number(p.price || 0),
                 base_price: Number(p.price || 0),
                 discount: Number(p.discount || 0),
-                purchase_product_id: p.purchase_product_id,
+                purchase_item_id: p.purchase_item_id,
                 gift: Number(p.price) === 0
             };
         });

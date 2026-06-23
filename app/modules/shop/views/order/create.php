@@ -275,7 +275,7 @@ document.addEventListener("DOMContentLoaded", function () {
             base_price: Number(p.sale_price || 0),
             quantity: 1,
             discount: 0,
-            purchase_product_id: p.purchase_product_id,
+            purchase_item_id: p.purchase_item_id,
             gift: false
         };
 

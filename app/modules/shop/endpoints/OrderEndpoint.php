@@ -72,7 +72,7 @@ class OrderEndpoint
             $products[] = [
                 'product_id' => $item['product_id'],
                 'product_name' => $item['product_name'],
-                'purchase_product_id' => $item['purchase_product_id'],
+                'purchase_item_id' => $item['purchase_item_id'],
                 'price'      => (float)$item['price'],
                 'quantity'   => (int)$item['quantity'],
                 'discount'   => (float)$item['discount']
@@ -138,7 +138,7 @@ class OrderEndpoint
             $qty        = (int)($item['quantity'] ?? 1);
             $price      = (float)($item['price'] ?? 0);
             $discount   = (float)($item['discount'] ?? 0);
-            $purchase_product_id = (int)($item['purchase_product_id'] ?? 0);
+            $purchase_item_id = (int)($item['purchase_item_id'] ?? 0);
 
             if ($product_id <= 0 || $qty <= 0) {
                 continue;
@@ -150,7 +150,7 @@ class OrderEndpoint
             $this->orderItemModel->create([
                 'order_id' => $orderId,
                 'product_id' => $product_id,
-                'purchase_product_id' => $purchase_product_id,
+                'purchase_item_id' => $purchase_item_id,
                 'quantity' => $qty,
                 'price' => $price,
                 'discount' => $discount
@@ -231,7 +231,7 @@ class OrderEndpoint
             $qty        = (int)($item['quantity'] ?? 1);
             $price      = (float)($item['price'] ?? 0);
             $discount   = (float)($item['discount'] ?? 0);
-            $purchase_product_id = (int)($item['purchase_product_id'] ?? 0);
+            $purchase_item_id = (int)($item['purchase_item_id'] ?? 0);
 
             if ($product_id <= 0 || $qty <= 0) {
                 continue;
@@ -243,7 +243,7 @@ class OrderEndpoint
             $this->orderItemModel->create([
                 'order_id' => $orderId,
                 'product_id' => $product_id,
-                'purchase_product_id' => $purchase_product_id,
+                'purchase_item_id' => $purchase_item_id,
                 'quantity' => $qty,
                 'price' => $price,
                 'discount' => $discount
