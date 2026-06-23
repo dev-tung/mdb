@@ -1,3 +1,8 @@
+<?php
+$statuses = config('shop.option.purchase_status') ?? [];
+$payments = config('shop.option.payment') ?? [];
+?>
+
 <div class="container-fluid py-4 mt-5">
 
     <h3 class="mb-4">
@@ -40,14 +45,31 @@
             </div>
 
             <!-- STATUS -->
-            <div class="col-md-6">
+            <div class="col-md-3">
 
                 <label class="form-label">Trạng thái</label>
 
                 <select id="status" class="form-select">
-                    <option value="draft">Nháp</option>
-                    <option value="confirmed">Đã xác nhận</option>
-                    <option value="cancelled">Huỷ</option>
+                    <?php foreach ($statuses as $key => $status): ?>
+                        <option value="<?= $key ?>">
+                            <?= $status['label'] ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+
+            </div>
+
+            <!-- PAYMENT STATUS -->
+            <div class="col-md-3">
+
+                <label class="form-label">Thanh toán</label>
+
+                <select id="payment" class="form-select">
+                    <?php foreach ($payments as $key => $payment): ?>
+                        <option value="<?= $key ?>">
+                            <?= $payment['label'] ?>
+                        </option>
+                    <?php endforeach; ?>
                 </select>
 
             </div>
@@ -205,6 +227,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         document.getElementById("description").value = data.description || "";
         document.getElementById("status").value = data.status || "";
+        document.getElementById("payment").value = data.payment || "";
         warehouseSelect.value = data.warehouse_id || "";
 
         selectedProducts = {};
@@ -452,6 +475,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 warehouse_id: warehouseSelect.value,
                 description: document.getElementById("description").value,
                 status: document.getElementById("status").value,
+                payment: document.getElementById("payment").value,
                 products: Object.values(selectedProducts).map(p => ({
                     product_id: p.id,
                     quantity: p.quantity,

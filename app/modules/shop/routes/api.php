@@ -63,6 +63,7 @@ Router::get('/api/purchases/show/{id}', 'PurchaseEndpoint@apiShow');
 Router::post('/api/purchases/update', 'PurchaseEndpoint@apiUpdate');
 Router::post('/api/purchases/delete', 'PurchaseEndpoint@apiDelete');
 Router::post('/api/purchases/status', 'PurchaseEndpoint@apiStatus');
+Router::post('/api/purchases/payment', 'PurchaseEndpoint@apiPayment');
 
 // =========================
 // ORDER

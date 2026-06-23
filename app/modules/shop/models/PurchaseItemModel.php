@@ -10,10 +10,14 @@ class PurchaseItemModel
     public function getByPurchaseId(int $purchaseId): array
     {
         return Database::get(
-            "SELECT *
-             FROM {$this->table}
-             WHERE purchase_id = :purchase_id
-             ORDER BY id ASC",
+            "SELECT
+                pi.*,
+                p.name AS product_name
+            FROM {$this->table} pi
+            LEFT JOIN products p
+                ON p.id = pi.product_id
+            WHERE pi.purchase_id = :purchase_id
+            ORDER BY pi.id ASC",
             ['purchase_id' => $purchaseId]
         );
     }

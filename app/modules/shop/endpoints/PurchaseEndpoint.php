@@ -84,6 +84,7 @@ class PurchaseEndpoint
                 'supplier_id'  => $purchase['supplier_id'],
                 'warehouse_id' => $purchase['warehouse_id'],
                 'status'       => $purchase['status'],
+                'payment'      => $purchase['payment'],
                 'description'  => $purchase['description'] ?? '',
 
                 // optional display
@@ -108,6 +109,7 @@ class PurchaseEndpoint
         $status       = $input['status'] ?? 'draft';
         $items        = $input['products'] ?? [];
         $description  = $input['description'];
+        $payment      = $input['payment'] ?? '';
 
         if ($supplier_id <= 0) {
             return Response::json([
@@ -123,19 +125,21 @@ class PurchaseEndpoint
             ]);
         }
 
+
         $purchaseId = $this->purchaseModel->create([
             'supplier_id'  => $supplier_id,
             'warehouse_id' => $warehouse_id,
             'status'       => $status,
             'total_cost'   => 0,
-            'description'  => $description
+            'description'  => $description,
+            'payment'      => $payment
         ]);
 
         $total = 0;
 
         foreach ($items as $item) {
 
-            $product_id = (int)($item['product_id'] ?? 0);
+            $product_id = (int)($item['product_id'] ?? $item['id'] ?? 0);
             $qty        = (int)($item['quantity'] ?? 1);
             $price      = (float)($item['price'] ?? 0);
 
@@ -182,15 +186,17 @@ class PurchaseEndpoint
 
         $supplier_id  = (int)($input['supplier_id'] ?? 0);
         $warehouse_id = (int)($input['warehouse_id'] ?? 0);
-        $status       = $input['status'] ?? 'draft';
+        $status       = $input['status'] ?? '';
         $items        = $input['products'] ?? [];
         $description  = $input['description'];
+        $payment      = $input['payment'] ?? '';
 
         // update header
         $this->purchaseModel->updateById($id, [
             'supplier_id'  => $supplier_id,
             'warehouse_id' => $warehouse_id,
             'status'       => $status,
+            'payment'      => $payment,
             'description'  => $description
         ]);
 
@@ -279,6 +285,46 @@ class PurchaseEndpoint
         return Response::json([
             'success' => $updated > 0,
             'message' => $updated > 0 ? 'Cập nhật trạng thái thành công' : 'Không tìm thấy phiếu nhập'
+        ]);
+    }
+
+    // =========================
+    // UPDATE PAYMENT STATUS
+    // =========================
+    public function apiPayment()
+    {
+        $id = (int)($_POST['id'] ?? 0);
+        $paymentStatus = trim($_POST['payment'] ?? '');
+
+        // validate ID
+        if ($id <= 0) {
+            return Response::json([
+                'success' => false,
+                'message' => 'ID không hợp lệ'
+            ]);
+        }
+
+        // validate payment status from config
+        $allowed = array_keys(config('shop.option.payment') ?? []);
+
+        if (!in_array($paymentStatus, $allowed)) {
+            return Response::json([
+                'success' => false,
+                'message' => 'Trạng thái thanh toán không hợp lệ'
+            ]);
+        }
+
+        // update
+        $updated = $this->purchaseModel->updateById($id, [
+            'payment' => $paymentStatus,
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
+
+        return Response::json([
+            'success' => $updated > 0,
+            'message' => $updated > 0 
+                ? 'Cập nhật thanh toán thành công'
+                : 'Không tìm thấy phiếu nhập'
         ]);
     }
 }
