@@ -207,19 +207,21 @@ async function loadPurchases(page = 1) {
 
                 <!-- STATUS -->
                 <td>
-                    <select class="form-select form-select-sm"
+                    <select class="form-select form-select-sm text-${STATUS_CONFIG[p.status]?.color || 'secondary'}"
                             onchange="updateStatus(${p.id}, this.value)">
+
                         ${Object.keys(STATUS_CONFIG).map(k => `
-                            <option value="${k}" ${String(k) === status ? 'selected' : ''}>
+                            <option value="${k}" ${String(k) === String(p.status) ? 'selected' : ''}>
                                 ${STATUS_CONFIG[k].label}
                             </option>
                         `).join('')}
+
                     </select>
                 </td>
 
                 <!-- PAYMENT -->
                 <td>
-                    <select class="form-select form-select-sm"
+                    <select class="form-select form-select-sm text-${PAYMENT_CONFIG[p.payment]?.color || 'secondary'}"
                             onchange="updatePayment(${p.id}, this.value)">
 
                         ${Object.keys(PAYMENT_CONFIG).map(k => `

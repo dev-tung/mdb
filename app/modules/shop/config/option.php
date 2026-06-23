@@ -10,15 +10,15 @@ return [
     'purchase_status' => [
         'draft' => [
             'label' => 'Nháp',
-            'color' => 'gray',
+            'color' => 'danger',
         ],
         'confirmed' => [
-            'label' => 'Đã xác nhận',
-            'color' => 'blue',
+            'label' => 'Đang chờ hàng',
+            'color' => 'danger',
         ],
         'received' => [
             'label' => 'Đã nhận hàng',
-            'color' => 'green',
+            'color' => 'default',
         ],
     ],
 
@@ -31,15 +31,15 @@ return [
     'payment' => [
         'unpaid' => [
             'label' => 'Chưa thanh toán',
-            'color' => 'red',
+            'color' => 'danger',
         ],
         'partial' => [
             'label' => 'Thanh toán một phần',
-            'color' => 'orange',
+            'color' => 'danger',
         ],
         'paid' => [
             'label' => 'Đã thanh toán',
-            'color' => 'green',
+            'color' => 'default',
         ],
     ],
 
@@ -52,11 +52,11 @@ return [
     'order_status' => [
         'pending' => [
             'label' => 'Chờ xử lý',
-            'color' => 'orange',
+            'color' => 'danger',
         ],
-        'paid' => [
+        'completed' => [
             'label' => 'Đã thanh toán',
-            'color' => 'green',
+            'color' => 'default',
         ],
     ],
 

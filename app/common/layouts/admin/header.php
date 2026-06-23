@@ -17,49 +17,49 @@
 
             <!-- SẢN PHẨM -->
             <li class="nav-item">
-            <a class="nav-link <?= active_menu('/products') ?>" href="<?= route('/admin/products') ?>">
+            <a class="nav-link <?= active_menu('/admin/products') ?>" href="<?= route('/admin/products') ?>">
                 Sản phẩm
             </a>
             </li>
 
             <!-- THÊM SẢN PHẨM -->
             <li class="nav-item">
-            <a class="nav-link <?= active_menu('/products/create') ?>" href="<?= route('/admin/products/create') ?>">
+            <a class="nav-link <?= active_menu('/admin/products/create') ?>" href="<?= route('/admin/products/create') ?>">
                 Thêm sản phẩm
             </a>
             </li>
 
             <!-- MUA HÀNG -->
             <li class="nav-item">
-            <a class="nav-link <?= active_menu('/purchases') ?>" href="<?= route('/admin/purchases') ?>">
+            <a class="nav-link <?= active_menu('/admin/purchases') ?>" href="<?= route('/admin/purchases') ?>">
                 Mua hàng
             </a>
             </li>
 
             <!-- THÊM PHIẾU MUA -->
             <li class="nav-item">
-            <a class="nav-link <?= active_menu('/purchases/create') ?>" href="<?= route('/admin/purchases/create') ?>">
+            <a class="nav-link <?= active_menu('/admin/purchases/create') ?>" href="<?= route('/admin/purchases/create') ?>">
                 Thêm phiếu mua
             </a>
             </li>
 
             <!-- ĐƠN HÀNG -->
             <li class="nav-item">
-            <a class="nav-link <?= active_menu('/orders') ?>" href="<?= route('/admin/orders') ?>">
+            <a class="nav-link <?= active_menu('/admin/orders') ?>" href="<?= route('/admin/orders') ?>">
                 Đơn hàng
             </a>
             </li>
 
             <!-- THÊM ĐƠN HÀNG -->
             <li class="nav-item">
-            <a class="nav-link <?= active_menu('/orders/create') ?>" href="<?= route('/admin/orders/create') ?>">
+            <a class="nav-link <?= active_menu('/admin/orders/create') ?>" href="<?= route('/admin/orders/create') ?>">
                 Thêm đơn hàng
             </a>
             </li>
 
             <!-- BÁO CÁO DOANH THU -->
             <li class="nav-item">
-            <a class="nav-link <?= active_menu('/reports/revenue') ?>" href="<?= route('/admin/reports/revenue') ?>">
+            <a class="nav-link <?= active_menu('/admin/reports/revenue') ?>" href="<?= route('/admin/reports/revenue') ?>">
                 Báo cáo doanh thu
             </a>
             </li>

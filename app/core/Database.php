@@ -22,7 +22,7 @@ class Database
                 [
                     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                    PDO::ATTR_EMULATE_PREPARES   => false,
+                    PDO::ATTR_EMULATE_PREPARES   => true,
                 ]
             );
         }
@@ -30,16 +30,27 @@ class Database
         return self::$pdo;
     }
 
-    public static function query(
-        string $sql,
-        array $params = []
-    ): PDOStatement
+    public static function query(string $sql, array $params = []): PDOStatement
     {
-        $stmt = self::connect()->prepare($sql);
+        if (!is_array($params)) {
+            $params = [];
+        }
 
-        $stmt->execute($params);
+        try {
+            $stmt = self::connect()->prepare($sql);
+            $stmt->execute($params);
+            return $stmt;
 
-        return $stmt;
+        } catch (PDOException $e) {
+
+            echo "SQL ERROR:\n";
+            echo $sql . "\n\n";
+
+            echo "PARAMS:\n";
+            var_dump($params);
+
+            die($e->getMessage());
+        }
     }
 
     public static function first(
@@ -119,27 +130,5 @@ class Database
     public static function pdo(): PDO
     {
         return self::connect();
-    }
-
-    public static function ddSql(string $sql, array $params = []): string
-    {
-        foreach ($params as $key => $value) {
-
-            if ($value === null) {
-                $value = 'NULL';
-            } elseif (is_string($value)) {
-                $value = "'" . addslashes($value) . "'";
-            } elseif (is_bool($value)) {
-                $value = $value ? 1 : 0;
-            }
-
-            $sql = preg_replace(
-                '/:' . preg_quote($key, '/') . '\b/',
-                (string)$value,
-                $sql
-            );
-        }
-
-        dd($sql);
     }
 }

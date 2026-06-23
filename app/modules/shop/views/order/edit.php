@@ -1,697 +1,396 @@
+<?php
+$statuses = config('shop.option.order_status');
+$payments = config('shop.option.payment');
+?>
+
 <div class="container-fluid py-4 mt-5">
 
     <h3 class="mb-4">
-        Sửa đơn hàng
+        <?= !empty($id) ? 'Sửa đơn hàng' : 'Tạo đơn hàng' ?>
     </h3>
 
-    <form id="export-add-form" novalidate>
+    <form id="order-create-form">
 
         <div class="row g-3">
 
+            <!-- CUSTOMER -->
             <div class="col-md-6 position-relative">
+                <label class="form-label">Khách hàng</label>
 
-                <label class="form-label">
-                    Khách hàng
-                </label>
+                <input type="text"
+                       id="customer_search"
+                       class="form-control"
+                       placeholder="Tìm khách hàng...">
 
-                <input
-                    type="text"
-                    id="customer_search"
-                    class="form-control"
-                    placeholder="Tìm khách hàng..."
-                    autocomplete="off">
+                <input type="hidden" id="customer_id">
 
-                <input
-                    type="hidden"
-                    id="customer_id">
-
-                <div
-                    id="customer_suggestions"
-                    class="list-group position-absolute w-100 d-none">
-                </div>
-
-                <small
-                    id="error-customer"
-                    class="text-danger d-none">
-                </small>
-
+                <div id="customer_suggestions"
+                     class="list-group position-absolute w-100 d-none z-1"></div>
             </div>
 
+            <!-- DESCRIPTION -->
             <div class="col-md-6">
-
-                <label
-                    for="description"
-                    class="form-label">
-
-                    Mô tả
-
-                </label>
-
-                <input
-                    type="text"
-                    id="description"
-                    class="form-control"
-                    placeholder="Nhập mô tả đơn hàng">
-
+                <label class="form-label">Mô tả</label>
+                <input type="text" id="description" class="form-control">
             </div>
 
-            <div class="col-md-6">
-
-                <label
-                    for="status"
-                    class="form-label">
-
-                    Trạng thái đơn hàng
-
-                </label>
-
-                <select
-                    id="status"
-                    class="form-select">
-
-                    <option value="new">
-                        Mới
-                    </option>
-
-                    <option value="processing">
-                        Đang xử lý
-                    </option>
-
-                    <option value="completed">
-                        Hoàn thành
-                    </option>
-
+            <!-- STATUS -->
+            <div class="col-md-3">
+                <label class="form-label">Trạng thái</label>
+                <select id="status" class="form-select">
+                    <?php foreach ($statuses as $k => $v): ?>
+                        <option value="<?= $k ?>"><?= $v['label'] ?></option>
+                    <?php endforeach; ?>
                 </select>
-
             </div>
 
-            <div class="col-md-6">
-
-                <label
-                    for="payment_status"
-                    class="form-label">
-
-                    Trạng thái thanh toán
-
-                </label>
-
-                <select
-                    id="payment_status"
-                    class="form-select">
-
-                    <option value="unpaid">
-                        Chưa thanh toán
-                    </option>
-
-                    <option value="paid">
-                        Đã thanh toán
-                    </option>
-
+            <!-- PAYMENT -->
+            <div class="col-md-3">
+                <label class="form-label">Thanh toán</label>
+                <select id="payment" class="form-select">
+                    <?php foreach ($payments as $k => $v): ?>
+                        <option value="<?= $k ?>"><?= $v['label'] ?></option>
+                    <?php endforeach; ?>
                 </select>
-
             </div>
 
+            <!-- PRODUCT SEARCH -->
             <div class="col-12 position-relative mt-4">
+                <label class="form-label">Sản phẩm</label>
 
-                <label class="form-label">
-                    Sản phẩm
-                </label>
+                <input type="text"
+                       id="product_search"
+                       class="form-control"
+                       placeholder="Tìm sản phẩm...">
 
-                <input
-                    type="text"
-                    id="product_search"
-                    class="form-control"
-                    placeholder="Tìm sản phẩm..."
-                    autocomplete="off">
-
-                <div
-                    id="product_suggestions"
-                    class="list-group position-absolute w-100 d-none">
-                </div>
-
+                <div id="product_suggestions"
+                     class="list-group position-absolute w-100 d-none"></div>
             </div>
 
+            <!-- TABLE -->
             <div class="col-12">
 
                 <div class="border rounded p-3">
 
                     <div class="table-responsive">
 
-                        <table class="table table-sm align-middle mb-0">
+                        <table class="table table-sm align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Tên</th>
+                                    <th>SL</th>
+                                    <th>Giá</th>
+                                    <th>Giảm</th>
+                                    <th>Quà tặng</th>
+                                    <th>Tạm tính</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
 
-                        <thead>
+                            <tbody id="selected_products"></tbody>
+                        </table>
 
-                            <tr>
+                    </div>
 
-                                <th>
-                                    Sản phẩm
-                                </th>
-
-                                <th>
-                                    SL
-                                </th>
-
-                                <th>
-                                    Giá
-                                </th>
-
-                                <th>
-                                    Giảm giá
-                                </th>
-
-                                <th>
-                                    Quà tặng
-                                </th>
-
-                                <th>
-                                    Thành tiền
-                                </th>
-
-                                <th>
-                                    Hành động
-                                </th>
-
-                            </tr>
-
-                        </thead>
-
-                        <tbody id="selected_products">
-
-                            <tr>
-
-                                <td>
-                                    Yonex Astrox 100ZZ
-                                </td>
-
-                                <td>
-                                    <input
-                                        type="number"
-                                        value="1"
-                                        class="form-control form-control-sm">
-                                </td>
-
-                                <td>
-                                    5.200.000
-                                </td>
-
-                                <td>
-                                    <input
-                                        type="number"
-                                        value="0"
-                                        class="form-control form-control-sm">
-                                </td>
-
-                                <td>
-                                    <input
-                                        type="checkbox"
-                                        class="form-check-input">
-                                </td>
-
-                                <td>
-                                    5.200.000
-                                </td>
-
-                                <td>
-                                    <button
-                                        type="button"
-                                        class="btn btn-sm btn-outline-secondary">
-                                        Xóa
-                                    </button>
-                                </td>
-
-                            </tr>
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-                <div class="col-12 text-end mt-3">
-
-                    <h5 class="mb-0">
-                        Tổng tiền
-                        <span id="total_amount">
-                            5.200.000
-                        </span>
-                        ₫
+                    <h5 class="mt-3">
+                        Tổng tiền:
+                        <span id="total_amount">0</span> ₫
                     </h5>
 
                 </div>
+
             </div>
 
-
-
+            <!-- SUBMIT -->
             <div class="col-12">
-
-                <button
-                    type="submit"
-                    class="btn btn-outline-secondary mt-3">
-
-                    Thêm đơn hàng
-
+                <button class="btn btn-outline-secondary mt-3">
+                    Lưu đơn hàng
                 </button>
-
             </div>
 
         </div>
 
     </form>
-
 </div>
-
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-    const customers = [
-        {
-            id: 1,
-            name: "Nguyễn Văn A",
-            group_name: "Bán lẻ",
-            address: "Hà Nội"
-        },
-        {
-            id: 2,
-            name: "Trần Thị B",
-            group_name: "CLB Cầu lông",
-            address: "Hải Phòng"
-        },
-        {
-            id: 3,
-            name: "Lê Văn C",
-            group_name: "Đại lý",
-            address: "Nam Định"
-        }
-    ];
+    const ORDER_ID = "<?= $id ?? '' ?>";
 
-    const products = [
-        {
-            id: 1,
-            name: "Yonex Astrox 100ZZ",
-            price: 5200000,
-            quantity: 5
-        },
-        {
-            id: 2,
-            name: "Yonex Nanoflare 1000Z",
-            price: 4800000,
-            quantity: 8
-        },
-        {
-            id: 3,
-            name: "Victor Thruster F",
-            price: 3900000,
-            quantity: 12
-        }
-    ];
+    const API = {
+        customers: "/api/customers",
+        products: "/api/products",
+        orders: ORDER_ID ? "/api/orders/show/" + ORDER_ID : "/api/orders"
+    };
+
+    let selectedProducts = {};
+    let CUSTOMERS_MAP = {};
 
     const customerInput = document.getElementById("customer_search");
     const customerId = document.getElementById("customer_id");
-    const customerSuggestions = document.getElementById("customer_suggestions");
+    const customerBox = document.getElementById("customer_suggestions");
 
     const productInput = document.getElementById("product_search");
-    const productSuggestions = document.getElementById("product_suggestions");
+    const productBox = document.getElementById("product_suggestions");
 
-    const selectedProductsBody =
-        document.getElementById("selected_products");
+    const tbody = document.getElementById("selected_products");
+    const totalEl = document.getElementById("total_amount");
 
-    const totalAmount =
-        document.getElementById("total_amount");
-
-    let selectedProducts = {};
-
-    function formatMoney(value) {
-        return Number(value).toLocaleString("vi-VN");
+    function money(v) {
+        return Number(v || 0).toLocaleString("vi-VN");
     }
 
-    customerInput.addEventListener("input", function () {
+    // =========================
+    // CUSTOMERS CACHE
+    // =========================
+    async function loadCustomersCache() {
+        const res = await fetch(API.customers);
+        const json = await res.json();
 
-        const keyword =
-            this.value.toLowerCase().trim();
+        CUSTOMERS_MAP = {};
+        (json.data || []).forEach(c => {
+            CUSTOMERS_MAP[c.id] = c.name;
+        });
+    }
 
-        customerSuggestions.innerHTML = "";
+    // =========================
+    // LOAD ORDER
+    // =========================
+    async function loadOrder() {
+        if (!ORDER_ID) return;
 
-        customerId.value = "";
+        const res = await fetch(API.orders);
+        const json = await res.json();
+        const data = json.data;
 
-        if (!keyword) {
-            customerSuggestions.classList.add("d-none");
-            return;
-        }
+        customerInput.value = CUSTOMERS_MAP[data.customer_id] || "";
+        customerId.value = data.customer_id;
 
-        const matches = customers.filter(customer =>
-            customer.name.toLowerCase().includes(keyword)
-        );
+        document.getElementById("description").value = data.description || "";
+        document.getElementById("status").value = data.status || "";
+        document.getElementById("payment").value = data.payment || "";
 
-        if (!matches.length) {
-            customerSuggestions.classList.add("d-none");
-            return;
-        }
+        selectedProducts = {};
 
-        matches.forEach(customer => {
-
-            const button =
-                document.createElement("button");
-
-            button.type = "button";
-
-            button.className =
-                "list-group-item list-group-item-action";
-
-            button.textContent =
-                `${customer.name} - ${customer.group_name} - ${customer.address}`;
-
-            button.addEventListener("click", function () {
-
-                customerInput.value =
-                    `${customer.name} - ${customer.group_name}`;
-
-                customerId.value =
-                    customer.id;
-
-                customerSuggestions.classList.add("d-none");
-
-            });
-
-            customerSuggestions.appendChild(button);
-
+        (data.products || []).forEach(p => {
+            selectedProducts[p.product_id] = {
+                id: p.product_id,
+                name: p.product_name || `SP #${p.product_id}`,
+                quantity: Number(p.quantity || 1),
+                price: Number(p.price || 0),
+                base_price: Number(p.price || 0),
+                discount: Number(p.discount || 0),
+                gift: Number(p.price) === 0
+            };
         });
 
-        customerSuggestions.classList.remove("d-none");
+        render();
+    }
 
-    });
+    // =========================
+    // PRODUCT SEARCH
+    // =========================
+    productInput.addEventListener("input", async function () {
 
-    productInput.addEventListener("input", function () {
+        const keyword = this.value.trim();
+        productBox.innerHTML = "";
 
-        const keyword =
-            this.value.toLowerCase().trim();
+        if (!keyword) return productBox.classList.add("d-none");
 
-        productSuggestions.innerHTML = "";
+        const res = await fetch(`${API.products}?keyword=${keyword}`);
+        const json = await res.json();
+        const data = json.data || [];
 
-        if (!keyword) {
-            productSuggestions.classList.add("d-none");
-            return;
-        }
+        if (!data.length) return productBox.classList.add("d-none");
 
-        const matches = products.filter(product =>
-            product.name.toLowerCase().includes(keyword)
-        );
+        data.forEach(p => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "list-group-item list-group-item-action";
+            btn.textContent = p.name;
 
-        if (!matches.length) {
-            productSuggestions.classList.add("d-none");
-            return;
-        }
-
-        matches.forEach(product => {
-
-            const button =
-                document.createElement("button");
-
-            button.type = "button";
-
-            button.className =
-                "list-group-item list-group-item-action";
-
-            button.textContent =
-                `${product.name} - ${formatMoney(product.price)} ₫ - Tồn ${product.quantity}`;
-
-            button.addEventListener("click", function () {
-
-                addProduct(product);
-
+            btn.onclick = () => {
+                addProduct(p);
                 productInput.value = "";
+                productBox.classList.add("d-none");
+            };
 
-                productSuggestions.classList.add("d-none");
-
-            });
-
-            productSuggestions.appendChild(button);
-
+            productBox.appendChild(btn);
         });
 
-        productSuggestions.classList.remove("d-none");
-
+        productBox.classList.remove("d-none");
     });
 
-    function addProduct(product) {
+    // =========================
+    // ADD PRODUCT
+    // =========================
+    function addProduct(p) {
+        if (selectedProducts[p.id]) return;
 
-        if (selectedProducts[product.id]) {
-            return;
-        }
-
-        selectedProducts[product.id] = {
-            id: product.id,
-            name: product.name,
-            price: product.price,
+        selectedProducts[p.id] = {
+            id: p.id,
+            name: p.name,
             quantity: 1,
+            price: Number(p.sale_price || 0),
+            base_price: Number(p.sale_price || 0),
             discount: 0,
-            is_gift: false,
-            max_quantity: product.quantity
+            gift: false
         };
 
-        renderProducts();
-
+        render();
     }
 
-    function renderProducts() {
+    // =========================
+    // RENDER (FIX ORDER + UI)
+    // =========================
+    function render() {
 
-        selectedProductsBody.innerHTML = "";
+        tbody.innerHTML = "";
 
-        Object.values(selectedProducts).forEach(product => {
+        const list = Object.values(selectedProducts)
+            .filter(p => p && p.name)
+            .sort((a, b) => (a.name || '').localeCompare(b.name || '', 'vi'));
 
-            const row =
-                document.createElement("tr");
+        list.forEach(p => {
 
-            row.innerHTML = `
-                <td>${product.name}</td>
+            const tr = document.createElement("tr");
+
+            tr.innerHTML = `
+                <td>${p.name}</td>
+
+                <td><input class="form-control form-control-sm qty" data-id="${p.id}" value="${p.quantity}"></td>
+
+                <td><input class="form-control form-control-sm price" data-id="${p.id}" value="${p.price}" ${p.gift ? "disabled" : ""}></td>
+
+                <td><input class="form-control form-control-sm discount" data-id="${p.id}" value="${p.discount}"></td>
 
                 <td>
-                    <input
-                        type="number"
-                        min="1"
-                        value="${product.quantity}"
-                        data-id="${product.id}"
-                        class="form-control form-control-sm qty-input">
+                    <input type="checkbox" class="form-check-input gift" data-id="${p.id}" ${p.gift ? "checked" : ""}>
+                    Quà tặng
                 </td>
 
-                <td>
-                    ${formatMoney(product.price)}
-                </td>
+                <td class="item-total" data-id="${p.id}"></td>
 
                 <td>
-                    <input
-                        type="number"
-                        min="0"
-                        value="${product.discount}"
-                        data-id="${product.id}"
-                        class="form-control form-control-sm discount-input">
-                </td>
-
-                <td>
-                    <input
-                        type="checkbox"
-                        data-id="${product.id}"
-                        class="form-check-input gift-checkbox"
-                        ${product.is_gift ? "checked" : ""}>
-                </td>
-
-                <td>
-                    <span
-                        class="item-total"
-                        data-id="${product.id}">
-                    </span>
-                </td>
-
-                <td>
-                    <button
-                        type="button"
-                        data-id="${product.id}"
-                        class="btn btn-sm btn-outline-secondary remove-btn">
-
-                        Xóa
-
-                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-danger remove" data-id="${p.id}">Xóa</button>
                 </td>
             `;
 
-            selectedProductsBody.appendChild(row);
-
+            tbody.appendChild(tr);
         });
 
-        bindEvents();
-
-        calculateTotal();
-
+        bind();
+        calc();
     }
 
-    function bindEvents() {
+    // =========================
+    // BIND EVENTS (IMPORTANT FIX)
+    // =========================
+    function bind() {
 
-        document.querySelectorAll(".qty-input")
-            .forEach(input => {
+        document.querySelectorAll(".qty").forEach(el => {
+            el.oninput = () => {
+                selectedProducts[el.dataset.id].quantity = +el.value || 1;
+                calc();
+            };
+        });
 
-                input.addEventListener("input", function () {
+        document.querySelectorAll(".price").forEach(el => {
+            el.oninput = () => {
+                selectedProducts[el.dataset.id].price = +el.value || 0;
+                selectedProducts[el.dataset.id].base_price = +el.value || 0;
+                calc();
+            };
+        });
 
-                    const id = this.dataset.id;
+        document.querySelectorAll(".discount").forEach(el => {
+            el.oninput = () => {
+                selectedProducts[el.dataset.id].discount = +el.value || 0;
+                calc();
+            };
+        });
 
-                    let quantity =
-                        parseInt(this.value) || 1;
+        document.querySelectorAll(".remove").forEach(el => {
+            el.onclick = () => {
+                delete selectedProducts[el.dataset.id];
+                render();
+            };
+        });
 
-                    const max =
-                        selectedProducts[id].max_quantity;
+        // GIFT FIX
+        document.querySelectorAll(".gift").forEach(el => {
+            el.onchange = () => {
 
-                    if (quantity > max) {
+                const p = selectedProducts[el.dataset.id];
 
-                        quantity = max;
+                p.gift = el.checked;
 
-                        this.value = max;
+                if (p.gift) {
+                    p.price = 0;
+                } else {
+                    p.price = p.base_price;
+                }
 
-                    }
-
-                    selectedProducts[id].quantity =
-                        quantity;
-
-                    calculateTotal();
-
-                });
-
-            });
-
-        document.querySelectorAll(".discount-input")
-            .forEach(input => {
-
-                input.addEventListener("input", function () {
-
-                    const id = this.dataset.id;
-
-                    selectedProducts[id].discount =
-                        parseInt(this.value) || 0;
-
-                    calculateTotal();
-
-                });
-
-            });
-
-        document.querySelectorAll(".gift-checkbox")
-            .forEach(input => {
-
-                input.addEventListener("change", function () {
-
-                    const id = this.dataset.id;
-
-                    selectedProducts[id].is_gift =
-                        this.checked;
-
-                    calculateTotal();
-
-                });
-
-            });
-
-        document.querySelectorAll(".remove-btn")
-            .forEach(button => {
-
-                button.addEventListener("click", function () {
-
-                    delete selectedProducts[
-                        this.dataset.id
-                    ];
-
-                    renderProducts();
-
-                });
-
-            });
-
+                render();
+            };
+        });
     }
 
-    function calculateTotal() {
+    // =========================
+    // CALC
+    // =========================
+    function calc() {
 
         let total = 0;
 
-        Object.values(selectedProducts).forEach(product => {
+        Object.values(selectedProducts).forEach(p => {
 
-            let itemTotal = 0;
+            const sum = (p.price * p.quantity) - (p.discount || 0);
 
-            if (!product.is_gift) {
+            const el = document.querySelector(`.item-total[data-id="${p.id}"]`);
+            if (el) el.textContent = money(sum);
 
-                itemTotal =
-                    Math.max(
-                        product.price - product.discount,
-                        0
-                    ) * product.quantity;
-
-            }
-
-            const target =
-                document.querySelector(
-                    `.item-total[data-id="${product.id}"]`
-                );
-
-            if (target) {
-
-                target.textContent =
-                    formatMoney(itemTotal);
-
-            }
-
-            total += itemTotal;
-
+            total += sum;
         });
 
-        totalAmount.textContent =
-            formatMoney(total);
-
+        totalEl.textContent = money(total);
     }
 
-    document.addEventListener("click", function (event) {
+    // =========================
+    // SUBMIT
+    // =========================
+    document.getElementById("order-create-form")
+        .addEventListener("submit", async function (e) {
 
-        if (
-            !customerInput.contains(event.target) &&
-            !customerSuggestions.contains(event.target)
-        ) {
-            customerSuggestions.classList.add("d-none");
-        }
-
-        if (
-            !productInput.contains(event.target) &&
-            !productSuggestions.contains(event.target)
-        ) {
-            productSuggestions.classList.add("d-none");
-        }
-
-    });
-
-    document
-        .getElementById("export-add-form")
-        .addEventListener("submit", function (event) {
-
-            event.preventDefault();
+            e.preventDefault();
 
             const payload = {
-
-                customer_id:
-                    customerId.value,
-
-                description:
-                    document.getElementById("description").value,
-
-                status:
-                    document.getElementById("status").value,
-
-                payment_status:
-                    document.getElementById("payment_status").value,
-
-                products:
-                    Object.values(selectedProducts)
-
+                id: ORDER_ID,
+                customer_id: customerId.value,
+                description: document.getElementById("description").value,
+                status: document.getElementById("status").value,
+                payment: document.getElementById("payment").value,
+                products: Object.values(selectedProducts)
             };
 
-            console.log(payload);
+            const url = ORDER_ID ? "/api/orders/update" : "/api/orders";
 
-            alert(
-                "Fake submit thành công. Kiểm tra Console."
-            );
+            const res = await fetch(url, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(payload)
+            });
 
+            const data = await res.json();
+
+            if (!data.success) return alert(data.message || "Lỗi");
+
+            alert("Cập nhật đơn hàng thành công!");
+            window.location.href = "/admin/orders";
         });
+
+    // INIT
+    loadCustomersCache().then(loadOrder);
 
 });
 </script>

@@ -73,3 +73,5 @@ Router::post('/api/orders', 'OrderEndpoint@apiCreate');
 Router::get('/api/orders/show/{id}', 'OrderEndpoint@apiShow');
 Router::post('/api/orders/update', 'OrderEndpoint@apiUpdate');
 Router::post('/api/orders/delete', 'OrderEndpoint@apiDelete');
+Router::post('/api/orders/status', 'OrderEndpoint@apiStatus');
+Router::post('/api/orders/payment', 'OrderEndpoint@apiPayment');
