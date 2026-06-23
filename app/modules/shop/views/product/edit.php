@@ -71,133 +71,56 @@
 </div>
 
 <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const productId = window.location.pathname.split('/').pop();
 
-const productId = window.location.pathname.split('/').pop();
-
-async function loadCategories() {
-
-    try {
-
-        const res = await fetch('/api/categories');
-        const json = await res.json();
-
-        const select = document.querySelector('#category_id');
-
-        select.innerHTML = '<option value="">-- Chọn danh mục --</option>';
-
-        json.data.forEach(category => {
-
-            select.innerHTML += `
-                <option value="${category.id}">
-                    ${category.name}
-                </option>
-            `;
-
-        });
-
-    } catch (error) {
-
-        console.error(error);
-
-    }
-
-}
-
-async function loadProduct() {
-
-    try {
-
-        const res = await fetch(`/api/products/show/${productId}`);
-        const json = await res.json();
-
-        const product = json.data;
-
-        document.querySelector('#name').value = product.name ?? '';
-        document.querySelector('#price').value = product.price ?? '';
-        document.querySelector('#category_id').value = product.category_id ?? '';
-        document.querySelector('#description').value = product.description ?? '';
-
-        if (product.thumbnail) {
-
-            document.querySelector('#thumbnail-preview').src =
-                product.thumbnail;
-
-        }
-
-    } catch (error) {
-
-        console.error(error);
-
-    }
-
-}
-
-document
-    .querySelector('#thumbnail')
-    .addEventListener('change', function () {
-
-        const file = this.files[0];
-
-        if (!file) {
-            return;
-        }
-
-        document.querySelector('#thumbnail-preview').src =
-            URL.createObjectURL(file);
-
-    });
-
-document
-    .querySelector('#product-edit-form')
-    .addEventListener('submit', async function (e) {
-
-        e.preventDefault();
-
-        const formData = new FormData();
-
-        formData.append('id', productId);
-        formData.append('name', document.querySelector('#name').value);
-        formData.append('price', document.querySelector('#price').value);
-        formData.append('category_id', document.querySelector('#category_id').value);
-        formData.append('description', document.querySelector('#description').value);
-
-        const thumbnail =
-            document.querySelector('#thumbnail').files[0];
-
-        if (thumbnail) {
-
-            formData.append(
-                'thumbnail',
-                thumbnail
-            );
-
-        }
+    async function loadCategories() {
 
         try {
 
-            const res = await fetch(
-                '/api/products/update',
-                {
-                    method: 'POST',
-                    body: formData
-                }
-            );
+            const res = await fetch('/api/categories');
+            const json = await res.json();
 
-            const result = await res.json();
+            const select = document.querySelector('#category_id');
 
-            if (result.success) {
+            select.innerHTML = '<option value="">-- Chọn danh mục --</option>';
 
-                alert('Cập nhật sản phẩm thành công');
+            json.data.forEach(category => {
 
-                window.location.href =
-                    '/admin/products';
+                select.innerHTML += `
+                    <option value="${category.id}">
+                        ${category.name}
+                    </option>
+                `;
 
-            } else {
+            });
 
-                alert(
-                    result.message ??
-                    'Cập nhật thất bại'
-                );
+        } catch (error) {
+
+            console.error(error);
+
+        }
+
+    }
+
+    async function loadProduct() {
+
+        try {
+
+            const res = await fetch(`/api/products/show/${productId}`);
+            const json = await res.json();
+
+            const product = json.data;
+
+            document.querySelector('#name').value = product.name ?? '';
+            document.querySelector('#price').value = product.price ?? '';
+            document.querySelector('#category_id').value = product.category_id ?? '';
+            document.querySelector('#description').value = product.description ?? '';
+
+            if (product.thumbnail) {
+
+                document.querySelector('#thumbnail-preview').src =
+                    product.thumbnail;
 
             }
 
@@ -205,17 +128,96 @@ document
 
             console.error(error);
 
-            alert('Lỗi hệ thống');
-
         }
 
-    });
+    }
 
-(async function () {
+    document
+        .querySelector('#thumbnail')
+        .addEventListener('change', function () {
 
-    await loadCategories();
-    await loadProduct();
+            const file = this.files[0];
 
-})();
+            if (!file) {
+                return;
+            }
+
+            document.querySelector('#thumbnail-preview').src =
+                URL.createObjectURL(file);
+
+        });
+
+    document
+        .querySelector('#product-edit-form')
+        .addEventListener('submit', async function (e) {
+
+            e.preventDefault();
+
+            const formData = new FormData();
+
+            formData.append('id', productId);
+            formData.append('name', document.querySelector('#name').value);
+            formData.append('price', document.querySelector('#price').value);
+            formData.append('category_id', document.querySelector('#category_id').value);
+            formData.append('description', document.querySelector('#description').value);
+
+            const thumbnail =
+                document.querySelector('#thumbnail').files[0];
+
+            if (thumbnail) {
+
+                formData.append(
+                    'thumbnail',
+                    thumbnail
+                );
+
+            }
+
+            try {
+
+                const res = await fetch(
+                    '/api/products/update',
+                    {
+                        method: 'POST',
+                        body: formData
+                    }
+                );
+
+                const result = await res.json();
+
+                if (result.success) {
+
+                    alert('Cập nhật sản phẩm thành công');
+
+                    window.location.href =
+                        '/admin/products';
+
+                } else {
+
+                    alert(
+                        result.message ??
+                        'Cập nhật thất bại'
+                    );
+
+                }
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert('Lỗi hệ thống');
+
+            }
+
+        });
+
+    (async function () {
+
+        await loadCategories();
+        await loadProduct();
+
+    })();
+}
+
 
 </script>

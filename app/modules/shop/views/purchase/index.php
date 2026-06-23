@@ -93,224 +93,234 @@ $payments = config('shop.option.payment') ?? [];
 </div>
 
 <script>
+document.addEventListener("DOMContentLoaded", function () {
 
-/* =========================
-   API
-========================= */
-const API = {
-    suppliers: '/api/suppliers',
-    purchases: '/api/purchases',
-    status: '/api/purchases/status',
-    payment: '/api/purchases/payment',
-    delete: '/api/purchases/delete'
-};
+    /* =========================
+       API
+    ========================= */
+    const API = {
+        suppliers: '/api/suppliers',
+        purchases: '/api/purchases',
+        status: '/api/purchases/status',
+        payment: '/api/purchases/payment',
+        delete: '/api/purchases/delete'
+    };
 
-/* =========================
-   STATE
-========================= */
-let currentPage = 1;
-let lastPage = 1;
-let prevPage = 1;
-let nextPage = 1;
+    /* =========================
+       STATE
+    ========================= */
+    let currentPage = 1;
+    let lastPage = 1;
+    let prevPage = 1;
+    let nextPage = 1;
 
-/* =========================
-   PHP CONFIG
-========================= */
-const STATUS_CONFIG = <?= json_encode($statuses) ?>;
-const PAYMENT_CONFIG = <?= json_encode($payments) ?>;
+    /* =========================
+       PHP CONFIG
+    ========================= */
+    const STATUS_CONFIG = <?= json_encode($statuses) ?>;
+    const PAYMENT_CONFIG = <?= json_encode($payments) ?>;
 
-/* =========================
-   SAFE GET VALUE
-========================= */
-function getVal(id) {
-    const el = document.getElementById(id);
-    return el ? el.value : '';
-}
-
-/* =========================
-   SUPPLIERS
-========================= */
-async function loadSuppliers() {
-    const el = document.getElementById('filter-supplier');
-    if (!el) return;
-
-    const res = await fetch(API.suppliers);
-    const json = await res.json();
-
-    el.innerHTML = `<option value="">Nhà cung cấp</option>`;
-
-    (json.data || []).forEach(s => {
-        el.innerHTML += `<option value="${s.id}">${s.name}</option>`;
-    });
-}
-
-/* =========================
-   LOAD PAYMENT OPTIONS FROM PHP
-========================= */
-function initPaymentFilter() {
-    const el = document.getElementById('filter-payment');
-    if (!el) return;
-
-    el.innerHTML = `<option value="">Thanh toán</option>`;
-
-    Object.keys(PAYMENT_CONFIG).forEach(k => {
-        el.innerHTML += `<option value="${k}">${PAYMENT_CONFIG[k].label}</option>`;
-    });
-}
-
-/* =========================
-   LOAD PURCHASES
-========================= */
-async function loadPurchases(page = 1) {
-
-    currentPage = page;
-
-    const query = new URLSearchParams({
-        page,
-        supplier_id: getVal('filter-supplier'),
-        date_from: getVal('filter-date-from'),
-        date_to: getVal('filter-date-to'),
-        payment: getVal('filter-payment')
-    });
-
-    const res = await fetch(`${API.purchases}?${query}`);
-    const json = await res.json();
-
-    const tbody = document.getElementById('purchase-table-body');
-    if (!tbody) return;
-
-    tbody.innerHTML = '';
-
-    if (!json.data || json.data.length === 0) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="9" class="text-center text-muted">
-                    Không có phiếu nhập nào
-                </td>
-            </tr>`;
-        return;
+    /* =========================
+       SAFE GET VALUE
+    ========================= */
+    function getVal(id) {
+        const el = document.getElementById(id);
+        return el ? el.value : '';
     }
 
-    json.data.forEach((p, index) => {
+    /* =========================
+       SUPPLIERS
+    ========================= */
+    async function loadSuppliers() {
+        const el = document.getElementById('filter-supplier');
+        if (!el) return;
 
-        const status = String(p.status);
-        const payment = String(p.payment);
+        const res = await fetch(API.suppliers);
+        const json = await res.json();
 
-        tbody.innerHTML += `
-            <tr>
-                <td>${(json.meta.page - 1) * json.meta.perPage + index + 1}</td>
+        el.innerHTML = `<option value="">Nhà cung cấp</option>`;
 
-                <td>${p.supplier_name ?? '---'}</td>
-                <td>${p.warehouse_name ?? '---'}</td>
-                <td>${Number(p.total_cost).toLocaleString()} ₫</td>
-                <td>${p.total_items ?? 0}</td>
+        (json.data || []).forEach(s => {
+            el.innerHTML += `<option value="${s.id}">${s.name}</option>`;
+        });
+    }
 
-                <!-- STATUS -->
-                <td>
-                    <select class="form-select form-select-sm text-${STATUS_CONFIG[p.status]?.color || 'secondary'}"
-                            onchange="updateStatus(${p.id}, this.value)">
+    /* =========================
+       LOAD PAYMENT OPTIONS FROM PHP
+    ========================= */
+    function initPaymentFilter() {
+        const el = document.getElementById('filter-payment');
+        if (!el) return;
 
-                        ${Object.keys(STATUS_CONFIG).map(k => `
-                            <option value="${k}" ${String(k) === String(p.status) ? 'selected' : ''}>
-                                ${STATUS_CONFIG[k].label}
-                            </option>
-                        `).join('')}
+        el.innerHTML = `<option value="">Thanh toán</option>`;
 
-                    </select>
-                </td>
+        Object.keys(PAYMENT_CONFIG).forEach(k => {
+            el.innerHTML += `<option value="${k}">${PAYMENT_CONFIG[k].label}</option>`;
+        });
+    }
 
-                <!-- PAYMENT -->
-                <td>
-                    <select class="form-select form-select-sm text-${PAYMENT_CONFIG[p.payment]?.color || 'secondary'}"
-                            onchange="updatePayment(${p.id}, this.value)">
+    /* =========================
+       LOAD PURCHASES
+    ========================= */
+    async function loadPurchases(page = 1) {
 
-                        ${Object.keys(PAYMENT_CONFIG).map(k => `
-                            <option value="${k}" ${String(p.payment) === String(k) ? 'selected' : ''}>
-                                ${PAYMENT_CONFIG[k].label}
-                            </option>
-                        `).join('')}
+        currentPage = page;
 
-                    </select>
-                </td>
+        const query = new URLSearchParams({
+            page,
+            supplier_id: getVal('filter-supplier'),
+            date_from: getVal('filter-date-from'),
+            date_to: getVal('filter-date-to'),
+            payment: getVal('filter-payment')
+        });
 
-                <td>${p.created_at ?? ''}</td>
+        const res = await fetch(`${API.purchases}?${query}`);
+        const json = await res.json();
 
-                <td>
-                    <a href="/admin/purchases/edit/${p.id}" class="btn btn-sm btn-outline-secondary">Sửa</a>
-                    <button class="btn btn-sm btn-outline-secondary" onclick="deletePurchase(${p.id})">Xóa</button>
-                </td>
-            </tr>
-        `;
-    });
+        const tbody = document.getElementById('purchase-table-body');
+        if (!tbody) return;
 
-    document.getElementById('total-amount').innerText = json.meta.total;
+        tbody.innerHTML = '';
 
-    lastPage = json.meta.totalPages;
-    prevPage = Math.max(1, json.meta.page - 1);
-    nextPage = Math.min(lastPage, json.meta.page + 1);
+        if (!json.data || json.data.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="9" class="text-center text-muted">
+                        Không có phiếu nhập nào
+                    </td>
+                </tr>`;
+            return;
+        }
 
-    renderPages(json.meta.page, json.meta.totalPages);
-}
+        json.data.forEach((p, index) => {
 
-/* =========================
-   UPDATE STATUS
-========================= */
-async function updateStatus(id, status) {
-    const form = new FormData();
-    form.append('id', id);
-    form.append('status', status);
+            tbody.innerHTML += `
+                <tr>
+                    <td>${(json.meta.page - 1) * json.meta.perPage + index + 1}</td>
 
-    await fetch(API.status, { method: 'POST', body: form });
+                    <td>${p.supplier_name ?? '---'}</td>
+                    <td>${p.warehouse_name ?? '---'}</td>
+                    <td>${Number(p.total_cost).toLocaleString()} ₫</td>
+                    <td>${p.total_items ?? 0}</td>
 
-    loadPurchases(currentPage);
-}
+                    <td>
+                        <select class="form-select form-select-sm text-${STATUS_CONFIG[p.status]?.color || 'secondary'}"
+                                onchange="updateStatus(${p.id}, this.value)">
 
-/* =========================
-   UPDATE PAYMENT
-========================= */
-async function updatePayment(id, status) {
-    const form = new FormData();
-    form.append('id', id);
-    form.append('payment', status);
+                            ${Object.keys(STATUS_CONFIG).map(k => `
+                                <option value="${k}" ${String(k) === String(p.status) ? 'selected' : ''}>
+                                    ${STATUS_CONFIG[k].label}
+                                </option>
+                            `).join('')}
 
-    await fetch(API.payment, { method: 'POST', body: form });
+                        </select>
+                    </td>
 
-    loadPurchases(currentPage);
-}
+                    <td>
+                        <select class="form-select form-select-sm text-${PAYMENT_CONFIG[p.payment]?.color || 'secondary'}"
+                                onchange="updatePayment(${p.id}, this.value)">
 
-/* =========================
-   DELETE
-========================= */
-async function deletePurchase(id) {
-    if (!confirm('Bạn có chắc muốn xóa?')) return;
+                            ${Object.keys(PAYMENT_CONFIG).map(k => `
+                                <option value="${k}" ${String(p.payment) === String(k) ? 'selected' : ''}>
+                                    ${PAYMENT_CONFIG[k].label}
+                                </option>
+                            `).join('')}
 
-    const form = new FormData();
-    form.append('id', id);
+                        </select>
+                    </td>
 
-    const res = await fetch(API.delete, { method: 'POST', body: form });
-    const json = await res.json();
+                    <td>${p.created_at ?? ''}</td>
 
-    if (json.success) loadPurchases(currentPage);
-    else alert(json.message || 'Xóa thất bại');
-}
+                    <td>
+                        <a href="/admin/purchases/edit/${p.id}" class="btn btn-sm btn-outline-secondary">Sửa</a>
+                        <button class="btn btn-sm btn-outline-secondary"
+                                onclick="deletePurchase(${p.id})">
+                            Xóa
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
 
-/* =========================
-   PAGINATION (GIỮ NGUYÊN UI)
-========================= */
-function goToPage(page) {
-    loadPurchases(page);
-}
+        document.getElementById('total-amount').innerText = json.meta.total;
 
-function renderPages(page, totalPages) {
+        lastPage = json.meta.totalPages;
+        prevPage = Math.max(1, json.meta.page - 1);
+        nextPage = Math.min(lastPage, json.meta.page + 1);
 
-    const container = document.getElementById('pagination-pages');
-    if (!container) return;
+        renderPages(json.meta.page, json.meta.totalPages);
+    }
 
-    container.innerHTML = '';
+    /* =========================
+       UPDATE STATUS
+    ========================= */
+    async function updateStatus(id, status) {
+        const form = new FormData();
+        form.append('id', id);
+        form.append('status', status);
 
-    for (let i = 1; i <= totalPages; i++) {
+        await fetch(API.status, { method: 'POST', body: form });
 
-        if (i === 1 || i === totalPages || (i >= page - 2 && i <= page + 2)) {
+        loadPurchases(currentPage);
+    }
+
+    /* =========================
+       UPDATE PAYMENT
+    ========================= */
+    async function updatePayment(id, status) {
+        const form = new FormData();
+        form.append('id', id);
+        form.append('payment', status);
+
+        await fetch(API.payment, { method: 'POST', body: form });
+
+        loadPurchases(currentPage);
+    }
+
+    /* =========================
+       DELETE
+    ========================= */
+    async function deletePurchase(id) {
+        if (!confirm('Bạn có chắc muốn xóa?')) return;
+
+        const form = new FormData();
+        form.append('id', id);
+
+        const res = await fetch(API.delete, {
+            method: 'POST',
+            body: form
+        });
+
+        const json = await res.json();
+
+        if (json.success) {
+            loadPurchases(currentPage);
+        } else {
+            alert(json.message || 'Xóa thất bại');
+        }
+    }
+
+    /* =========================
+       PAGINATION
+    ========================= */
+    function goToPage(page) {
+        loadPurchases(page);
+    }
+
+    function renderPages(page, totalPages) {
+
+        const container = document.getElementById('pagination-pages');
+        if (!container) return;
+
+        container.innerHTML = '';
+
+        for (let i = 1; i <= totalPages; i++) {
+
+            if (
+                i === 1 ||
+                i === totalPages ||
+                (i >= page - 2 && i <= page + 2)
+            ) {
 
                 container.innerHTML += `
                     <li class="page-item ${i === page ? 'active' : ''}">
@@ -320,28 +330,35 @@ function renderPages(page, totalPages) {
                             ${i}
                         </a>
                     </li>`;
+            }
         }
     }
-}
 
-/* =========================
-   FILTER EVENTS
-========================= */
-document.querySelectorAll(
-    '#filter-supplier, #filter-date-from, #filter-date-to, #filter-payment'
-).forEach(el => {
-    if (!el) return;
-    el.addEventListener('change', () => loadPurchases(1));
-    el.addEventListener('input', () => loadPurchases(1));
-});
+    /* =========================
+       GLOBAL FUNCTIONS
+    ========================= */
+    window.updateStatus = updateStatus;
+    window.updatePayment = updatePayment;
+    window.deletePurchase = deletePurchase;
+    window.goToPage = goToPage;
 
-/* =========================
-   INIT
-========================= */
-document.addEventListener('DOMContentLoaded', async function () {
-    await loadSuppliers();
+    /* =========================
+       FILTER EVENTS
+    ========================= */
+    document.querySelectorAll(
+        '#filter-supplier, #filter-date-from, #filter-date-to, #filter-payment'
+    ).forEach(el => {
+        el.addEventListener('change', () => loadPurchases(1));
+        el.addEventListener('input', () => loadPurchases(1));
+    });
+
+    /* =========================
+       INIT
+    ========================= */
+    loadSuppliers();
     initPaymentFilter();
-    await loadPurchases(1);
+    loadPurchases(1);
+
 });
 
 </script>

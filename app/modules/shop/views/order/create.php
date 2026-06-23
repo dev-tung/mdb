@@ -14,7 +14,7 @@ $payments = config('shop.option.payment');
         <div class="row g-3">
 
             <!-- CUSTOMER -->
-            <div class="col-md-6 position-relative">
+            <div class="col-md-4 position-relative">
 
                 <label class="form-label">Khách hàng</label>
 
@@ -32,20 +32,8 @@ $payments = config('shop.option.payment');
 
             </div>
 
-            <!-- DESCRIPTION -->
-            <div class="col-md-6">
-
-                <label class="form-label">Mô tả</label>
-
-                <input type="text"
-                       id="description"
-                       class="form-control"
-                       placeholder="Nhập mô tả đơn hàng">
-
-            </div>
-
             <!-- STATUS -->
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <label class="form-label">Trạng thái</label>
 
                 <select id="status" class="form-select">
@@ -58,7 +46,7 @@ $payments = config('shop.option.payment');
             </div>
 
             <!-- PAYMENT STATUS -->
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <label class="form-label">Thanh toán</label>
 
                 <select id="payment" class="form-select">
@@ -68,6 +56,18 @@ $payments = config('shop.option.payment');
                         </option>
                     <?php endforeach; ?>
                 </select>
+            </div>
+
+            <!-- DESCRIPTION -->
+            <div class="col-md-12">
+
+                <label class="form-label">Mô tả</label>
+
+                <input type="text"
+                       id="description"
+                       class="form-control"
+                       placeholder="Nhập mô tả đơn hàng">
+
             </div>
 
             <!-- PRODUCT SEARCH -->
@@ -275,6 +275,7 @@ document.addEventListener("DOMContentLoaded", function () {
             base_price: Number(p.sale_price || 0),
             quantity: 1,
             discount: 0,
+            purchase_product_id: p.purchase_product_id,
             gift: false
         };
 

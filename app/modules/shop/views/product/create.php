@@ -52,7 +52,7 @@
 </div>
 
 <script>
-
+document.addEventListener("DOMContentLoaded", function () {
     // =========================
     // LOAD CATEGORIES
     // =========================
@@ -127,4 +127,5 @@
     // =========================
     loadCategories();
 
+}
 </script>

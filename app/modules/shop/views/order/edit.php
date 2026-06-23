@@ -14,7 +14,7 @@ $payments = config('shop.option.payment');
         <div class="row g-3">
 
             <!-- CUSTOMER -->
-            <div class="col-md-6 position-relative">
+            <div class="col-md-4 position-relative">
                 <label class="form-label">Khách hàng</label>
 
                 <input type="text"
@@ -28,14 +28,8 @@ $payments = config('shop.option.payment');
                      class="list-group position-absolute w-100 d-none z-1"></div>
             </div>
 
-            <!-- DESCRIPTION -->
-            <div class="col-md-6">
-                <label class="form-label">Mô tả</label>
-                <input type="text" id="description" class="form-control">
-            </div>
-
             <!-- STATUS -->
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <label class="form-label">Trạng thái</label>
                 <select id="status" class="form-select">
                     <?php foreach ($statuses as $k => $v): ?>
@@ -45,13 +39,19 @@ $payments = config('shop.option.payment');
             </div>
 
             <!-- PAYMENT -->
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <label class="form-label">Thanh toán</label>
                 <select id="payment" class="form-select">
                     <?php foreach ($payments as $k => $v): ?>
                         <option value="<?= $k ?>"><?= $v['label'] ?></option>
                     <?php endforeach; ?>
                 </select>
+            </div>
+
+            <!-- DESCRIPTION -->
+            <div class="col-md-12">
+                <label class="form-label">Mô tả</label>
+                <input type="text" id="description" class="form-control">
             </div>
 
             <!-- PRODUCT SEARCH -->
@@ -180,6 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 price: Number(p.price || 0),
                 base_price: Number(p.price || 0),
                 discount: Number(p.discount || 0),
+                purchase_product_id: p.purchase_product_id,
                 gift: Number(p.price) === 0
             };
         });

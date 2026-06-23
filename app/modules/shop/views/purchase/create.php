@@ -152,17 +152,13 @@ $payments = config('shop.option.payment');
 document.addEventListener("DOMContentLoaded", function () {
 
     // =========================
-    // CONFIG
+    // API
     // =========================
-    const PURCHASE_ID = "<?= $id ?? '' ?>";
-
     const API = {
         suppliers: "/api/suppliers",
         products: "/api/products",
         warehouses: "/api/warehouses",
-        purchases: PURCHASE_ID
-            ? ("/api/purchases/show/" + PURCHASE_ID)
-            : "/api/purchases"
+        purchases: "/api/purchases"
     };
 
     let selectedProducts = {};
@@ -214,46 +210,14 @@ document.addEventListener("DOMContentLoaded", function () {
         warehouseSelect.innerHTML = "";
 
         data.forEach(w => {
+
             const opt = document.createElement("option");
+
             opt.value = w.id;
             opt.textContent = w.name;
+
             warehouseSelect.appendChild(opt);
         });
-    }
-
-    // =========================
-    // LOAD PURCHASE (EDIT MODE)
-    // =========================
-    async function loadPurchase() {
-
-        if (!PURCHASE_ID) return;
-
-        const res = await fetch(API.purchases);
-        const json = await res.json();
-
-        const data = json.data;
-
-        // supplier map from cache
-        supplierInput.value = SUPPLIERS_MAP[data.supplier_id] || "";
-        supplierId.value = data.supplier_id || "";
-
-        document.getElementById("description").value = data.description || "";
-        document.getElementById("status").value = data.status || "";
-        document.getElementById("payment").value = data.payment || "";
-        warehouseSelect.value = data.warehouse_id || "";
-
-        selectedProducts = {};
-
-        (data.products || []).forEach(p => {
-            selectedProducts[p.product_id] = {
-                id: p.product_id,
-                name: p.name,
-                price: Number(p.price),
-                quantity: Number(p.quantity)
-            };
-        });
-
-        render();
     }
 
     // =========================
@@ -286,6 +250,7 @@ document.addEventListener("DOMContentLoaded", function () {
         data.forEach(s => {
 
             const btn = document.createElement("button");
+
             btn.type = "button";
             btn.className = "list-group-item list-group-item-action";
             btn.textContent = s.name;
@@ -331,12 +296,15 @@ document.addEventListener("DOMContentLoaded", function () {
         data.forEach(p => {
 
             const btn = document.createElement("button");
+
             btn.type = "button";
             btn.className = "list-group-item list-group-item-action";
             btn.textContent = p.name;
 
             btn.onclick = () => {
+
                 addProduct(p);
+
                 productInput.value = "";
                 productBox.classList.add("d-none");
             };
@@ -379,27 +347,31 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>${p.name}</td>
 
                 <td>
-                    <input type="number"
-                           min="1"
-                           value="${p.quantity}"
-                           data-id="${p.id}"
-                           class="form-control form-control-sm qty">
+                    <input
+                        type="number"
+                        min="1"
+                        value="${p.quantity}"
+                        data-id="${p.id}"
+                        class="form-control form-control-sm qty">
                 </td>
 
                 <td>
-                    <input type="number"
-                           min="0"
-                           value="${p.price}"
-                           data-id="${p.id}"
-                           class="form-control form-control-sm price">
+                    <input
+                        type="number"
+                        min="0"
+                        value="${p.price}"
+                        data-id="${p.id}"
+                        class="form-control form-control-sm price">
                 </td>
 
-                <td class="item-total" data-id="${p.id}"></td>
+                <td class="item-total" data-id="${p.id}">
+                </td>
 
                 <td>
-                    <button type="button"
-                            class="btn btn-sm btn-outline-danger remove"
-                            data-id="${p.id}">
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-outline-danger remove"
+                        data-id="${p.id}">
                         Xóa
                     </button>
                 </td>
@@ -413,34 +385,45 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // =========================
-    // BIND
+    // BIND EVENTS
     // =========================
     function bind() {
 
         document.querySelectorAll(".qty").forEach(i => {
+
             i.oninput = () => {
-                selectedProducts[i.dataset.id].quantity = +i.value || 1;
+
+                selectedProducts[i.dataset.id].quantity =
+                    +i.value || 1;
+
                 calc();
             };
         });
 
         document.querySelectorAll(".price").forEach(i => {
+
             i.oninput = () => {
-                selectedProducts[i.dataset.id].price = +i.value || 0;
+
+                selectedProducts[i.dataset.id].price =
+                    +i.value || 0;
+
                 calc();
             };
         });
 
         document.querySelectorAll(".remove").forEach(b => {
+
             b.onclick = () => {
+
                 delete selectedProducts[b.dataset.id];
+
                 render();
             };
         });
     }
 
     // =========================
-    // CALC
+    // CALCULATE TOTAL
     // =========================
     function calc() {
 
@@ -450,8 +433,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const sum = p.price * p.quantity;
 
-            const el = document.querySelector(`.item-total[data-id="${p.id}"]`);
-            if (el) el.textContent = money(sum);
+            const el = document.querySelector(
+                `.item-total[data-id="${p.id}"]`
+            );
+
+            if (el) {
+                el.textContent = money(sum);
+            }
 
             total += sum;
         });
@@ -460,20 +448,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // =========================
-    // SUBMIT (CREATE + EDIT)
+    // SUBMIT CREATE
     // =========================
-    document.getElementById("purchase-create-form")
+    document
+        .getElementById("purchase-create-form")
         .addEventListener("submit", async function (e) {
 
             e.preventDefault();
 
-            const supplier = supplierId.value.trim();
-            const products = Object.values(selectedProducts);
+            const products =
+                Object.values(selectedProducts);
 
-            // =========================
-            // VALIDATE
-            // =========================
-            if (!supplier) {
+            if (!supplierId.value.trim()) {
                 alert("Vui lòng chọn nhà cung cấp");
                 return;
             }
@@ -486,22 +472,17 @@ document.addEventListener("DOMContentLoaded", function () {
             const payload = {
                 supplier_id: supplierId.value,
                 warehouse_id: warehouseSelect.value,
-                description: document.getElementById("description").value,
-                status: document.getElementById("status").value,
-                payment: document.getElementById("payment").value,
-                products: Object.values(selectedProducts)
+                description:
+                    document.getElementById("description").value,
+                status:
+                    document.getElementById("status").value,
+                payment:
+                    document.getElementById("payment").value,
+                products: products
             };
 
-            const url = PURCHASE_ID
-                ? "/api/purchases/update"
-                : "/api/purchases";
-
-            const method = PURCHASE_ID ? "POST" : "POST";
-
-            if (PURCHASE_ID) payload.id = PURCHASE_ID;
-
-            const res = await fetch(url, {
-                method: method,
+            const res = await fetch(API.purchases, {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -515,7 +496,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            alert(PURCHASE_ID ? "Cập nhật thành công" : "Tạo phiếu nhập thành công");
+            alert("Tạo phiếu nhập thành công");
 
             window.location.href = "/admin/purchases";
         });
@@ -523,10 +504,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // =========================
     // INIT
     // =========================
-    loadSuppliersCache().then(() => {
-        loadWarehouses();
-        loadPurchase();
-    });
+    loadSuppliersCache();
+    loadWarehouses();
 
 });
 </script>

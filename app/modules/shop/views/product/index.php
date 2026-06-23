@@ -105,6 +105,7 @@
   </nav>
 </div>
 <script>
+document.addEventListener("DOMContentLoaded", function () {
     let currentPage = 1;
     let lastPage = 1;
     let prevPage = 1;
@@ -289,4 +290,6 @@
         await loadCategories();
         await loadProducts(1);
     })();
+}
+
 </script> 

@@ -65,25 +65,36 @@ class ProductModel
         $params = [];
 
         $sql = "
-            SELECT 
+            SELECT
                 {$this->alias}.*,
 
                 c.name AS category_name,
 
-                COALESCE(SUM(pi.quantity),0) AS stock_in,
-                COALESCE(SUM(oi.quantity),0) AS stock_out,
+                (
+                    SELECT pi2.id
+                    FROM purchase_items pi2
+                    WHERE pi2.product_id = {$this->alias}.id
+                    ORDER BY pi2.id DESC
+                    LIMIT 1
+                ) AS purchase_product_id,
 
-                (COALESCE(SUM(pi.quantity),0) - COALESCE(SUM(oi.quantity),0)) AS stock
+                COALESCE(SUM(pi.quantity), 0) AS stock_in,
+                COALESCE(SUM(oi.quantity), 0) AS stock_out,
+
+                (
+                    COALESCE(SUM(pi.quantity), 0)
+                    - COALESCE(SUM(oi.quantity), 0)
+                ) AS stock
 
             FROM {$this->table} {$this->alias}
 
-            LEFT JOIN categories c 
+            LEFT JOIN categories c
                 ON c.id = {$this->alias}.category_id
 
-            LEFT JOIN purchase_items pi 
+            LEFT JOIN purchase_items pi
                 ON pi.product_id = {$this->alias}.id
 
-            LEFT JOIN order_items oi 
+            LEFT JOIN order_items oi
                 ON oi.product_id = {$this->alias}.id
         ";
 
@@ -91,7 +102,12 @@ class ProductModel
 
         $sql .= "
             GROUP BY {$this->alias}.id
-            HAVING (COALESCE(SUM(pi.quantity),0) - COALESCE(SUM(oi.quantity),0)) > 0
+
+            HAVING (
+                COALESCE(SUM(pi.quantity), 0)
+                - COALESCE(SUM(oi.quantity), 0)
+            ) > 0
+
             ORDER BY {$this->alias}.id DESC
         ";
 

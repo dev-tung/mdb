@@ -219,6 +219,7 @@ class OrderModel
 
         return (int)($row['total'] ?? 0);
     }
+    
 
     public function sumRevenueReport($dateFrom = null, $dateTo = null)
     {
