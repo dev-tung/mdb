@@ -60,6 +60,44 @@ class ProductModel
         return Database::get($sql, $params);
     }
 
+    public function getStock(array $conditions = []): array
+    {
+        $params = [];
+
+        $sql = "
+            SELECT 
+                {$this->alias}.*,
+
+                c.name AS category_name,
+
+                COALESCE(SUM(pi.quantity),0) AS stock_in,
+                COALESCE(SUM(oi.quantity),0) AS stock_out,
+
+                (COALESCE(SUM(pi.quantity),0) - COALESCE(SUM(oi.quantity),0)) AS stock
+
+            FROM {$this->table} {$this->alias}
+
+            LEFT JOIN categories c 
+                ON c.id = {$this->alias}.category_id
+
+            LEFT JOIN purchase_items pi 
+                ON pi.product_id = {$this->alias}.id
+
+            LEFT JOIN order_items oi 
+                ON oi.product_id = {$this->alias}.id
+        ";
+
+        $sql .= $this->buildWhere($conditions, $params);
+
+        $sql .= "
+            GROUP BY {$this->alias}.id
+            HAVING (COALESCE(SUM(pi.quantity),0) - COALESCE(SUM(oi.quantity),0)) > 0
+            ORDER BY {$this->alias}.id DESC
+        ";
+
+        return Database::get($sql, $params);
+    }
+
     /**
      * COUNT
      */

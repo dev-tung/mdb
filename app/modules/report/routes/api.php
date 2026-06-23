@@ -3,5 +3,4 @@
 // =========================
 // REVENUE
 // =========================
-
-Router::get('/admin/reports/revenue', 'ReportController@revenue');
+Router::get('/api/reports/revenue', 'ReportEndpoint@apiRevenue');

@@ -141,4 +141,122 @@ class OrderModel
 
         return (int)($row['total'] ?? 0);
     }
+
+    // =========================
+    // REVENUE REPORT (BY DATE)
+    // =========================
+    public function getRevenueReport($dateFrom, $dateTo, $limit, $offset)
+    {
+        $sql = "
+            SELECT 
+                DATE(o.created_at) as date,
+                COUNT(DISTINCT o.id) as orders,
+
+                SUM(oi.quantity * oi.price) as revenue,
+
+                (
+                    SUM(oi.quantity * oi.price)
+                    -
+                    COALESCE(SUM(
+                        oi.quantity * (
+                            SELECT AVG(pp.unit_price)
+                            FROM purchase_items pp
+                            WHERE pp.product_id = oi.product_id
+                        )
+                    ), 0)
+                ) as profit
+
+            FROM orders o
+
+            JOIN order_items oi 
+                ON oi.order_id = o.id
+
+            WHERE 1=1
+        ";
+
+        $params = [];
+
+        if ($dateFrom) {
+            $sql .= " AND o.created_at >= :date_from";
+            $params['date_from'] = $dateFrom;
+        }
+
+        if ($dateTo) {
+            $sql .= " AND o.created_at <= :date_to";
+            $params['date_to'] = $dateTo;
+        }
+
+        $sql .= "
+            GROUP BY DATE(o.created_at)
+            ORDER BY DATE(o.created_at) DESC
+            LIMIT $limit OFFSET $offset
+        ";
+
+        return Database::get($sql, $params);
+    }
+
+    public function countRevenueReport(?string $dateFrom, ?string $dateTo): int
+    {
+        $sql = "
+            SELECT COUNT(DISTINCT DATE(o.created_at)) as total
+            FROM orders o
+            WHERE 1=1
+        ";
+
+        $params = [];
+
+        if ($dateFrom) {
+            $sql .= " AND DATE(o.created_at) >= :date_from";
+            $params['date_from'] = $dateFrom;
+        }
+
+        if ($dateTo) {
+            $sql .= " AND DATE(o.created_at) <= :date_to";
+            $params['date_to'] = $dateTo;
+        }
+
+        $row = Database::first($sql, $params);
+
+        return (int)($row['total'] ?? 0);
+    }
+
+    public function sumRevenueReport($dateFrom = null, $dateTo = null)
+    {
+        $sql = "
+            SELECT 
+                COALESCE(SUM(oi.quantity * oi.price), 0)
+                -
+                COALESCE(SUM(
+                    oi.quantity * (
+                        SELECT AVG(pp.unit_price)
+                        FROM purchase_items pp
+                        WHERE pp.product_id = oi.product_id
+                    )
+                ), 0)
+                AS total_profit
+
+            FROM order_items oi
+
+            JOIN orders o 
+                ON o.id = oi.order_id
+
+            WHERE 1=1
+        ";
+
+        $params = [];
+
+        if ($dateFrom) {
+            $sql .= " AND o.created_at >= :date_from ";
+            $params['date_from'] = $dateFrom;
+        }
+
+        if ($dateTo) {
+            $sql .= " AND o.created_at <= :date_to ";
+            $params['date_to'] = $dateTo;
+        }
+
+        $row = Database::first($sql, $params);
+
+        return (float)($row['total_profit'] ?? 0);
+    }
 }

@@ -4,6 +4,7 @@
 // PRODUCT
 // =========================
 Router::get('/api/products', 'ProductEndpoint@apiList');
+Router::get('/api/products/stock', 'ProductEndpoint@apiStock');
 Router::post('/api/products', 'ProductEndpoint@apiCreate');
 Router::get('/api/products/show/{id}', 'ProductEndpoint@apiShow');
 Router::post('/api/products/update', 'ProductEndpoint@apiUpdate');

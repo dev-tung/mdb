@@ -141,14 +141,9 @@ $payments = config('shop.option.payment');
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-    const ORDER_ID = "<?= $id ?? '' ?>";
-
     const API = {
         customers: "/api/customers",
-        products: "/api/products",
-        orders: ORDER_ID
-            ? ("/api/orders/show/" + ORDER_ID)
-            : "/api/orders"
+        products: "/api/products/stock"
     };
 
     let selectedProducts = {};
@@ -181,41 +176,6 @@ document.addEventListener("DOMContentLoaded", function () {
         data.forEach(c => {
             CUSTOMERS_MAP[c.id] = c.name || c.customer_name;
         });
-    }
-
-    // =========================
-    // LOAD ORDER
-    // =========================
-    async function loadOrder() {
-
-        if (!ORDER_ID) return;
-
-        const res = await fetch(API.orders);
-        const json = await res.json();
-        const data = json.data;
-
-        customerInput.value = CUSTOMERS_MAP[data.customer_id] || "";
-        customerId.value = data.customer_id || "";
-
-        document.getElementById("description").value = data.description || "";
-        document.getElementById("status").value = data.status || "";
-        document.getElementById("payment").value = data.payment || "";
-
-        selectedProducts = {};
-
-        (data.products || []).forEach(p => {
-            selectedProducts[p.product_id] = {
-                id: p.product_id,
-                name: p.name,
-                price: Number(p.price),
-                base_price: Number(p.price),
-                quantity: Number(p.quantity),
-                discount: Number(p.discount || 0),
-                gift: false
-            };
-        });
-
-        render();
     }
 
     // =========================
@@ -322,7 +282,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // =========================
-    // RENDER (SORT FIXED)
+    // RENDER
     // =========================
     function render() {
 
@@ -388,10 +348,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // =========================
-    // EVENT DELEGATION (FIX ALL BUGS)
+    // EVENTS
     // =========================
 
-    // INPUT EVENTS
     tbody.addEventListener("input", function (e) {
 
         const id = e.target.dataset.id;
@@ -415,7 +374,6 @@ document.addEventListener("DOMContentLoaded", function () {
         calc();
     });
 
-    // CHANGE EVENTS (GIFT + REMOVE)
     tbody.addEventListener("change", function (e) {
 
         const id = e.target.dataset.id;
@@ -423,7 +381,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const item = selectedProducts[id];
 
-        // GIFT TOGGLE
         if (e.target.classList.contains("gift")) {
 
             item.gift = e.target.checked;
@@ -438,7 +395,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // REMOVE BUTTON
     tbody.addEventListener("click", function (e) {
 
         const id = e.target.dataset.id;
@@ -461,9 +417,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const sum = (p.price * p.quantity) - (p.discount || 0);
 
-            const el = document.querySelector(`.item-total[data-id="${p.id}"]`);
-            if (el) el.textContent = money(sum);
-
             total += sum;
         });
 
@@ -471,16 +424,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // =========================
-    // SUBMIT
+    // SUBMIT (CREATE ONLY)
     // =========================
     document.getElementById("order-create-form")
         .addEventListener("submit", async function (e) {
 
             e.preventDefault();
 
-            const customer = customerId.value.trim();
-
-            if (!customer) {
+            if (!customerId.value) {
                 alert("Vui lòng chọn khách hàng");
                 return;
             }
@@ -500,11 +451,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 products: products
             };
 
-            const url = ORDER_ID
-                ? "/api/orders/update"
-                : "/api/orders";
-
-            const res = await fetch(url, {
+            const res = await fetch("/api/orders", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
@@ -525,9 +472,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // =========================
     // INIT
     // =========================
-    loadCustomersCache().then(() => {
-        loadOrder();
-    });
+    loadCustomersCache();
 
 });
 </script>
