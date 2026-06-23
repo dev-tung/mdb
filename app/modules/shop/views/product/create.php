@@ -127,5 +127,5 @@ document.addEventListener("DOMContentLoaded", function () {
     // =========================
     loadCategories();
 
-}
+});
 </script>

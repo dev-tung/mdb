@@ -217,7 +217,7 @@ document.addEventListener("DOMContentLoaded", function () {
         await loadProduct();
 
     })();
-}
+});
 
 
 </script>
