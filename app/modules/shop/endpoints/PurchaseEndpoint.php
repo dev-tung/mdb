@@ -19,7 +19,7 @@ class PurchaseEndpoint
         $page  = max(1, (int)($_GET['page'] ?? 1));
         $limit = Config::get('pagination', 'default_per_page');
 
-        $filters = request_filters(['keyword', 'supplier_id', 'status']);
+        $filters = request_filters(['keyword', 'supplier_id', 'status', 'payment']);
 
         $data = $this->purchaseModel->getList(
             $filters,

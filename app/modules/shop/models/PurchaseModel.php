@@ -35,6 +35,11 @@ class PurchaseModel
             $params['status'] = $conditions['status'];
         }
 
+        if (!empty($conditions['payment'])) {
+            $sql .= " AND p.payment = :payment";
+            $params['payment'] = $conditions['payment'];
+        }
+
         $sql .= " ORDER BY p.id DESC";
 
         if ($limit > 0) {
