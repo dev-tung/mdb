@@ -13,9 +13,7 @@
 
                 <div class="card-body">
 
-                    <div id="checkout-items">
-                        Đang tải...
-                    </div>
+                    <div id="checkout-items">Đang tải...</div>
 
                     <hr>
 
@@ -61,8 +59,7 @@
                         <textarea id="note" class="form-control" rows="3"></textarea>
                     </div>
 
-                    <button class="btn btn-success w-100"
-                            onclick="submitOrder()">
+                    <button class="btn btn-success w-100" onclick="submitOrder()">
                         Đặt hàng
                     </button>
 
@@ -77,11 +74,9 @@
 </main>
 
 <script>
-function getCart() {
 
-    return JSON.parse(sessionStorage.getItem('buy_now'))
-        || JSON.parse(localStorage.getItem('cart'))
-        || [];
+function getCart() {
+    return JSON.parse(localStorage.getItem('cart')) || [];
 }
 
 function renderCheckout() {
@@ -91,6 +86,7 @@ function renderCheckout() {
 
     if (!cart.length) {
         container.innerHTML = `<div class="alert alert-warning">Giỏ hàng trống</div>`;
+        document.getElementById('checkout-total').innerText = '0 ₫';
         return;
     }
 
@@ -99,7 +95,11 @@ function renderCheckout() {
 
     cart.forEach(item => {
 
-        total += item.price * item.quantity;
+        const price = Number(item.price) || 0;
+        const qty   = Number(item.quantity) || 1;
+        const line  = price * qty;
+
+        total += line;
 
         container.innerHTML += `
             <div class="d-flex justify-content-between align-items-center border-bottom py-2">
@@ -110,13 +110,13 @@ function renderCheckout() {
 
                     <div>
                         <div class="fw-semibold">${item.name}</div>
-                        <small class="text-muted">x${item.quantity}</small>
+                        <small class="text-muted">x${qty}</small>
                     </div>
 
                 </div>
 
                 <div class="fw-bold text-danger">
-                    ${(item.price * item.quantity).toLocaleString('vi-VN')} ₫
+                    ${line.toLocaleString('vi-VN')} ₫
                 </div>
 
             </div>
@@ -129,49 +129,82 @@ function renderCheckout() {
 
 async function submitOrder() {
 
-    const cart = getCart();
-
-    if (!cart.length) {
-        alert('Giỏ hàng trống');
-        return;
-    }
-
-    const payload = {
-        customer_name: document.getElementById('customer_name').value,
-        phone: document.getElementById('phone').value,
-        address: document.getElementById('address').value,
-        note: document.getElementById('note').value,
-        items: cart
-    };
-
-    if (!payload.customer_name || !payload.phone || !payload.address) {
-        alert('Vui lòng nhập đầy đủ thông tin');
-        return;
-    }
-
     try {
 
-        const res = await fetch('/api/orders/create', {
+        const cart = getCart();
+
+        if (!cart.length) {
+            alert('Giỏ hàng trống');
+            return;
+        }
+
+        const customer_name = document.getElementById('customer_name').value.trim();
+        const phone         = document.getElementById('phone').value.trim();
+        const address       = document.getElementById('address').value.trim();
+        const note          = document.getElementById('note').value.trim();
+
+        if (!customer_name || !phone || !address) {
+            alert('Vui lòng nhập đầy đủ thông tin');
+            return;
+        }
+
+        // =========================
+        // STEP 1: CREATE CUSTOMER
+        // =========================
+        const cusRes = await fetch('/api/customers', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: customer_name,
+                phone: phone,
+                email: '',
+                group_id: 0,
+                address: address,
+                description: note
+            })
         });
 
-        const json = await res.json();
+        const cusJson = await cusRes.json();
 
-        if (json.success) {
+        if (!cusJson.success) {
+            alert(cusJson.message || 'Không tạo được khách hàng');
+            return;
+        }
 
-            sessionStorage.removeItem('buy_now');
+        const customer_id = cusJson.id;
+
+        // =========================
+        // STEP 2: CREATE ORDER
+        // =========================
+        const products = cart.map(item => ({
+            product_id: Number(item.product_id),
+            quantity: Number(item.quantity),
+            price: Number(item.price),
+            discount: 0
+        }));
+
+        const orderRes = await fetch('/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                customer_id,
+                products,
+                description: note
+            })
+        });
+
+        const orderJson = await orderRes.json();
+
+        if (orderJson.success) {
+
             localStorage.removeItem('cart');
 
             alert('Đặt hàng thành công');
 
-            window.location.href = '/order/success/' + json.order_id;
+            window.location.href = '/order';
 
         } else {
-            alert(json.message || 'Đặt hàng thất bại');
+            alert(orderJson.message || 'Đặt hàng thất bại');
         }
 
     } catch (err) {
@@ -181,4 +214,5 @@ async function submitOrder() {
 }
 
 document.addEventListener('DOMContentLoaded', renderCheckout);
+
 </script>

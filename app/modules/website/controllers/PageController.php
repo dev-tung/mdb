@@ -17,6 +17,11 @@ class PageController
         View::render('pages/career');
     }
 
+    public function order(): void
+    {
+        View::render('pages/order');
+    }
+
     public function contact(): void {}
     public function warrantyPolicy(): void {}
     public function shippingPolicy(): void {}

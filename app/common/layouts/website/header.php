@@ -125,10 +125,7 @@
                 <!-- ACTIONS -->
                 <div class="d-flex gap-2">
 
-                    <a href="<?= route('login') ?>"
-                       class="btn btn-outline-secondary btn-sm">
-                        Tài khoản
-                    </a>
+
 
                     <a href="<?= route('cart') ?>"
                        class="btn btn-success btn-sm">

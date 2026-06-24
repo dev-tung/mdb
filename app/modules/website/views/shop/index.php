@@ -354,16 +354,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function buyNow(id, name, price, image) {
 
-    const cart = [{
-        product_id: id,
-        name,
-        price,
-        image,
-        quantity: 1
-    }];
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-    sessionStorage.setItem('buy_now', JSON.stringify(cart));
+    // check product exists
+    const index = cart.findIndex(item => item.product_id === id);
 
-    window.location.href = '/checkout';
+    if (index !== -1) {
+        cart[index].quantity += 1;
+    } else {
+        cart.push({
+            product_id: id,
+            name,
+            price,
+            image,
+            quantity: 1
+        });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    // chuyển sang giỏ hàng
+    window.location.href = '/cart';
 }
 </script>

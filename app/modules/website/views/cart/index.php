@@ -59,14 +59,8 @@
 </main>
 
 <script>
+
 function getCart() {
-
-    const buyNow = sessionStorage.getItem('buy_now');
-
-    if (buyNow) {
-        return JSON.parse(buyNow);
-    }
-
     return JSON.parse(localStorage.getItem('cart')) || [];
 }
 
@@ -117,7 +111,6 @@ function renderCart() {
 
                 <div class="d-flex align-items-center gap-2">
 
-                    <!-- qty -->
                     <input type="number"
                            min="1"
                            value="${item.quantity}"
@@ -125,7 +118,6 @@ function renderCart() {
                            style="width:70px"
                            onchange="updateQty(${index}, this.value)">
 
-                    <!-- remove -->
                     <button class="btn btn-outline-danger btn-sm"
                             onclick="removeItem(${index})">
                         Xóa
@@ -169,4 +161,5 @@ function goCheckout() {
 }
 
 document.addEventListener('DOMContentLoaded', renderCart);
+
 </script>

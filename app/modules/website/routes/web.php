@@ -33,6 +33,11 @@ Router::get(
     'ShopController@search'
 );
 
+
+Router::get(
+    '/order',
+    'PageController@order'
+);
 // =========================
 // CART
 // =========================
