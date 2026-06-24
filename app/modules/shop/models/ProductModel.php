@@ -229,4 +229,22 @@ class ProductModel
             ['id' => $id]
         );
     }
+
+    public function getRackets(int $limit = 6): array
+    {
+        $sql = "
+            SELECT 
+                p.*,
+                c.name AS category_name
+            FROM {$this->table} {$this->alias}
+            LEFT JOIN categories c 
+                ON c.id = {$this->alias}.category_id
+            WHERE p.status = 1
+            AND p.category_id = 1
+            ORDER BY p.id DESC
+            LIMIT {$limit}
+        ";
+
+        return Database::get($sql);
+    }
 }
