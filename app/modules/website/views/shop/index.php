@@ -233,16 +233,16 @@ document.addEventListener('DOMContentLoaded', () => {
                                             ? (
                                                 product.sale_price && Number(product.sale_price) > 0
                                                 ? `
-                                                    <span class="text-muted text-decoration-line-through me-1">
-                                                        ${product.price.toLocaleString('vi-VN')} ₫
-                                                    </span>
+                                                    <small class="text-muted text-decoration-line-through me-1">
+                                                        ${Number(product.price).toLocaleString('vi-VN')} ₫
+                                                    </small>
                                                     <span>
                                                         ${Number(product.sale_price).toLocaleString('vi-VN')} ₫
                                                     </span>
                                                 `
                                                 : `
                                                     <span>
-                                                        ${product.price.toLocaleString('vi-VN')} ₫
+                                                        ${Number(product.price).toLocaleString('vi-VN')} ₫
                                                     </span>
                                                 `
                                             )
