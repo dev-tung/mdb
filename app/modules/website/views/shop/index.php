@@ -242,14 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="p-2 pt-0">
 
                                 ${
-                                    price > 0
-                                    ? `
-                                        <button class="btn btn-outline-success btn-sm w-100"
-                                                onclick="buyNow(${product.id}, '${product.name}', ${price}, '${image}')">
-                                            Mua ngay
-                                        </button>
                                     `
-                                    : `
                                         <button class="btn btn-outline-secondary btn-sm w-100" disabled>
                                             Liên hệ
                                         </button>
