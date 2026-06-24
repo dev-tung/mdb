@@ -16,7 +16,7 @@ class ProductController
      */
     public function index(): void
     {
-        $categories = $this->categoryModel->getAll();
+        $categories = $this->categoryModel->getList();
 
         View::render('product/index', [
             'categories' => $categories

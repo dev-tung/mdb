@@ -32,7 +32,14 @@ class ProductEndpoint
         $page  = max(1, (int)($_GET['page'] ?? 1));
         $limit = Config::get('pagination', 'default_per_page');
 
-        $filters = request_filters(['keyword', 'category_id', 'status']);
+        $filters = request_filters([
+            'keyword',
+            'category_id',
+            'status',
+            'price'
+        ]);
+
+        $filters['brands'] = $_GET['brand'] ?? [];
 
         $products = $this->productModel->getList(
             $filters,

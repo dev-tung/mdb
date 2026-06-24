@@ -14,7 +14,7 @@ class CategoryEndpoint
         header('Content-Type: application/json');
 
         // Lấy tất cả category (thường dùng cho dropdown filter)
-        $categories = $this->categoryModel->getAll();
+        $categories = $this->categoryModel->getList();
 
         echo json_encode([
             'data' => $categories

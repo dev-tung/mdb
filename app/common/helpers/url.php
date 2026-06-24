@@ -15,6 +15,11 @@ function asset(string $path): string
     return base_url('assets/' . ltrim($path, '/'));
 }
 
+function upload(string $path): string
+{
+    return base_url('uploads/' . ltrim($path, '/'));
+}
+
 function route(string $path = ''): string
 {
     return base_url($path);

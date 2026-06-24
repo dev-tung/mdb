@@ -13,13 +13,13 @@ class ProductModel
         $sql = " WHERE 1=1 ";
 
         // STATUS
-        if (isset($conditions['status']) && $conditions['status'] !== '') {
+        if (!empty($conditions['status'])) {
             $sql .= " AND {$this->alias}.status = :status";
             $params['status'] = $conditions['status'];
         }
 
         // CATEGORY
-        if (isset($conditions['category_id']) && $conditions['category_id'] !== '') {
+        if (!empty($conditions['category_id'])) {
             $sql .= " AND {$this->alias}.category_id = :category_id";
             $params['category_id'] = $conditions['category_id'];
         }
@@ -28,6 +28,48 @@ class ProductModel
         if (!empty($conditions['keyword'])) {
             $sql .= " AND {$this->alias}.name LIKE :keyword";
             $params['keyword'] = '%' . $conditions['keyword'] . '%';
+        }
+
+        // BRANDS
+        if (!empty($conditions['brands']) && is_array($conditions['brands'])) {
+
+            $placeholders = [];
+
+            foreach ($conditions['brands'] as $index => $brandId) {
+
+                $key = "brand_" . $index;
+
+                $placeholders[] = ":" . $key;
+                $params[$key] = (int)$brandId;
+            }
+
+            if (!empty($placeholders)) {
+                $sql .= " AND {$this->alias}.brand_id IN (" . implode(',', $placeholders) . ")";
+            }
+        }
+
+        // PRICE RANGE
+        if (!empty($conditions['price'])) {
+
+            $priceRanges = config('shop.option.price_range') ?? [];
+
+            if (isset($priceRanges[$conditions['price']])) {
+
+                $range = $priceRanges[$conditions['price']];
+
+                if ($range['max'] === null) {
+
+                    $sql .= " AND {$this->alias}.price >= :price_min";
+                    $params['price_min'] = $range['min'];
+
+                } else {
+
+                    $sql .= " AND {$this->alias}.price BETWEEN :price_min AND :price_max";
+
+                    $params['price_min'] = $range['min'];
+                    $params['price_max'] = $range['max'];
+                }
+            }
         }
 
         return $sql;

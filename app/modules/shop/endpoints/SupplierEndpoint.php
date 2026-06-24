@@ -24,7 +24,7 @@ class SupplierEndpoint
             $filters['keyword'] = $keyword;
         }
 
-        $suppliers = $this->supplierModel->getAll($filters);
+        $suppliers = $this->supplierModel->getList($filters);
 
         echo json_encode([
             'data' => $suppliers

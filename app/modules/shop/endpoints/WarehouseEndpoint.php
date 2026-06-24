@@ -24,7 +24,7 @@ class WarehouseEndpoint
             $filters['keyword'] = $keyword;
         }
 
-        $warehouses = $this->warehouseModel->getAll($filters);
+        $warehouses = $this->warehouseModel->getList($filters);
 
         echo json_encode([
             'data' => $warehouses

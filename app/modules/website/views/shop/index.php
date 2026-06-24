@@ -5,9 +5,7 @@
         <!-- FILTER -->
         <aside class="col-12 col-lg-3">
 
-            <form method="GET" class="position-sticky" style="top:20px;">
-
-                <input type="hidden" name="page" value="1">
+            <div class="position-sticky" style="top:20px;">
 
                 <div class="border rounded bg-white shadow-sm p-3">
 
@@ -17,68 +15,25 @@
 
                     <!-- CATEGORY -->
                     <div class="mb-3">
-
                         <label class="form-label fw-semibold">
                             Danh mục
                         </label>
 
-                        <select class="form-select form-select-sm" name="category">
+                        <select
+                            class="form-select form-select-sm"
+                            id="filter-category">
 
-                            <option value="0">
+                            <option value="">
                                 Tất cả danh mục
                             </option>
 
-                            
-                                <option value="2">
-
-                                    Cước cầu lông
+                            <?php foreach($categories as $cat): ?>
+                                <option value="<?= $cat['id'] ?>">
+                                    <?= $cat['name'] ?>
                                 </option>
+                            <?php endforeach; ?>
 
-                            
-                                <option value="6">
-
-                                    Giày cầu lông
-                                </option>
-
-                            
-                                <option value="3">
-
-                                    Máy đan vợt
-                                </option>
-
-                            
-                                <option value="8">
-
-                                    Phụ kiện cầu lông
-                                </option>
-
-                            
-                                <option value="4">
-
-                                    Quả cầu lông
-                                </option>
-
-                            
-                                <option value="5">
-
-                                    Quần áo cầu lông
-                                </option>
-
-                            
-                                <option value="7">
-
-                                    Túi cầu lông
-                                </option>
-
-                            
-                                <option value="1">
-
-                                    Vợt cầu lông
-                                </option>
-
-                            
                         </select>
-
                     </div>
 
                     <hr class="my-3">
@@ -90,19 +45,22 @@
                             Thương hiệu
                         </label>
 
-                        
+                        <?php foreach($brands as $brand): ?>
                             <div class="form-check small mb-1">
 
-                                <input class="form-check-input" type="checkbox" name="brand[]" value="1">
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="brand[]"
+                                    value="<?= $brand['id'] ?>">
 
                                 <label class="form-check-label">
-
-                                    Yonex
+                                    <?= $brand['name'] ?>
                                 </label>
 
                             </div>
+                        <?php endforeach; ?>
 
-                        
                     </div>
 
                     <hr class="my-3">
@@ -114,725 +72,344 @@
                             Khoảng giá
                         </label>
 
-                        
-                            <div class="form-check small mb-1">
+                        <?php
+                            $priceRanges = config('shop.option.price_range') ?? [];
+                        ?>
 
-                                <input class="form-check-input" type="radio" name="price" value="lt1">
+                        <?php foreach ($priceRanges as $key => $item): ?>
 
-                                <label class="form-check-label">
+                        <div class="form-check small mb-1">
 
-                                    Dưới 1 triệu
-                                </label>
+                            <input
+                                class="form-check-input"
+                                type="radio"
+                                name="price"
+                                id="price_<?= $key ?>"
+                                value="<?= $key ?>">
 
-                            </div>
+                            <label
+                                class="form-check-label"
+                                for="price_<?= $key ?>">
 
-                        
-                            <div class="form-check small mb-1">
+                                <?= $item['label'] ?>
 
-                                <input class="form-check-input" type="radio" name="price" value="1-3">
+                            </label>
 
-                                <label class="form-check-label">
+                        </div>
 
-                                    1 - 3 triệu
-                                </label>
+                        <?php endforeach; ?>
 
-                            </div>
-
-                        
-                            <div class="form-check small mb-1">
-
-                                <input class="form-check-input" type="radio" name="price" value="3-5">
-
-                                <label class="form-check-label">
-
-                                    3 - 5 triệu
-                                </label>
-
-                            </div>
-
-                        
-                            <div class="form-check small mb-1">
-
-                                <input class="form-check-input" type="radio" name="price" value="gt5">
-
-                                <label class="form-check-label">
-
-                                    Trên 5 triệu
-                                </label>
-
-                            </div>
-
-                        
                     </div>
-
-                    <button class="btn btn-success btn-sm w-100">
-                        Lọc sản phẩm
-                    </button>
 
                 </div>
 
-            </form>
+            </div>
 
         </aside>
 
         <!-- PRODUCTS -->
         <section class="col-12 col-lg-9">
 
-            <div class="row g-3">
+            <div class="row g-3" id="product-list">
 
-                
-                    <div class="col-6 col-md-4 col-xl-3">
+                <div class="col-12 text-center">
+                    Đang tải...
+                </div>
 
-                        <a href="/product/nanoflare-e13" class="text-decoration-none text-dark">
-
-                            <div class="card h-100 border-0 shadow-sm">
-
-                                <div class="ratio ratio-1x1 bg-light">
-
-                                    <img src="https://manhdungsports.com//module/shop/image/yonex_product/nanoflare/nanoflare-e13.png" alt="NANOFLARE E13" class="w-100 h-100 p-2" style="object-fit:contain;">
-
-                                </div>
-
-                                <div class="card-body">
-
-                                    <h6 class="mb-2">
-                                        NANOFLARE E13                                    </h6>
-
-                                    <div class="text-danger fw-bold">
-                                        Liên hệ                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                
-                    <div class="col-6 col-md-4 col-xl-3">
-
-                        <a href="/product/nanoflare-001-feel" class="text-decoration-none text-dark">
-
-                            <div class="card h-100 border-0 shadow-sm">
-
-                                <div class="ratio ratio-1x1 bg-light">
-
-                                    <img src="https://manhdungsports.com//module/shop/image/yonex_product/nanoflare/nanoflare-001-feel.png" alt="NANOFLARE 001 FEEL" class="w-100 h-100 p-2" style="object-fit:contain;">
-
-                                </div>
-
-                                <div class="card-body">
-
-                                    <h6 class="mb-2">
-                                        NANOFLARE 001 FEEL                                    </h6>
-
-                                    <div class="text-danger fw-bold">
-                                        Liên hệ                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                
-                    <div class="col-6 col-md-4 col-xl-3">
-
-                        <a href="/product/nanoflare-001-clear" class="text-decoration-none text-dark">
-
-                            <div class="card h-100 border-0 shadow-sm">
-
-                                <div class="ratio ratio-1x1 bg-light">
-
-                                    <img src="https://manhdungsports.com//module/shop/image/yonex_product/nanoflare/nanoflare-001-clear.png" alt="NANOFLARE 001 CLEAR" class="w-100 h-100 p-2" style="object-fit:contain;">
-
-                                </div>
-
-                                <div class="card-body">
-
-                                    <h6 class="mb-2">
-                                        NANOFLARE 001 CLEAR                                    </h6>
-
-                                    <div class="text-danger fw-bold">
-                                        Liên hệ                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                
-                    <div class="col-6 col-md-4 col-xl-3">
-
-                        <a href="/product/nanoflare-001-ability" class="text-decoration-none text-dark">
-
-                            <div class="card h-100 border-0 shadow-sm">
-
-                                <div class="ratio ratio-1x1 bg-light">
-
-                                    <img src="https://manhdungsports.com//module/shop/image/yonex_product/nanoflare/nanoflare-001-ability.png" alt="NANOFLARE 001 ABILITY" class="w-100 h-100 p-2" style="object-fit:contain;">
-
-                                </div>
-
-                                <div class="card-body">
-
-                                    <h6 class="mb-2">
-                                        NANOFLARE 001 ABILITY                                    </h6>
-
-                                    <div class="text-danger fw-bold">
-                                        Liên hệ                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                
-                    <div class="col-6 col-md-4 col-xl-3">
-
-                        <a href="/product/nanoflare-002-feel" class="text-decoration-none text-dark">
-
-                            <div class="card h-100 border-0 shadow-sm">
-
-                                <div class="ratio ratio-1x1 bg-light">
-
-                                    <img src="https://manhdungsports.com//module/shop/image/yonex_product/nanoflare/nanoflare-002-feel.png" alt="NANOFLARE 002 FEEL" class="w-100 h-100 p-2" style="object-fit:contain;">
-
-                                </div>
-
-                                <div class="card-body">
-
-                                    <h6 class="mb-2">
-                                        NANOFLARE 002 FEEL                                    </h6>
-
-                                    <div class="text-danger fw-bold">
-                                        Liên hệ                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                
-                    <div class="col-6 col-md-4 col-xl-3">
-
-                        <a href="/product/ultra-thin-grap" class="text-decoration-none text-dark">
-
-                            <div class="card h-100 border-0 shadow-sm">
-
-                                <div class="ratio ratio-1x1 bg-light">
-
-                                    <img src="https://manhdungsports.com//module/shop/image/yonex_product/accessories/ultra-thin-grap.png" alt="Phụ kiện cầu lông ULTRA THIN GRAP" class="w-100 h-100 p-2" style="object-fit:contain;">
-
-                                </div>
-
-                                <div class="card-body">
-
-                                    <h6 class="mb-2">
-                                        Phụ kiện cầu lông ULTRA THIN GRAP                                    </h6>
-
-                                    <div class="text-danger fw-bold">
-                                        Liên hệ                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                
-                    <div class="col-6 col-md-4 col-xl-3">
-
-                        <a href="/product/wave-grap-pure" class="text-decoration-none text-dark">
-
-                            <div class="card h-100 border-0 shadow-sm">
-
-                                <div class="ratio ratio-1x1 bg-light">
-
-                                    <img src="https://manhdungsports.com//module/shop/image/yonex_product/accessories/wave-grap-pure.png" alt="Phụ kiện cầu lông WAVE GRAP PURE" class="w-100 h-100 p-2" style="object-fit:contain;">
-
-                                </div>
-
-                                <div class="card-body">
-
-                                    <h6 class="mb-2">
-                                        Phụ kiện cầu lông WAVE GRAP PURE                                    </h6>
-
-                                    <div class="text-danger fw-bold">
-                                        Liên hệ                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                
-                    <div class="col-6 col-md-4 col-xl-3">
-
-                        <a href="/product/super-grap-pure" class="text-decoration-none text-dark">
-
-                            <div class="card h-100 border-0 shadow-sm">
-
-                                <div class="ratio ratio-1x1 bg-light">
-
-                                    <img src="https://manhdungsports.com//module/shop/image/yonex_product/accessories/super-grap-pure.png" alt="Phụ kiện cầu lông SUPER GRAP PURE" class="w-100 h-100 p-2" style="object-fit:contain;">
-
-                                </div>
-
-                                <div class="card-body">
-
-                                    <h6 class="mb-2">
-                                        Phụ kiện cầu lông SUPER GRAP PURE                                    </h6>
-
-                                    <div class="text-danger fw-bold">
-                                        Liên hệ                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                
-                    <div class="col-6 col-md-4 col-xl-3">
-
-                        <a href="/product/wave-grap" class="text-decoration-none text-dark">
-
-                            <div class="card h-100 border-0 shadow-sm">
-
-                                <div class="ratio ratio-1x1 bg-light">
-
-                                    <img src="https://manhdungsports.com//module/shop/image/yonex_product/accessories/wave-grap.png" alt="Phụ kiện cầu lông WAVE GRAP" class="w-100 h-100 p-2" style="object-fit:contain;">
-
-                                </div>
-
-                                <div class="card-body">
-
-                                    <h6 class="mb-2">
-                                        Phụ kiện cầu lông WAVE GRAP                                    </h6>
-
-                                    <div class="text-danger fw-bold">
-                                        Liên hệ                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                
-                    <div class="col-6 col-md-4 col-xl-3">
-
-                        <a href="/product/dry-super-grap-60-wraps" class="text-decoration-none text-dark">
-
-                            <div class="card h-100 border-0 shadow-sm">
-
-                                <div class="ratio ratio-1x1 bg-light">
-
-                                    <img src="https://manhdungsports.com//module/shop/image/yonex_product/accessories/dry-super-grap-60-wraps.png" alt="Phụ kiện cầu lông DRY SUPER GRAP (60 WRAPS)" class="w-100 h-100 p-2" style="object-fit:contain;">
-
-                                </div>
-
-                                <div class="card-body">
-
-                                    <h6 class="mb-2">
-                                        Phụ kiện cầu lông DRY SUPER GRAP (60 WRAPS)                                    </h6>
-
-                                    <div class="text-danger fw-bold">
-                                        Liên hệ                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                
-                    <div class="col-6 col-md-4 col-xl-3">
-
-                        <a href="/product/dry-super-grap-30-wraps" class="text-decoration-none text-dark">
-
-                            <div class="card h-100 border-0 shadow-sm">
-
-                                <div class="ratio ratio-1x1 bg-light">
-
-                                    <img src="https://manhdungsports.com//module/shop/image/yonex_product/accessories/dry-super-grap-30-wraps.png" alt="Phụ kiện cầu lông DRY SUPER GRAP (30 WRAPS)" class="w-100 h-100 p-2" style="object-fit:contain;">
-
-                                </div>
-
-                                <div class="card-body">
-
-                                    <h6 class="mb-2">
-                                        Phụ kiện cầu lông DRY SUPER GRAP (30 WRAPS)                                    </h6>
-
-                                    <div class="text-danger fw-bold">
-                                        Liên hệ                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                
-                    <div class="col-6 col-md-4 col-xl-3">
-
-                        <a href="/product/dry-super-grap-3-wraps" class="text-decoration-none text-dark">
-
-                            <div class="card h-100 border-0 shadow-sm">
-
-                                <div class="ratio ratio-1x1 bg-light">
-
-                                    <img src="https://manhdungsports.com//module/shop/image/yonex_product/accessories/dry-super-grap-3-wraps.png" alt="Phụ kiện cầu lông DRY SUPER GRAP(3 WRAPS)" class="w-100 h-100 p-2" style="object-fit:contain;">
-
-                                </div>
-
-                                <div class="card-body">
-
-                                    <h6 class="mb-2">
-                                        Phụ kiện cầu lông DRY SUPER GRAP(3 WRAPS)                                    </h6>
-
-                                    <div class="text-danger fw-bold">
-                                        Liên hệ                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                
-                    <div class="col-6 col-md-4 col-xl-3">
-
-                        <a href="/product/super-grap-60-wraps" class="text-decoration-none text-dark">
-
-                            <div class="card h-100 border-0 shadow-sm">
-
-                                <div class="ratio ratio-1x1 bg-light">
-
-                                    <img src="https://manhdungsports.com//module/shop/image/yonex_product/accessories/super-grap-60-wraps.png" alt="Phụ kiện cầu lông SUPER GRAP (60 WRAPS)" class="w-100 h-100 p-2" style="object-fit:contain;">
-
-                                </div>
-
-                                <div class="card-body">
-
-                                    <h6 class="mb-2">
-                                        Phụ kiện cầu lông SUPER GRAP (60 WRAPS)                                    </h6>
-
-                                    <div class="text-danger fw-bold">
-                                        Liên hệ                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                
-                    <div class="col-6 col-md-4 col-xl-3">
-
-                        <a href="/product/super-grap-36wraps" class="text-decoration-none text-dark">
-
-                            <div class="card h-100 border-0 shadow-sm">
-
-                                <div class="ratio ratio-1x1 bg-light">
-
-                                    <img src="https://manhdungsports.com//module/shop/image/yonex_product/accessories/super-grap-36wraps.png" alt="Phụ kiện cầu lông SUPER GRAP (36WRAPS)" class="w-100 h-100 p-2" style="object-fit:contain;">
-
-                                </div>
-
-                                <div class="card-body">
-
-                                    <h6 class="mb-2">
-                                        Phụ kiện cầu lông SUPER GRAP (36WRAPS)                                    </h6>
-
-                                    <div class="text-danger fw-bold">
-                                        Liên hệ                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                
-                    <div class="col-6 col-md-4 col-xl-3">
-
-                        <a href="/product/super-grap-30-wraps" class="text-decoration-none text-dark">
-
-                            <div class="card h-100 border-0 shadow-sm">
-
-                                <div class="ratio ratio-1x1 bg-light">
-
-                                    <img src="https://manhdungsports.com//module/shop/image/yonex_product/accessories/super-grap-30-wraps.png" alt="Phụ kiện cầu lông SUPER GRAP (30 WRAPS)" class="w-100 h-100 p-2" style="object-fit:contain;">
-
-                                </div>
-
-                                <div class="card-body">
-
-                                    <h6 class="mb-2">
-                                        Phụ kiện cầu lông SUPER GRAP (30 WRAPS)                                    </h6>
-
-                                    <div class="text-danger fw-bold">
-                                        Liên hệ                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                
-                    <div class="col-6 col-md-4 col-xl-3">
-
-                        <a href="/product/super-grap-12-wraps" class="text-decoration-none text-dark">
-
-                            <div class="card h-100 border-0 shadow-sm">
-
-                                <div class="ratio ratio-1x1 bg-light">
-
-                                    <img src="https://manhdungsports.com//module/shop/image/yonex_product/accessories/super-grap-12-wraps.png" alt="Phụ kiện cầu lông SUPER GRAP (12 WRAPS)" class="w-100 h-100 p-2" style="object-fit:contain;">
-
-                                </div>
-
-                                <div class="card-body">
-
-                                    <h6 class="mb-2">
-                                        Phụ kiện cầu lông SUPER GRAP (12 WRAPS)                                    </h6>
-
-                                    <div class="text-danger fw-bold">
-                                        Liên hệ                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                
-                    <div class="col-6 col-md-4 col-xl-3">
-
-                        <a href="/product/super-grap-3-wraps" class="text-decoration-none text-dark">
-
-                            <div class="card h-100 border-0 shadow-sm">
-
-                                <div class="ratio ratio-1x1 bg-light">
-
-                                    <img src="https://manhdungsports.com//module/shop/image/yonex_product/accessories/super-grap-3-wraps.png" alt="Phụ kiện cầu lông SUPER GRAP (3 WRAPS)" class="w-100 h-100 p-2" style="object-fit:contain;">
-
-                                </div>
-
-                                <div class="card-body">
-
-                                    <h6 class="mb-2">
-                                        Phụ kiện cầu lông SUPER GRAP (3 WRAPS)                                    </h6>
-
-                                    <div class="text-danger fw-bold">
-                                        Liên hệ                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                
-                    <div class="col-6 col-md-4 col-xl-3">
-
-                        <a href="/product/knee" class="text-decoration-none text-dark">
-
-                            <div class="card h-100 border-0 shadow-sm">
-
-                                <div class="ratio ratio-1x1 bg-light">
-
-                                    <img src="https://manhdungsports.com//module/shop/image/yonex_product/accessories/knee.png" alt="Phụ kiện cầu lông KNEE" class="w-100 h-100 p-2" style="object-fit:contain;">
-
-                                </div>
-
-                                <div class="card-body">
-
-                                    <h6 class="mb-2">
-                                        Phụ kiện cầu lông KNEE                                    </h6>
-
-                                    <div class="text-danger fw-bold">
-                                        Liên hệ                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                
-                    <div class="col-6 col-md-4 col-xl-3">
-
-                        <a href="/product/ankle" class="text-decoration-none text-dark">
-
-                            <div class="card h-100 border-0 shadow-sm">
-
-                                <div class="ratio ratio-1x1 bg-light">
-
-                                    <img src="https://manhdungsports.com//module/shop/image/yonex_product/accessories/ankle.png" alt="Phụ kiện cầu lông ANKLE" class="w-100 h-100 p-2" style="object-fit:contain;">
-
-                                </div>
-
-                                <div class="card-body">
-
-                                    <h6 class="mb-2">
-                                        Phụ kiện cầu lông ANKLE                                    </h6>
-
-                                    <div class="text-danger fw-bold">
-                                        Liên hệ                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                
-                    <div class="col-6 col-md-4 col-xl-3">
-
-                        <a href="/product/achilles-tendon" class="text-decoration-none text-dark">
-
-                            <div class="card h-100 border-0 shadow-sm">
-
-                                <div class="ratio ratio-1x1 bg-light">
-
-                                    <img src="https://manhdungsports.com//module/shop/image/yonex_product/accessories/achilles-tendon.png" alt="Phụ kiện cầu lông ACHILLES TENDON" class="w-100 h-100 p-2" style="object-fit:contain;">
-
-                                </div>
-
-                                <div class="card-body">
-
-                                    <h6 class="mb-2">
-                                        Phụ kiện cầu lông ACHILLES TENDON                                    </h6>
-
-                                    <div class="text-danger fw-bold">
-                                        Liên hệ                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                
-                
             </div>
 
             <!-- PAGINATION -->
-            
-    
-        <nav class="mt-3 d-flex">
-            <ul class="pagination pagination-sm shadow-sm mb-0">
+            <nav class="mt-3 d-flex">
+                <ul
+                    class="pagination pagination-sm shadow-sm mb-0"
+                    id="pagination">
+                </ul>
+            </nav>
 
-                
-                
-                
-                
-                    <li class="page-item active">
-
-                        
-                            <span class="page-link border-success text-success bg-light">
-                                1                            </span>
-
-                        
-                    </li>
-
-                
-                    <li class="page-item ">
-
-                        
-                            <a class="page-link text-success" href="?page=2">
-                                2                            </a>
-
-                        
-                    </li>
-
-                
-                    <li class="page-item ">
-
-                        
-                            <a class="page-link text-success" href="?page=3">
-                                3                            </a>
-
-                        
-                    </li>
-
-                
-                
-                    <li class="page-item disabled">
-                        <span class="page-link">
-                            ...
-                        </span>
-                    </li>
-
-                
-                
-                    <li class="page-item">
-                        <a class="page-link text-success" href="?page=2">
-                            ›
-                        </a>
-                    </li>
-
-                    <li class="page-item">
-                        <a class="page-link text-success" href="?page=12">
-                            Cuối »
-                        </a>
-                    </li>
-
-                
-            </ul>
-        </nav>
-
-    
-    
         </section>
 
     </div>
 
 </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    let currentPage = 1;
+    let lastPage = 1;
+    let prevPage = 1;
+    let nextPage = 1;
+
+    // LẤY KEYWORD TỪ URL
+    function getKeywordFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('keyword') || '';
+    }
+
+    async function loadProducts(page = 1) {
+
+        try {
+
+            currentPage = page;
+
+            const keyword = getKeywordFromUrl();
+
+            const category =
+                document.getElementById('filter-category')?.value || '';
+
+            const brands = [
+                ...document.querySelectorAll(
+                    'input[name="brand[]"]:checked'
+                )
+            ].map(item => item.value);
+
+            const price =
+                document.querySelector(
+                    'input[name="price"]:checked'
+                )?.value || '';
+
+            const query = new URLSearchParams();
+
+            query.append('page', page);
+
+            // 👉 ADD KEYWORD FROM URL
+            if (keyword) {
+                query.append('keyword', keyword);
+            }
+
+            if (category) {
+                query.append('category_id', category);
+            }
+
+            if (price) {
+                query.append('price', price);
+            }
+
+            brands.forEach(id => {
+                query.append('brand[]', id);
+            });
+
+            const response = await fetch(
+                `/api/products?${query.toString()}`
+            );
+
+            const json = await response.json();
+
+            const container =
+                document.getElementById('product-list');
+
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            if (!json.data || json.data.length === 0) {
+
+                container.innerHTML = `
+                    <div class="col-12">
+                        <div class="alert alert-light border text-center">
+                            Không có sản phẩm nào
+                        </div>
+                    </div>
+                `;
+
+                return;
+            }
+
+            json.data.forEach(product => {
+
+                const image =
+                    product.thumbnail ||
+                    product.image ||
+                    product.featured_image ||
+                    '/assets/image/no-image.svg';
+
+                const url =
+                    product.slug
+                        ? `/product/${product.slug}`
+                        : `/product/${product.id}`;
+
+                const price =
+                    Number(
+                        product.sale_price ||
+                        product.price ||
+                        0
+                    );
+
+                container.innerHTML += `
+                    <div class="col-6 col-md-4 col-xl-3">
+
+                        <a href="${url}"
+                           class="text-decoration-none text-dark">
+
+                            <div class="card h-100 border-0 shadow-sm">
+
+                                <div class="ratio ratio-1x1 bg-light">
+
+                                    <img
+                                        src="${image}"
+                                        alt="${product.name}"
+                                        class="w-100 h-100 p-2"
+                                        style="object-fit:contain">
+
+                                </div>
+
+                                <div class="card-body">
+
+                                    <h6 class="mb-2">
+                                        ${product.name}
+                                    </h6>
+
+                                    <div class="text-danger fw-bold">
+
+                                        ${
+                                            price > 0
+                                            ? price.toLocaleString('vi-VN') + ' ₫'
+                                            : 'Liên hệ'
+                                        }
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </a>
+
+                    </div>
+                `;
+            });
+
+            lastPage =
+                json.meta?.totalPages ||
+                json.meta?.lastPage ||
+                json.meta?.total_pages ||
+                1;
+
+            prevPage = Math.max(1, page - 1);
+            nextPage = Math.min(lastPage, page + 1);
+
+            renderPagination(page, lastPage);
+
+        } catch (error) {
+
+            console.error(error);
+
+            const container =
+                document.getElementById('product-list');
+
+            if (container) {
+
+                container.innerHTML = `
+                    <div class="col-12">
+                        <div class="alert alert-danger">
+                            Lỗi tải dữ liệu sản phẩm
+                        </div>
+                    </div>
+                `;
+            }
+        }
+    }
+
+    function renderPagination(page, totalPages) {
+
+        const pagination =
+            document.getElementById('pagination');
+
+        if (!pagination) return;
+
+        let html = '';
+
+        html += `
+            <li class="page-item ${page === 1 ? 'disabled' : ''}">
+                <a class="page-link"
+                   href="#"
+                   data-page="1">
+                    Đầu
+                </a>
+            </li>
+
+            <li class="page-item ${page === 1 ? 'disabled' : ''}">
+                <a class="page-link"
+                   href="#"
+                   data-page="${prevPage}">
+                    ‹
+                </a>
+            </li>
+        `;
+
+        for (let i = 1; i <= totalPages; i++) {
+
+            if (
+                i === 1 ||
+                i === totalPages ||
+                (i >= page - 2 && i <= page + 2)
+            ) {
+
+                html += `
+                    <li class="page-item ${i === page ? 'active' : ''}">
+
+                        <a class="page-link"
+                           href="#"
+                           data-page="${i}">
+                            ${i}
+                        </a>
+
+                    </li>
+                `;
+            }
+        }
+
+        html += `
+            <li class="page-item ${page === totalPages ? 'disabled' : ''}">
+                <a class="page-link"
+                   href="#"
+                   data-page="${nextPage}">
+                    ›
+                </a>
+            </li>
+
+            <li class="page-item ${page === totalPages ? 'disabled' : ''}">
+                <a class="page-link"
+                   href="#"
+                   data-page="${lastPage}">
+                    Cuối
+                </a>
+            </li>
+        `;
+
+        pagination.innerHTML = html;
+    }
+
+    document.addEventListener('change', e => {
+
+        if (
+            e.target.id === 'filter-category' ||
+            e.target.name === 'brand[]' ||
+            e.target.name === 'price'
+        ) {
+            loadProducts(1);
+        }
+
+    });
+
+    document.addEventListener('click', e => {
+
+        const link =
+            e.target.closest('[data-page]');
+
+        if (!link) return;
+
+        e.preventDefault();
+
+        const page =
+            parseInt(link.dataset.page);
+
+        if (!isNaN(page)) {
+            loadProducts(page);
+        }
+    });
+
+    loadProducts(1);
+
+});
+</script>

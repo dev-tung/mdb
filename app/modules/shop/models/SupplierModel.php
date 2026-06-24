@@ -7,7 +7,7 @@ class SupplierModel
     /**
      * Lấy danh sách supplier
      */
-    public function getAll(array $conditions = []): array
+    public function getList(array $conditions = []): array
     {
         $sql = "SELECT * FROM {$this->table} WHERE 1=1";
         $params = [];
