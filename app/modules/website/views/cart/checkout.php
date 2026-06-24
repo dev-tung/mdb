@@ -201,7 +201,7 @@ async function submitOrder() {
 
             alert('Đặt hàng thành công');
 
-            window.location.href = '/order';
+            window.location.href = '/cart/success';
 
         } else {
             alert(orderJson.message || 'Đặt hàng thất bại');

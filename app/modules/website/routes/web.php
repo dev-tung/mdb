@@ -34,10 +34,7 @@ Router::get(
 );
 
 
-Router::get(
-    '/order',
-    'PageController@order'
-);
+
 // =========================
 // CART
 // =========================
@@ -52,19 +49,9 @@ Router::get(
     'CartController@checkout'
 );
 
-Router::post(
-    '/cart/add',
-    'CartController@add'
-);
-
-Router::post(
-    '/cart/update',
-    'CartController@update'
-);
-
-Router::post(
-    '/cart/remove',
-    'CartController@remove'
+Router::get(
+    '/cart/success',
+    'CartController@success'
 );
 
 // =========================

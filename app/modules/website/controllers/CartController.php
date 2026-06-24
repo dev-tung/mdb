@@ -18,6 +18,14 @@ class CartController
         View::render('cart/checkout');
     }
 
+    /**
+     * Success page
+     */
+    public function success(): void
+    {
+        View::render('cart/success');
+    }
+
     public function add(): void {}
     public function update(): void {}
     public function remove(): void {}
