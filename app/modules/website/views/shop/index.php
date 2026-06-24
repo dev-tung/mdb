@@ -135,42 +135,58 @@ document.addEventListener('DOMContentLoaded', () => {
         return params.get('keyword') || '';
     }
 
-    function buyNow(id, name, price, image) {
+    // =========================
+    // ADD TO CART + STOCK LIMIT
+    // =========================
+    function buyNow(id, name, price, image, stock) {
 
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-        // check product exists
         const index = cart.findIndex(item => item.product_id === id);
 
         if (index !== -1) {
+
+            if (cart[index].quantity + 1 > stock) {
+                alert(`Chỉ còn ${stock} sản phẩm trong kho!`);
+                return;
+            }
+
             cart[index].quantity += 1;
+
         } else {
+
+            if (stock <= 0) {
+                alert('Sản phẩm đã hết hàng!');
+                return;
+            }
+
             cart.push({
                 product_id: id,
                 name,
                 price,
                 image,
-                quantity: 1
+                quantity: 1,
+                stock: stock
             });
         }
 
         localStorage.setItem('cart', JSON.stringify(cart));
 
-        // chuyển sang giỏ hàng
         window.location.href = '/cart';
     }
 
     // =========================
-    // HANDLE BUY (SAFE VERSION)
+    // HANDLE BUY (SAFE)
     // =========================
     window.handleBuy = function (el) {
 
-        const id = el.dataset.id;
+        const id = Number(el.dataset.id);
         const name = decodeURIComponent(el.dataset.name);
         const price = Number(el.dataset.price || 0);
         const image = decodeURIComponent(el.dataset.image);
+        const stock = Number(el.dataset.stock || 0);
 
-        buyNow(id, name, price, image);
+        buyNow(id, name, price, image, stock);
     };
 
     async function loadProducts(page = 1) {
@@ -233,9 +249,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         ? `/product/${product.slug}`
                         : `/product/${product.id}`;
 
-                // =========================
-                // NORMALIZE DATA
-                // =========================
                 const price = Number(product.price || 0);
                 const salePrice = Number(product.sale_price || 0);
                 const stock = Number(product.stock || 0);
@@ -310,6 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                             data-name="${encodeURIComponent(product.name)}"
                                             data-price="${salePrice > 0 ? salePrice : price}"
                                             data-image="${encodeURIComponent(image)}"
+                                            data-stock="${stock}"
                                             onclick="handleBuy(this)"
                                         >
                                             Mua hàng

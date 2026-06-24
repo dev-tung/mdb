@@ -68,10 +68,15 @@ function saveCart(cart) {
     localStorage.setItem('cart', JSON.stringify(cart));
 }
 
+// =========================
+// RENDER CART
+// =========================
 function renderCart() {
 
     const cart = getCart();
     const container = document.getElementById('cart-items');
+
+    if (!container) return;
 
     if (!cart.length) {
         container.innerHTML = `
@@ -88,7 +93,12 @@ function renderCart() {
 
     cart.forEach((item, index) => {
 
-        total += item.price * item.quantity;
+        const price = Number(item.price || 0);
+        const qty = Number(item.quantity || 0);
+        const stock = Number(item.stock || 999999);
+
+        const subtotal = price * qty;
+        total += subtotal;
 
         container.innerHTML += `
             <div class="d-flex align-items-center justify-content-between border-bottom py-3">
@@ -103,8 +113,12 @@ function renderCart() {
                     <div>
                         <div class="fw-semibold">${item.name}</div>
                         <div class="text-danger fw-bold">
-                            ${item.price.toLocaleString('vi-VN')} ₫
+                            ${price.toLocaleString('vi-VN')} ₫
                         </div>
+
+                        <small class="text-muted">
+                            Tồn kho: ${stock}
+                        </small>
                     </div>
 
                 </div>
@@ -113,7 +127,8 @@ function renderCart() {
 
                     <input type="number"
                            min="1"
-                           value="${item.quantity}"
+                           max="${stock}"
+                           value="${qty}"
                            class="form-control form-control-sm"
                            style="width:70px"
                            onchange="updateQty(${index}, this.value)">
@@ -133,12 +148,23 @@ function renderCart() {
         total.toLocaleString('vi-VN') + ' ₫';
 }
 
+// =========================
+// UPDATE QTY (WITH STOCK CHECK)
+// =========================
 function updateQty(index, qty) {
 
     let cart = getCart();
+
     qty = parseInt(qty);
 
-    if (qty < 1) qty = 1;
+    if (isNaN(qty) || qty < 1) qty = 1;
+
+    const stock = Number(cart[index].stock || 999999);
+
+    if (qty > stock) {
+        alert(`Chỉ còn ${stock} sản phẩm trong kho!`);
+        qty = stock;
+    }
 
     cart[index].quantity = qty;
 
@@ -146,6 +172,9 @@ function updateQty(index, qty) {
     renderCart();
 }
 
+// =========================
+// REMOVE ITEM
+// =========================
 function removeItem(index) {
 
     let cart = getCart();
@@ -156,10 +185,14 @@ function removeItem(index) {
     renderCart();
 }
 
+// =========================
+// CHECKOUT
+// =========================
 function goCheckout() {
     window.location.href = '/checkout';
 }
 
+// =========================
 document.addEventListener('DOMContentLoaded', renderCart);
 
 </script>
