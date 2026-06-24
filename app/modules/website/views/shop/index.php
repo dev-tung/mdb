@@ -195,7 +195,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         ? `/product/${product.slug}`
                         : `/product/${product.id}`;
 
-                const price = Number(product.sale_price || product.price || 0);
 
                 container.innerHTML += `
                     <div class="col-6 col-md-4 col-xl-3">
@@ -230,12 +229,12 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <div class="text-danger fw-bold">
 
                                         ${
-                                            price > 0
+                                            product.price > 0
                                             ? (
                                                 product.sale_price && Number(product.sale_price) > 0
                                                 ? `
                                                     <span class="text-muted text-decoration-line-through me-1">
-                                                        ${price.toLocaleString('vi-VN')} ₫
+                                                        ${product.price.toLocaleString('vi-VN')} ₫
                                                     </span>
                                                     <span>
                                                         ${Number(product.sale_price).toLocaleString('vi-VN')} ₫
@@ -243,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                                 `
                                                 : `
                                                     <span>
-                                                        ${price.toLocaleString('vi-VN')} ₫
+                                                        ${product.price.toLocaleString('vi-VN')} ₫
                                                     </span>
                                                 `
                                             )
