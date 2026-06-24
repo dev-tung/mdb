@@ -175,7 +175,7 @@ document.addEventListener("DOMContentLoaded", function () {
                       <td>
                           <div class="d-flex align-items-center gap-2">
                               <img
-                                  src="${p.thumbnail || 'https://placehold.co/50x50?text=No+Image'}"
+                                  src="/${p.thumbnail || 'https://placehold.co/50x50?text=No+Image'}"
                                   alt="${p.name}"
                                   width="20"
                                   height="20"
