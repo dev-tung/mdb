@@ -4,4 +4,4 @@
 // REVENUE
 // =========================
 
-Router::get('/admin/reports/revenue', 'ReportController@revenue');
+

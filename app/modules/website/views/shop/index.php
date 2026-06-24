@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             brands.forEach(id => query.append('brand[]', id));
 
-            const response = await fetch(`/api/products?${query.toString()}`);
+            const response = await fetch(`/api/products/stock?${query.toString()}`);
             const json = await response.json();
 
             const container = document.getElementById('product-list');
@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                         ${
                                             price > 0
                                             ? price.toLocaleString('vi-VN') + ' ₫'
-                                            : 'Liên hệ'
+                                            : 'Hết hàng'
                                         }
                                     </div>
 
@@ -239,17 +239,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
                             </a>
 
-                            <div class="p-2 pt-0">
+                                <div class="p-2 pt-0">
 
-                                ${
-                                    `
-                                        <button class="btn btn-outline-secondary btn-sm w-100" disabled>
-                                            Liên hệ
-                                        </button>
-                                    `
-                                }
+                                    ${
+                                        product.stock > 0
+                                        ? `
+                                            <button
+                                                class="btn btn-outline-success btn-sm w-100"
+                                                onclick="buyNow(
+                                                    ${product.id},
+                                                    '${product.name.replace(/'/g, "\\'")}',
+                                                    ${price},
+                                                    '${image}'
+                                                )"
+                                            >
+                                                Mua hàng
+                                            </button>
+                                        `
+                                        : `
+                                            <a href="tel:0973359165" class="btn btn-outline-secondary btn-sm w-100">
+                                                Liên hệ đặt hàng
+                                            </a>
+                                        `
+                                    }
 
-                            </div>
+                                </div>
 
                         </div>
 

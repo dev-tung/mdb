@@ -25,6 +25,21 @@ class ProductEndpoint
     }
 
     // =========================
+    // AVAILABLE
+    // =========================
+    public function apiAvailable()
+    {
+        $filters = request_filters(['keyword', 'category_id', 'status']);
+
+        $products = $this->productModel->getAvailable($filters);
+
+        return Response::json([
+            'success' => true,
+            'data' => $products
+        ]);
+    }
+
+    // =========================
     // LIST
     // =========================
     public function apiList()

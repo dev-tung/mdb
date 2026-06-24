@@ -1,32 +1,49 @@
 <?php
 class Middleware
 {
-    protected static array $authMap = [
-        // 'admin'   => 'admin',
-        // 'crm'     => 'admin',
-        // 'shop'    => 'admin',
-        // 'website' => null
-    ];
-
-    public static function handle(string $module, array $routeMiddleware = [])
+    public static function handle(array $middlewares = []): void
     {
-        $authType = self::$authMap[$module] ?? null;
+        $auth = $middlewares['auth'] ?? null;
 
-        if ($authType === 'admin') {
-            if (!Session::get('auth_user')) {
-              header('Location: /admin/login');
-              exit;
-            }
+        switch ($auth) {
+
+            case 'admin':
+                self::admin();
+                break;
+
+            case 'customer':
+                self::customer();
+                break;
+        }
+    }
+
+    protected static function admin(): void
+    {
+        if (Session::get('auth_user')) {
+            return;
         }
 
-        if ($authType === 'customer') {
-            if (!Session::get('auth_customer')) {
-                http_response_code(401);
-                echo json_encode(['message' => 'Unauthorized customer']);
-                exit;
-            }
+        http_response_code(401);
+
+        echo json_encode([
+            'message' => 'Unauthorized'
+        ]);
+
+        exit;
+    }
+
+    protected static function customer(): void
+    {
+        if (Session::get('auth_customer')) {
+            return;
         }
 
-        // route middleware custom (nếu có sau này)
+        http_response_code(401);
+
+        echo json_encode([
+            'message' => 'Unauthorized'
+        ]);
+
+        exit;
     }
 }

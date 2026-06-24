@@ -7,22 +7,30 @@ class Router
     // =========================
     // REGISTER GET
     // =========================
-    public static function get(string $uri, string $handler): void
-    {
+    public static function get(
+        string $uri,
+        string $handler,
+        array $middleware = []
+    ): void {
         self::$routes['GET'][] = [
-            'uri' => $uri,
-            'handler' => $handler
+            'uri'        => $uri,
+            'handler'    => $handler,
+            'middleware' => $middleware,
         ];
     }
 
     // =========================
     // REGISTER POST
     // =========================
-    public static function post(string $uri, string $handler): void
-    {
+    public static function post(
+        string $uri,
+        string $handler,
+        array $middleware = []
+    ): void {
         self::$routes['POST'][] = [
-            'uri' => $uri,
-            'handler' => $handler
+            'uri'        => $uri,
+            'handler'    => $handler,
+            'middleware' => $middleware,
         ];
     }
 
@@ -37,75 +45,116 @@ class Router
 
             $pattern = self::convertUriToRegex($route['uri']);
 
-            if (preg_match($pattern, $uri, $matches)) {
-
-                array_shift($matches);
-
-                // 1. resolve controller file
-                $controllerFile = self::resolveControllerFile($route['handler']);
-
-                if (!$controllerFile) {
-                    die("Controller not found: {$route['handler']}");
-                }
-
-                // 2. detect module
-                $module = self::detectModuleFromPath($controllerFile);
-
-                // 3. set view context
-                View::setModule($module);
-
-                // 4. RUN MIDDLEWARE (ALL AUTH LOGIC HERE)
-                Middleware::handle($module);
-
-                // 5. call controller
-                self::callAction($route['handler'], $controllerFile, $matches);
-
-                return;
+            if (!preg_match($pattern, $uri, $matches)) {
+                continue;
             }
+
+            array_shift($matches);
+
+            // resolve controller file
+            $controllerFile = self::resolveControllerFile(
+                $route['handler']
+            );
+
+            if (!$controllerFile) {
+                die(
+                    "Controller not found: {$route['handler']}"
+                );
+            }
+
+            // detect module
+            $module = self::detectModuleFromPath(
+                $controllerFile
+            );
+
+            // set view module
+            View::setModule($module);
+
+            // middleware
+            Middleware::handle(
+                $route['middleware'] ?? []
+            );
+
+            // controller action
+            self::callAction(
+                $route['handler'],
+                $controllerFile,
+                $matches
+            );
+
+            return;
         }
 
         http_response_code(404);
-        echo "404 NOT FOUND: $uri";
+
+        echo "404 NOT FOUND: {$uri}";
     }
 
     // =========================
     // CONVERT ROUTE PARAMS
     // =========================
-    protected static function convertUriToRegex(string $uri): string
-    {
+    protected static function convertUriToRegex(
+        string $uri
+    ): string {
         $pattern = preg_replace_callback(
             '#\{([a-zA-Z_]+)\}#',
             fn() => '([a-zA-Z0-9_-]+)',
             $uri
         );
 
-        return "#^" . $pattern . "$#";
+        return "#^{$pattern}$#";
     }
 
     // =========================
-    // CALL CONTROLLER ACTION
+    // CALL ACTION
     // =========================
-    protected static function callAction(string $handler, string $file, array $params = []): void
-    {
-        [$controller, $action] = explode('@', $handler);
+    protected static function callAction(
+        string $handler,
+        string $file,
+        array $params = []
+    ): void {
+        [$controller, $action] = explode(
+            '@',
+            $handler
+        );
+
+        require_once $file;
 
         if (!class_exists($controller)) {
-            die("Class not found: {$controller}");
+            die(
+                "Class not found: {$controller}"
+            );
         }
 
         $instance = new $controller();
 
-        call_user_func_array([$instance, $action], $params);
+        if (!method_exists($instance, $action)) {
+            die(
+                "Method not found: {$controller}@{$action}"
+            );
+        }
+
+        call_user_func_array(
+            [$instance, $action],
+            $params
+        );
     }
 
     // =========================
     // RESOLVE CONTROLLER FILE
     // =========================
-    protected static function resolveControllerFile(string $handler): ?string
-    {
-        [$controller] = explode('@', $handler);
+    protected static function resolveControllerFile(
+        string $handler
+    ): ?string {
+        [$controller] = explode(
+            '@',
+            $handler
+        );
 
-        $modules = glob(BASE_PATH . '/app/modules/*', GLOB_ONLYDIR);
+        $modules = glob(
+            BASE_PATH . '/app/modules/*',
+            GLOB_ONLYDIR
+        );
 
         foreach ($modules as $module) {
 
@@ -115,6 +164,7 @@ class Router
             ];
 
             foreach ($paths as $path) {
+
                 if (file_exists($path)) {
                     return $path;
                 }
@@ -127,10 +177,15 @@ class Router
     // =========================
     // DETECT MODULE
     // =========================
-    protected static function detectModuleFromPath(string $file): string
-    {
+    protected static function detectModuleFromPath(
+        string $file
+    ): string {
         $parts = explode('/modules/', $file);
-        $sub = explode('/', $parts[1] ?? '');
+
+        $sub = explode(
+            '/',
+            $parts[1] ?? ''
+        );
 
         return $sub[0] ?? 'website';
     }

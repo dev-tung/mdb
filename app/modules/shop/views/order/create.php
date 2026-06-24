@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const API = {
         customers: "/api/customers",
-        products: "/api/products/stock"
+        products: "/api/products/available"
     };
 
     let selectedProducts = {};
