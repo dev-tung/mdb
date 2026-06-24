@@ -60,8 +60,8 @@
               <th>#</th>
               <th>Sản phẩm</th>
               <th>Danh mục</th>
+              <th>Giá gốc</th>
               <th>Giá bán</th>
-              <th>Tồn kho</th>
               <th>Trạng thái</th>
               <th>Ngày tạo</th>
               <th>Hành động</th>
@@ -188,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                       <td>${p.category_name ?? '---'}</td>
                       <td>${Number(p.price).toLocaleString()} ₫</td>
-                      <td>${p.stock ?? 0}</td>
+                      <td>${Number(p.sale_price ?? p.price).toLocaleString()} ₫</td>
 
                       <td>
                           <select class="form-select form-select-sm">

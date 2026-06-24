@@ -18,6 +18,11 @@
                 </div>
 
                 <div class="col-md-12">
+                    <label class="form-label">Giá khuyến mãi</label>
+                    <input type="number" id="sale_price" class="form-control" placeholder="Nhập giá khuyến mãi">
+                </div>
+
+                <div class="col-md-12">
                     <label class="form-label">Mô tả</label>
                     <textarea
                         id="description"
@@ -114,6 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             document.querySelector('#name').value = product.name ?? '';
             document.querySelector('#price').value = product.price ?? '';
+            document.querySelector('#sale_price').value = product.sale_price ?? '';
             document.querySelector('#category_id').value = product.category_id ?? '';
             document.querySelector('#description').value = product.description ?? '';
 
@@ -158,6 +164,7 @@ document.addEventListener("DOMContentLoaded", function () {
             formData.append('id', productId);
             formData.append('name', document.querySelector('#name').value);
             formData.append('price', document.querySelector('#price').value);
+            formData.append('sale_price', document.querySelector('#sale_price').value);
             formData.append('category_id', document.querySelector('#category_id').value);
             formData.append('description', document.querySelector('#description').value);
 
@@ -218,6 +225,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
     })();
 });
-
-
 </script>
