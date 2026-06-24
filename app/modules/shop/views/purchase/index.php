@@ -50,7 +50,6 @@ $payments = config('shop.option.payment') ?? [];
           <th>Nhà cung cấp</th>
           <th>Kho</th>
           <th>Tổng tiền</th>
-          <th>Số sản phẩm</th>
           <th>Trạng thái</th>
           <th>Thanh toán</th>
           <th>Ngày tạo</th>
@@ -201,7 +200,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     <td>${p.supplier_name ?? '---'}</td>
                     <td>${p.warehouse_name ?? '---'}</td>
                     <td>${Number(p.total_cost).toLocaleString()} ₫</td>
-                    <td>${p.total_items ?? 0}</td>
 
                     <td>
                         <select class="form-select form-select-sm text-${STATUS_CONFIG[p.status]?.color || 'secondary'}"
