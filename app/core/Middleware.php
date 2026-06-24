@@ -1,7 +1,7 @@
 <?php
 class Middleware
 {
-    protected static array $moduleAuthMap = [
+    protected static array $authMap = [
         'admin'   => 'admin',
         'crm'     => 'admin',
         'shop'    => 'admin',
@@ -10,13 +10,12 @@ class Middleware
 
     public static function handle(string $module, array $routeMiddleware = [])
     {
-        $authType = self::$moduleAuthMap[$module] ?? null;
+        $authType = self::$authMap[$module] ?? null;
 
         if ($authType === 'admin') {
             if (!Session::get('auth_user')) {
-                http_response_code(401);
-                echo json_encode(['message' => 'Unauthorized admin']);
-                exit;
+              header('Location: /admin/login');
+              exit;
             }
         }
 

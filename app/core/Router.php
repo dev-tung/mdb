@@ -7,24 +7,22 @@ class Router
     // =========================
     // REGISTER GET
     // =========================
-    public static function get(string $uri, string $handler, array $middleware = []): void
+    public static function get(string $uri, string $handler): void
     {
         self::$routes['GET'][] = [
             'uri' => $uri,
-            'handler' => $handler,
-            'middleware' => $middleware
+            'handler' => $handler
         ];
     }
 
     // =========================
     // REGISTER POST
     // =========================
-    public static function post(string $uri, string $handler, array $middleware = []): void
+    public static function post(string $uri, string $handler): void
     {
         self::$routes['POST'][] = [
             'uri' => $uri,
-            'handler' => $handler,
-            'middleware' => $middleware
+            'handler' => $handler
         ];
     }
 
@@ -57,7 +55,7 @@ class Router
                 View::setModule($module);
 
                 // 4. RUN MIDDLEWARE (ALL AUTH LOGIC HERE)
-                Middleware::handle($module, $route['middleware']);
+                Middleware::handle($module);
 
                 // 5. call controller
                 self::callAction($route['handler'], $controllerFile, $matches);
