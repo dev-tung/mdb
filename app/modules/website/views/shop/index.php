@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                         ${
                                             price > 0
                                             ? price.toLocaleString('vi-VN') + ' ₫'
-                                            : 'Hết hàng'
+                                            : 'Tạm hết hàng'
                                         }
                                     </div>
 
