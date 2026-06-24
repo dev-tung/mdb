@@ -19,9 +19,8 @@
                             Danh mục
                         </label>
 
-                        <select
-                            class="form-select form-select-sm"
-                            id="filter-category">
+                        <select class="form-select form-select-sm"
+                                id="filter-category">
 
                             <option value="">
                                 Tất cả danh mục
@@ -48,11 +47,10 @@
                         <?php foreach($brands as $brand): ?>
                             <div class="form-check small mb-1">
 
-                                <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    name="brand[]"
-                                    value="<?= $brand['id'] ?>">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="brand[]"
+                                       value="<?= $brand['id'] ?>">
 
                                 <label class="form-check-label">
                                     <?= $brand['name'] ?>
@@ -72,27 +70,21 @@
                             Khoảng giá
                         </label>
 
-                        <?php
-                            $priceRanges = config('shop.option.price_range') ?? [];
-                        ?>
+                        <?php $priceRanges = config('shop.option.price_range') ?? []; ?>
 
                         <?php foreach ($priceRanges as $key => $item): ?>
 
                         <div class="form-check small mb-1">
 
-                            <input
-                                class="form-check-input"
-                                type="radio"
-                                name="price"
-                                id="price_<?= $key ?>"
-                                value="<?= $key ?>">
+                            <input class="form-check-input"
+                                   type="radio"
+                                   name="price"
+                                   id="price_<?= $key ?>"
+                                   value="<?= $key ?>">
 
-                            <label
-                                class="form-check-label"
-                                for="price_<?= $key ?>">
-
+                            <label class="form-check-label"
+                                   for="price_<?= $key ?>">
                                 <?= $item['label'] ?>
-
                             </label>
 
                         </div>
@@ -120,10 +112,8 @@
 
             <!-- PAGINATION -->
             <nav class="mt-3 d-flex">
-                <ul
-                    class="pagination pagination-sm shadow-sm mb-0"
-                    id="pagination">
-                </ul>
+                <ul class="pagination pagination-sm shadow-sm mb-0"
+                    id="pagination"></ul>
             </nav>
 
         </section>
@@ -140,7 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let prevPage = 1;
     let nextPage = 1;
 
-    // LẤY KEYWORD TỪ URL
     function getKeywordFromUrl() {
         const params = new URLSearchParams(window.location.search);
         return params.get('keyword') || '';
@@ -158,52 +147,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('filter-category')?.value || '';
 
             const brands = [
-                ...document.querySelectorAll(
-                    'input[name="brand[]"]:checked'
-                )
+                ...document.querySelectorAll('input[name="brand[]"]:checked')
             ].map(item => item.value);
 
             const price =
-                document.querySelector(
-                    'input[name="price"]:checked'
-                )?.value || '';
+                document.querySelector('input[name="price"]:checked')?.value || '';
 
             const query = new URLSearchParams();
 
             query.append('page', page);
 
-            // 👉 ADD KEYWORD FROM URL
-            if (keyword) {
-                query.append('keyword', keyword);
-            }
+            if (keyword) query.append('keyword', keyword);
+            if (category) query.append('category_id', category);
+            if (price) query.append('price', price);
 
-            if (category) {
-                query.append('category_id', category);
-            }
+            brands.forEach(id => query.append('brand[]', id));
 
-            if (price) {
-                query.append('price', price);
-            }
-
-            brands.forEach(id => {
-                query.append('brand[]', id);
-            });
-
-            const response = await fetch(
-                `/api/products?${query.toString()}`
-            );
-
+            const response = await fetch(`/api/products?${query.toString()}`);
             const json = await response.json();
 
-            const container =
-                document.getElementById('product-list');
-
+            const container = document.getElementById('product-list');
             if (!container) return;
 
             container.innerHTML = '';
 
             if (!json.data || json.data.length === 0) {
-
                 container.innerHTML = `
                     <div class="col-12">
                         <div class="alert alert-light border text-center">
@@ -211,7 +179,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     </div>
                 `;
-
                 return;
             }
 
@@ -228,132 +195,121 @@ document.addEventListener('DOMContentLoaded', () => {
                         ? `/product/${product.slug}`
                         : `/product/${product.id}`;
 
-                const price =
-                    Number(
-                        product.sale_price ||
-                        product.price ||
-                        0
-                    );
+                const price = Number(product.sale_price || product.price || 0);
 
                 container.innerHTML += `
                     <div class="col-6 col-md-4 col-xl-3">
 
-                        <a href="${url}"
-                           class="text-decoration-none text-dark">
+                        <div class="card h-100 border-0 shadow-sm d-flex flex-column">
 
-                            <div class="card h-100 border-0 shadow-sm">
+                            <a href="${url}" class="text-decoration-none text-dark">
 
                                 <div class="ratio ratio-1x1 bg-light">
 
-                                    <img
-                                        src="${image}"
-                                        alt="${product.name}"
-                                        class="w-100 h-100 p-2"
-                                        style="object-fit:contain">
+                                    <img src="${image}"
+                                         alt="${product.name}"
+                                         class="w-100 h-100 p-2"
+                                         style="object-fit:contain">
 
                                 </div>
 
-                                <div class="card-body">
+                                <div class="card-body flex-grow-1">
 
-                                    <h6 class="mb-2">
+                                    <h6 class="mb-2"
+                                        style="
+                                            display: -webkit-box;
+                                            -webkit-line-clamp: 2;
+                                            -webkit-box-orient: vertical;
+                                            overflow: hidden;
+                                            line-height: 1.3em;
+                                            height: 2.6em;
+                                        ">
                                         ${product.name}
                                     </h6>
 
                                     <div class="text-danger fw-bold">
-
                                         ${
                                             price > 0
                                             ? price.toLocaleString('vi-VN') + ' ₫'
                                             : 'Liên hệ'
                                         }
-
                                     </div>
 
                                 </div>
 
+                            </a>
+
+                            <div class="p-2 pt-0">
+
+                                ${
+                                    price > 0
+                                    ? `
+                                        <button class="btn btn-outline-success btn-sm w-100"
+                                                onclick="buyNow(${product.id}, '${product.name}', ${price}, '${image}')">
+                                            Mua ngay
+                                        </button>
+                                    `
+                                    : `
+                                        <button class="btn btn-outline-secondary btn-sm w-100" disabled>
+                                            Liên hệ
+                                        </button>
+                                    `
+                                }
+
                             </div>
 
-                        </a>
+                        </div>
 
                     </div>
                 `;
             });
 
-            lastPage =
-                json.meta?.totalPages ||
-                json.meta?.lastPage ||
-                json.meta?.total_pages ||
-                1;
-
+            lastPage = json.meta?.totalPages || 1;
             prevPage = Math.max(1, page - 1);
             nextPage = Math.min(lastPage, page + 1);
 
             renderPagination(page, lastPage);
 
-        } catch (error) {
+        } catch (e) {
 
-            console.error(error);
+            console.error(e);
 
-            const container =
-                document.getElementById('product-list');
-
-            if (container) {
-
-                container.innerHTML = `
-                    <div class="col-12">
-                        <div class="alert alert-danger">
-                            Lỗi tải dữ liệu sản phẩm
-                        </div>
+            document.getElementById('product-list').innerHTML = `
+                <div class="col-12">
+                    <div class="alert alert-danger">
+                        Lỗi tải dữ liệu sản phẩm
                     </div>
-                `;
-            }
+                </div>
+            `;
         }
     }
 
     function renderPagination(page, totalPages) {
 
-        const pagination =
-            document.getElementById('pagination');
-
+        const pagination = document.getElementById('pagination');
         if (!pagination) return;
 
         let html = '';
 
         html += `
             <li class="page-item ${page === 1 ? 'disabled' : ''}">
-                <a class="page-link"
-                   href="#"
-                   data-page="1">
-                    Đầu
-                </a>
+                <a class="page-link" href="#" data-page="1">Đầu</a>
             </li>
 
             <li class="page-item ${page === 1 ? 'disabled' : ''}">
-                <a class="page-link"
-                   href="#"
-                   data-page="${prevPage}">
-                    ‹
-                </a>
+                <a class="page-link" href="#" data-page="${prevPage}">‹</a>
             </li>
         `;
 
         for (let i = 1; i <= totalPages; i++) {
 
-            if (
-                i === 1 ||
-                i === totalPages ||
-                (i >= page - 2 && i <= page + 2)
-            ) {
+            if (i === 1 || i === totalPages || (i >= page - 2 && i <= page + 2)) {
 
                 html += `
                     <li class="page-item ${i === page ? 'active' : ''}">
-
-                        <a class="page-link"
-                           href="#"
-                           data-page="${i}">
+                        <a class="page-link" href="#" data-page="${i}">
                             ${i}
                         </a>
-
                     </li>
                 `;
             }
@@ -361,19 +317,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         html += `
             <li class="page-item ${page === totalPages ? 'disabled' : ''}">
-                <a class="page-link"
-                   href="#"
-                   data-page="${nextPage}">
-                    ›
-                </a>
+                <a class="page-link" href="#" data-page="${nextPage}">›</a>
             </li>
 
             <li class="page-item ${page === totalPages ? 'disabled' : ''}">
-                <a class="page-link"
-                   href="#"
-                   data-page="${lastPage}">
-                    Cuối
-                </a>
+                <a class="page-link" href="#" data-page="${lastPage}">Cuối</a>
             </li>
         `;
 
@@ -381,7 +329,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.addEventListener('change', e => {
-
         if (
             e.target.id === 'filter-category' ||
             e.target.name === 'brand[]' ||
@@ -389,27 +336,34 @@ document.addEventListener('DOMContentLoaded', () => {
         ) {
             loadProducts(1);
         }
-
     });
 
     document.addEventListener('click', e => {
 
-        const link =
-            e.target.closest('[data-page]');
-
+        const link = e.target.closest('[data-page]');
         if (!link) return;
 
         e.preventDefault();
 
-        const page =
-            parseInt(link.dataset.page);
-
-        if (!isNaN(page)) {
-            loadProducts(page);
-        }
+        const page = parseInt(link.dataset.page);
+        if (!isNaN(page)) loadProducts(page);
     });
 
     loadProducts(1);
-
 });
+
+function buyNow(id, name, price, image) {
+
+    const cart = [{
+        product_id: id,
+        name,
+        price,
+        image,
+        quantity: 1
+    }];
+
+    sessionStorage.setItem('buy_now', JSON.stringify(cart));
+
+    window.location.href = '/checkout';
+}
 </script>
