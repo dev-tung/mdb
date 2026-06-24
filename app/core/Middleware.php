@@ -2,10 +2,10 @@
 class Middleware
 {
     protected static array $authMap = [
-        'admin'   => 'admin',
-        'crm'     => 'admin',
-        'shop'    => 'admin',
-        'website' => null
+        // 'admin'   => 'admin',
+        // 'crm'     => 'admin',
+        // 'shop'    => 'admin',
+        // 'website' => null
     ];
 
     public static function handle(string $module, array $routeMiddleware = [])
