@@ -228,11 +228,28 @@ document.addEventListener('DOMContentLoaded', () => {
                                     </h6>
 
                                     <div class="text-danger fw-bold">
+
                                         ${
                                             price > 0
-                                            ? price.toLocaleString('vi-VN') + ' ₫'
+                                            ? (
+                                                product.sale_price && Number(product.sale_price) > 0
+                                                ? `
+                                                    <span class="text-muted text-decoration-line-through me-1">
+                                                        ${price.toLocaleString('vi-VN')} ₫
+                                                    </span>
+                                                    <span>
+                                                        ${Number(product.sale_price).toLocaleString('vi-VN')} ₫
+                                                    </span>
+                                                `
+                                                : `
+                                                    <span>
+                                                        ${price.toLocaleString('vi-VN')} ₫
+                                                    </span>
+                                                `
+                                            )
                                             : 'Tạm hết hàng'
                                         }
+
                                     </div>
 
                                 </div>
