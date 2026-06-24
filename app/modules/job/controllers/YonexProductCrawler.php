@@ -1,6 +1,6 @@
 <?php
 
-class CrawYonexProductController
+class YonexProductCrawler
 {
     protected string $categoryFile;
     protected string $jsonFile;

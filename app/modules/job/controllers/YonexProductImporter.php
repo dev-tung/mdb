@@ -1,6 +1,6 @@
 <?php
 
-class ImportYonexProductController
+class YonexProductImporter
 {
     protected string $categoryFile;
     protected string $productFile;

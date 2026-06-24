@@ -1,6 +1,6 @@
 <?php
 
-class CrawYonexProductDetailController
+class YonexProductDetailCrawler
 {
     protected string $inputFile;
     protected string $outputFile;

@@ -1,6 +1,6 @@
 <?php
 
-class CrawYonexCategoryController
+class YonexCategoryCrawler
 {
     protected string $baseUrl = 'https://www.yonex.com/badminton';
 
