@@ -13,11 +13,11 @@
                     Cảm ơn bạn đã đặt hàng. Chúng tôi sẽ liên hệ xác nhận và giao hàng sớm nhất.
                 </p>
 
-                <a href="/product" class="btn btn-success w-100 mb-2">
+                <a href="/product" class="btn btn-success ">
                     Tiếp tục mua hàng
                 </a>
 
-                <a href="/" class="btn btn-outline-secondary w-100">
+                <a href="/" class="btn btn-outline-secondary">
                     Về trang chủ
                 </a>
 
