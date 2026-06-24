@@ -135,6 +135,19 @@ document.addEventListener('DOMContentLoaded', () => {
         return params.get('keyword') || '';
     }
 
+    // =========================
+    // HANDLE BUY (SAFE VERSION)
+    // =========================
+    window.handleBuy = function (el) {
+
+        const id = el.dataset.id;
+        const name = decodeURIComponent(el.dataset.name);
+        const price = Number(el.dataset.price || 0);
+        const image = decodeURIComponent(el.dataset.image);
+
+        buyNow(id, name, price, image);
+    };
+
     async function loadProducts(page = 1) {
 
         try {
@@ -196,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         : `/product/${product.id}`;
 
                 // =========================
-                // FIX DATA
+                // NORMALIZE DATA
                 // =========================
                 const price = Number(product.price || 0);
                 const salePrice = Number(product.sale_price || 0);
@@ -268,19 +281,18 @@ document.addEventListener('DOMContentLoaded', () => {
                                     ? `
                                         <button
                                             class="btn btn-outline-success btn-sm w-100"
-                                            onclick="buyNow(
-                                                ${product.id},
-                                                ${JSON.stringify(product.name)},
-                                                ${salePrice > 0 ? salePrice : price},
-                                                ${JSON.stringify(image)}
-                                            )"
+                                            data-id="${product.id}"
+                                            data-name="${encodeURIComponent(product.name)}"
+                                            data-price="${salePrice > 0 ? salePrice : price}"
+                                            data-image="${encodeURIComponent(image)}"
+                                            onclick="handleBuy(this)"
                                         >
                                             Mua hàng
                                         </button>
                                     `
                                     : `
                                         <a href="https://zalo.me/0973359165"
-                                        class="btn btn-outline-secondary btn-sm w-100">
+                                           class="btn btn-outline-secondary btn-sm w-100">
                                             Liên hệ đặt hàng
                                         </a>
                                     `
@@ -381,29 +393,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadProducts(1);
 });
-
-function buyNow(id, name, price, image) {
-
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-    // check product exists
-    const index = cart.findIndex(item => item.product_id === id);
-
-    if (index !== -1) {
-        cart[index].quantity += 1;
-    } else {
-        cart.push({
-            product_id: id,
-            name,
-            price,
-            image,
-            quantity: 1
-        });
-    }
-
-    localStorage.setItem('cart', JSON.stringify(cart));
-
-    // chuyển sang giỏ hàng
-    window.location.href = '/cart';
-}
 </script>
