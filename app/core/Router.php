@@ -50,14 +50,14 @@ class Router
                     die("Controller not found: {$route['handler']}");
                 }
 
-                // 2. detect module from file path
+                // 2. detect module
                 $module = self::detectModuleFromPath($controllerFile);
 
-                // 3. set view context (IMPORTANT)
+                // 3. set view context
                 View::setModule($module);
 
-                // 4. middleware (placeholder)
-                // self::handleMiddleware($route['middleware']);
+                // 4. RUN MIDDLEWARE (ALL AUTH LOGIC HERE)
+                Middleware::handle($module, $route['middleware']);
 
                 // 5. call controller
                 self::callAction($route['handler'], $controllerFile, $matches);
@@ -77,9 +77,7 @@ class Router
     {
         $pattern = preg_replace_callback(
             '#\{([a-zA-Z_]+)\}#',
-            function () {
-                return '([a-zA-Z0-9_-]+)';
-            },
+            fn() => '([a-zA-Z0-9_-]+)',
             $uri
         );
 
@@ -129,15 +127,12 @@ class Router
     }
 
     // =========================
-    // DETECT MODULE FROM PATH
+    // DETECT MODULE
     // =========================
     protected static function detectModuleFromPath(string $file): string
     {
-        // .../modules/website/controllers/HomeController.php
-
         $parts = explode('/modules/', $file);
-
-        $sub = explode('/', $parts[1]);
+        $sub = explode('/', $parts[1] ?? '');
 
         return $sub[0] ?? 'website';
     }

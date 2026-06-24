@@ -1,6 +1,6 @@
 <?php
 
-class AuthController
+class WebsiteController
 {
     public function login(): void {}
     public function authenticate(): void {}

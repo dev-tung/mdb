@@ -14,7 +14,7 @@ class View
         return self::$module;
     }
 
-    public static function render(string $view, array $data = []): void
+    public static function render(string $view, array $data = [], $menu = true): void
     {
         $header  = self::getHeader();
         $content = self::getContent($view);

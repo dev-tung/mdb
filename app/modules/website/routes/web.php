@@ -54,45 +54,6 @@ Router::get(
     'CartController@success'
 );
 
-// =========================
-// AUTH
-// =========================
-
-Router::get(
-    '/login',
-    'AuthController@login'
-);
-
-Router::post(
-    '/login',
-    'AuthController@authenticate'
-);
-
-Router::get(
-    '/register',
-    'AuthController@register'
-);
-
-Router::post(
-    '/register',
-    'AuthController@store'
-);
-
-Router::get(
-    '/forgot-password',
-    'AuthController@forgotPassword'
-);
-
-Router::post(
-    '/forgot-password',
-    'AuthController@sendResetLink'
-);
-
-Router::post(
-    '/logout',
-    'AuthController@logout',
-    ['auth']
-);
 
 // =========================
 // PAGE
