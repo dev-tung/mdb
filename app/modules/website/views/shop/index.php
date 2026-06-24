@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ...document.querySelectorAll('input[name="brand[]"]:checked')
             ].map(item => item.value);
 
-            const price =
+            const priceFilter =
                 document.querySelector('input[name="price"]:checked')?.value || '';
 
             const query = new URLSearchParams();
@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (keyword) query.append('keyword', keyword);
             if (category) query.append('category_id', category);
-            if (price) query.append('price', price);
+            if (priceFilter) query.append('price', priceFilter);
 
             brands.forEach(id => query.append('brand[]', id));
 
@@ -195,6 +195,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         ? `/product/${product.slug}`
                         : `/product/${product.id}`;
 
+                // =========================
+                // FIX DATA
+                // =========================
+                const price = Number(product.price || 0);
+                const salePrice = Number(product.sale_price || 0);
+                const stock = Number(product.stock || 0);
 
                 container.innerHTML += `
                     <div class="col-6 col-md-4 col-xl-3">
@@ -206,9 +212,9 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <div class="ratio ratio-1x1 bg-light">
 
                                     <img src="${image}"
-                                         alt="${product.name}"
-                                         class="w-100 h-100 p-2"
-                                         style="object-fit:contain">
+                                        alt="${product.name}"
+                                        class="w-100 h-100 p-2"
+                                        style="object-fit:contain">
 
                                 </div>
 
@@ -229,24 +235,24 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <div class="text-danger">
 
                                         ${
-                                            product.price > 0
+                                            price > 0
                                             ? (
-                                                product.sale_price && Number(product.sale_price) > 0
+                                                salePrice > 0
                                                 ? `
                                                     <small class="text-muted text-decoration-line-through me-1">
-                                                        ${Number(product.price).toLocaleString('vi-VN')} ₫
+                                                        ${price.toLocaleString('vi-VN')} ₫
                                                     </small>
                                                     <span class="fw-bold">
-                                                        ${Number(product.sale_price).toLocaleString('vi-VN')} ₫
+                                                        ${salePrice.toLocaleString('vi-VN')} ₫
                                                     </span>
                                                 `
                                                 : `
                                                     <span class="fw-bold">
-                                                        ${Number(product.price).toLocaleString('vi-VN')} ₫
+                                                        ${price.toLocaleString('vi-VN')} ₫
                                                     </span>
                                                 `
                                             )
-                                            : `<span>Tạm hết hàng </span>`
+                                            : `<span>Tạm hết hàng</span>`
                                         }
 
                                     </div>
@@ -255,31 +261,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
                             </a>
 
-                                <div class="p-2 pt-0">
+                            <div class="p-2 pt-0">
 
-                                    ${
-                                        product.stock > 0
-                                        ? `
-                                            <button
-                                                class="btn btn-outline-success btn-sm w-100"
-                                                onclick="buyNow(
-                                                    ${product.id},
-                                                    '${product.name.replace(/'/g, "\\'")}',
-                                                    ${price},
-                                                    '${image}'
-                                                )"
-                                            >
-                                                Mua hàng
-                                            </button>
-                                        `
-                                        : `
-                                            <a href="tel:0973359165" class="btn btn-outline-secondary btn-sm w-100">
-                                                Liên hệ đặt hàng
-                                            </a>
-                                        `
-                                    }
+                                ${
+                                    stock > 0
+                                    ? `
+                                        <button
+                                            class="btn btn-outline-success btn-sm w-100"
+                                            onclick="buyNow(
+                                                ${product.id},
+                                                ${JSON.stringify(product.name)},
+                                                ${salePrice > 0 ? salePrice : price},
+                                                ${JSON.stringify(image)}
+                                            )"
+                                        >
+                                            Mua hàng
+                                        </button>
+                                    `
+                                    : `
+                                        <a href="https://zalo.me/0973359165"
+                                        class="btn btn-outline-secondary btn-sm w-100">
+                                            Liên hệ đặt hàng
+                                        </a>
+                                    `
+                                }
 
-                                </div>
+                            </div>
 
                         </div>
 
