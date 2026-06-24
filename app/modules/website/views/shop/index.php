@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                         ${product.name}
                                     </h6>
 
-                                    <div class="text-danger fw-bold">
+                                    <div class="text-danger">
 
                                         ${
                                             product.price > 0
@@ -236,17 +236,17 @@ document.addEventListener('DOMContentLoaded', () => {
                                                     <small class="text-muted text-decoration-line-through me-1">
                                                         ${Number(product.price).toLocaleString('vi-VN')} ₫
                                                     </small>
-                                                    <span>
+                                                    <span class="fw-bold">
                                                         ${Number(product.sale_price).toLocaleString('vi-VN')} ₫
                                                     </span>
                                                 `
                                                 : `
-                                                    <span>
+                                                    <span class="fw-bold">
                                                         ${Number(product.price).toLocaleString('vi-VN')} ₫
                                                     </span>
                                                 `
                                             )
-                                            : 'Tạm hết hàng'
+                                            : `<span>Tạm hết hàng </span>`
                                         }
 
                                     </div>
