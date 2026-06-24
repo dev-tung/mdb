@@ -1,97 +1,110 @@
 <main class="container py-4">
 
+    <?php
+        // normalize image url
+        function img_url($img) {
+            if (!$img) return 'https://placehold.co/600x600';
+            if (str_starts_with($img, 'http')) return $img;
+            return '/' . ltrim($img, '/');
+        }
+    ?>
+
     <div class="row g-5">
 
         <!-- LEFT -->
         <div class="col-lg-6">
 
+            <?php
+                $mainImage = img_url($product['thumbnail'] ?? null);
+            ?>
+
             <div class="bg-white border rounded p-3 text-center">
 
                 <img id="mainImg"
-                     src="https://placehold.co/600x600"
+                     src="<?= htmlspecialchars($mainImage) ?>"
                      class="img-fluid rounded"
                      style="max-height:500px; object-fit:contain;"
-                     alt="Product name">
+                     alt="<?= htmlspecialchars($product['name'] ?? '') ?>">
 
             </div>
 
-            <div class="d-flex gap-2 mt-3 flex-wrap justify-content-center">
+            <!-- GALLERY -->
+            <?php if (!empty($product['gallery']) && is_array($product['gallery'])): ?>
+                <div class="d-flex gap-2 mt-3 flex-wrap justify-content-center">
 
-                <img src="https://placehold.co/100x100"
-                     class="border rounded"
-                     style="width:60px;height:60px;object-fit:cover;cursor:pointer"
-                     onclick="document.getElementById('mainImg').src=this.src">
+                    <?php foreach ($product['gallery'] as $img): ?>
+                        <?php $imgUrl = img_url($img); ?>
 
-                <img src="https://placehold.co/100x100"
-                     class="border rounded"
-                     style="width:60px;height:60px;object-fit:cover;cursor:pointer"
-                     onclick="document.getElementById('mainImg').src=this.src">
+                        <img src="<?= htmlspecialchars($imgUrl) ?>"
+                             class="border rounded"
+                             style="width:60px;height:60px;object-fit:cover;cursor:pointer"
+                             onclick="document.getElementById('mainImg').src=this.src">
 
-                <img src="https://placehold.co/100x100"
-                     class="border rounded"
-                     style="width:60px;height:60px;object-fit:cover;cursor:pointer"
-                     onclick="document.getElementById('mainImg').src=this.src">
+                    <?php endforeach; ?>
 
-            </div>
+                </div>
+            <?php endif; ?>
 
         </div>
 
         <!-- RIGHT -->
         <div class="col-lg-6">
 
+            <!-- CATEGORY -->
             <div class="text-uppercase text-muted small mb-2">
-                Category name
+                <?= htmlspecialchars($product['category_name'] ?? '') ?>
             </div>
 
+            <!-- NAME -->
             <h1 class="fw-bold mb-3">
-                Product name
+                <?= htmlspecialchars($product['name'] ?? '') ?>
             </h1>
 
-            <p class="text-secondary mb-4">
-                Product description goes here. This is a sample description text.
-            </p>
+            <!-- DESCRIPTION -->
+            <?php if (!empty($product['description'])): ?>
+                <p class="text-secondary mb-4">
+                    <?= nl2br(htmlspecialchars($product['description'])) ?>
+                </p>
+            <?php endif; ?>
 
             <!-- PRICE -->
             <div class="mb-4">
 
-                <div class="fs-3 fw-bold text-success">
-                    1.234.567 ₫
+                <?php if (!empty($product['price'])): ?>
+                    <div class="fs-3 fw-bold text-success">
+                        <?= number_format($product['price'], 0, ',', '.') ?> ₫
+                    </div>
+                <?php else: ?>
+                    <span class="badge bg-danger px-3 py-2 fs-6">
+                        Liên hệ
+                    </span>
+                <?php endif; ?>
+
+            </div>
+
+            <!-- ATTRIBUTES -->
+            <?php if (!empty($product['attributes']) && is_array($product['attributes'])): ?>
+                <div class="border rounded p-3 bg-light">
+
+                    <div class="fw-bold mb-3">Đặc điểm chi tiết</div>
+
+                    <table class="table table-sm mb-0">
+
+                        <?php foreach ($product['attributes'] as $attr): ?>
+                            <tr>
+                                <th class="text-muted fw-normal">
+                                    <?= htmlspecialchars($attr['attribute_name']) ?>
+                                </th>
+                                <td class="fw-semibold">
+                                    <?= htmlspecialchars($attr['attribute_value']) ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+
+                    </table>
+
                 </div>
-
-                <!-- hoặc dùng khi không có giá -->
-                <!--
-                <span class="badge bg-danger px-3 py-2 fs-6">
-                    Liên hệ
-                </span>
-                -->
-
-            </div>
-
-            <!-- SPECIFICATIONS -->
-            <div class="border rounded p-3 bg-light">
-
-                <div class="fw-bold mb-3">Đặc điểm chi tiết</div>
-
-                <table class="table table-sm mb-0">
-
-                    <tr>
-                        <th class="text-muted fw-normal">Thương hiệu</th>
-                        <td class="fw-semibold">Yonex</td>
-                    </tr>
-
-                    <tr>
-                        <th class="text-muted fw-normal">Trọng lượng</th>
-                        <td class="fw-semibold">4U</td>
-                    </tr>
-
-                    <tr>
-                        <th class="text-muted fw-normal">Độ cứng</th>
-                        <td class="fw-semibold">Medium</td>
-                    </tr>
-
-                </table>
-
-            </div>
+            <?php endif; ?>
 
         </div>
 

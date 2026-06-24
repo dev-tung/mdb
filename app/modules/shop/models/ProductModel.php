@@ -247,4 +247,49 @@ class ProductModel
 
         return Database::get($sql);
     }
+
+    public function findBySlug(string $slug): ?array
+    {
+        $product = Database::first("
+            SELECT 
+                p.*,
+                c.name AS category_name,
+                b.name AS brand_name
+            FROM products p
+            LEFT JOIN categories c ON c.id = p.category_id
+            LEFT JOIN brands b ON b.id = p.brand_id
+            WHERE p.slug = :slug
+            LIMIT 1
+        ", [
+            'slug' => $slug
+        ]);
+
+        if (!$product) return null;
+
+        // IMAGES
+        $images = Database::get("
+            SELECT image 
+            FROM product_images
+            WHERE product_id = :id
+            ORDER BY sort_order ASC, id ASC
+        ", [
+            'id' => $product['id']
+        ]);
+
+        $product['gallery'] = array_column($images, 'image');
+
+        // ATTRIBUTES
+        $attributes = Database::get("
+            SELECT attribute_name, attribute_value
+            FROM product_attributes
+            WHERE product_id = :id
+            ORDER BY id ASC
+        ", [
+            'id' => $product['id']
+        ]);
+
+        $product['attributes'] = $attributes;
+
+        return $product;
+    }
 }

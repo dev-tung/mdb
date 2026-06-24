@@ -26,9 +26,21 @@ class ShopController
 
     public function show(): void
     {
-        View::render('shop/show');
-    }
+        $slug = $_SERVER['REQUEST_URI'];
+        $slug = trim(parse_url($slug, PHP_URL_PATH), '/');
+        $slug = str_replace('product/', '', $slug);
 
-    public function category(): void {}
-    public function search(): void {}
+        $product = $this->productModel->findBySlug($slug);
+
+        if (!$product) {
+            http_response_code(404);
+            exit('Product not found');
+        }
+
+        $category = $product['category_id']
+            ? $this->categoryModel->findById($product['category_id'])
+            : null;
+
+        View::render('shop/show', compact('product', 'category'));
+    }
 }
