@@ -53,7 +53,7 @@ return [
             'color' => 'danger',
         ],
         'completed' => [
-            'label' => 'Đã thanh toán',
+            'label' => 'Đã hoàn thành',
             'color' => 'default',
         ],
     ],

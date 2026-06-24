@@ -112,20 +112,15 @@ class ProductModel
 
                 c.name AS category_name,
 
-                (
-                    SELECT pi2.id
-                    FROM purchase_items pi2
-                    WHERE pi2.product_id = {$this->alias}.id
-                    ORDER BY pi2.id DESC
-                    LIMIT 1
-                ) AS purchase_item_id,
+                last_purchase.purchase_item_id,
 
-                COALESCE(SUM(pi.quantity), 0) AS stock_in,
-                COALESCE(SUM(oi.quantity), 0) AS stock_out,
+                COALESCE(stock_in.stock_in, 0) AS stock_in,
+
+                COALESCE(stock_out.stock_out, 0) AS stock_out,
 
                 (
-                    COALESCE(SUM(pi.quantity), 0)
-                    - COALESCE(SUM(oi.quantity), 0)
+                    COALESCE(stock_in.stock_in, 0)
+                    - COALESCE(stock_out.stock_out, 0)
                 ) AS stock
 
             FROM {$this->table} {$this->alias}
@@ -133,23 +128,47 @@ class ProductModel
             LEFT JOIN categories c
                 ON c.id = {$this->alias}.category_id
 
-            LEFT JOIN purchase_items pi
-                ON pi.product_id = {$this->alias}.id
+            LEFT JOIN (
+                SELECT
+                    pi.product_id,
+                    SUM(pi.quantity) AS stock_in
+                FROM purchase_items pi
+                INNER JOIN purchases p
+                    ON p.id = pi.purchase_id
+                WHERE p.status = 'received'
+                GROUP BY pi.product_id
+            ) stock_in
+                ON stock_in.product_id = {$this->alias}.id
 
-            LEFT JOIN order_items oi
-                ON oi.product_id = {$this->alias}.id
+            LEFT JOIN (
+                SELECT
+                    oi.product_id,
+                    SUM(oi.quantity) AS stock_out
+                FROM order_items oi
+                INNER JOIN orders o
+                    ON o.id = oi.order_id
+                WHERE o.status = 'received'
+                GROUP BY oi.product_id
+            ) stock_out
+                ON stock_out.product_id = {$this->alias}.id
+
+            LEFT JOIN (
+                SELECT
+                    pi.product_id,
+                    MAX(pi.id) AS purchase_item_id
+                FROM purchase_items pi
+                INNER JOIN purchases p
+                    ON p.id = pi.purchase_id
+                WHERE p.status = 'received'
+                GROUP BY pi.product_id
+            ) last_purchase
+                ON last_purchase.product_id = {$this->alias}.id
         ";
 
         $sql .= $this->buildWhere($conditions, $params);
 
         $sql .= "
-            GROUP BY {$this->alias}.id
-
-            HAVING (
-                COALESCE(SUM(pi.quantity), 0)
-                - COALESCE(SUM(oi.quantity), 0)
-            ) > 0
-
+            HAVING stock > 0
             ORDER BY {$this->alias}.id DESC
         ";
 
