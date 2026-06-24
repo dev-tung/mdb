@@ -135,6 +135,31 @@ document.addEventListener('DOMContentLoaded', () => {
         return params.get('keyword') || '';
     }
 
+    function buyNow(id, name, price, image) {
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // check product exists
+        const index = cart.findIndex(item => item.product_id === id);
+
+        if (index !== -1) {
+            cart[index].quantity += 1;
+        } else {
+            cart.push({
+                product_id: id,
+                name,
+                price,
+                image,
+                quantity: 1
+            });
+        }
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+        // chuyển sang giỏ hàng
+        window.location.href = '/cart';
+    }
+
     // =========================
     // HANDLE BUY (SAFE VERSION)
     // =========================
