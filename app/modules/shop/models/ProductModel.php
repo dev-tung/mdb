@@ -387,4 +387,94 @@ class ProductModel
 
         return $product;
     }
+
+    public function findBySlugStock(string $slug): ?array
+    {
+        $product = Database::first("
+            SELECT
+                p.*,
+
+                c.name AS category_name,
+                b.name AS brand_name,
+
+                COALESCE(stock_in.stock_in, 0) AS stock_in,
+
+                COALESCE(stock_out.stock_out, 0) AS stock_out,
+
+                (
+                    COALESCE(stock_in.stock_in, 0)
+                    - COALESCE(stock_out.stock_out, 0)
+                ) AS stock
+
+            FROM products p
+
+            LEFT JOIN categories c
+                ON c.id = p.category_id
+
+            LEFT JOIN brands b
+                ON b.id = p.brand_id
+
+            LEFT JOIN (
+                SELECT
+                    pi.product_id,
+                    SUM(pi.quantity) AS stock_in
+                FROM purchase_items pi
+                INNER JOIN purchases pu
+                    ON pu.id = pi.purchase_id
+                WHERE pu.status = 'received'
+                GROUP BY pi.product_id
+            ) stock_in
+                ON stock_in.product_id = p.id
+
+            LEFT JOIN (
+                SELECT
+                    oi.product_id,
+                    SUM(oi.quantity) AS stock_out
+                FROM order_items oi
+                INNER JOIN orders o
+                    ON o.id = oi.order_id
+                WHERE o.status = 'completed'
+                GROUP BY oi.product_id
+            ) stock_out
+                ON stock_out.product_id = p.id
+
+            WHERE p.slug = :slug
+
+            LIMIT 1
+        ", [
+            'slug' => $slug
+        ]);
+
+        if (!$product) {
+            return null;
+        }
+
+        // IMAGES
+        $images = Database::get("
+            SELECT image
+            FROM product_images
+            WHERE product_id = :id
+            ORDER BY sort_order ASC, id ASC
+        ", [
+            'id' => $product['id']
+        ]);
+
+        $product['gallery'] = array_column($images, 'image');
+
+        // ATTRIBUTES
+        $attributes = Database::get("
+            SELECT
+                attribute_name,
+                attribute_value
+            FROM product_attributes
+            WHERE product_id = :id
+            ORDER BY id ASC
+        ", [
+            'id' => $product['id']
+        ]);
+
+        $product['attributes'] = $attributes;
+
+        return $product;
+    }
 }

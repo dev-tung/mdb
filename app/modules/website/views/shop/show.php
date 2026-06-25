@@ -71,17 +71,49 @@
             <!-- PRICE -->
             <div class="mb-4">
 
-                <?php if (($product['stock'] ?? 0) > 0): ?>
+                <div class="fs-3 fw-bold text-success">
 
-                    <div class="fs-3 fw-bold text-success">
-                        <?= number_format($product['price'], 0, ',', '.') ?> ₫
-                    </div>
+                    <?php
+                        $price = $product['price'] ?? 0;
+                        $sale = $product['sale_price'] ?? 0;
+                    ?>
+
+                    <?php if ($price > 0): ?>
+
+                        <?php if ($sale > 0): ?>
+
+                            <small class="text-muted text-decoration-line-through me-2">
+                                <?= number_format($price, 0, ',', '.') ?> ₫
+                            </small>
+
+                            <span class="fw-bold text-danger">
+                                <?= number_format($sale, 0, ',', '.') ?> ₫
+                            </span>
+
+                        <?php else: ?>
+
+                            <span class="fw-bold">
+                                <?= number_format($price, 0, ',', '.') ?> ₫
+                            </span>
+
+                        <?php endif; ?>
+
+                    <?php else: ?>
+
+                        <span>Tạm hết hàng</span>
+
+                    <?php endif; ?>
+
+                </div>
+
+
+                <?php if (($product['stock'] ?? 0) > 0): ?>
 
                     <button
                         class="btn btn-success mt-3"
                         data-id="<?= $product['id'] ?>"
                         data-name="<?= urlencode($product['name']) ?>"
-                        data-price="<?= $product['sale_price'] > 0 ? $product['sale_price'] : $product['price'] ?>"
+                        data-price="<?= ($sale > 0 ? $sale : $price) ?>"
                         data-image="<?= urlencode($product['thumbnail'] ?? '') ?>"
                         data-stock="<?= $product['stock'] ?>"
                         onclick="handleBuy(this)"
@@ -90,10 +122,6 @@
                     </button>
 
                 <?php else: ?>
-
-                    <div class="fs-5 fw-bold text-danger">
-                        Tạm hết hàng
-                    </div>
 
                     <a href="https://zalo.me/0973359165"
                     class="btn btn-outline-secondary mt-3">

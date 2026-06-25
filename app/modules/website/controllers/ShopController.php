@@ -30,7 +30,7 @@ class ShopController
         $slug = trim(parse_url($slug, PHP_URL_PATH), '/');
         $slug = str_replace('product/', '', $slug);
 
-        $product = $this->productModel->findBySlug($slug);
+        $product = $this->productModel->findBySlugStock($slug);
 
         if (!$product) {
             http_response_code(404);
