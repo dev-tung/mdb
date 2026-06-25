@@ -1,6 +1,6 @@
 <main class="container py-4">
 
-    <div class="row g-4">
+    <div class="row g-3">
 
         <!-- CART LIST -->
         <div class="col-12 col-lg-8">
@@ -101,9 +101,10 @@ function renderCart() {
         total += subtotal;
 
         container.innerHTML += `
-            <div class="d-flex align-items-center justify-content-between border-bottom py-3">
+            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between border-bottom py-3 gap-3">
 
-                <div class="d-flex align-items-center gap-3">
+                <!-- LEFT -->
+                <div class="d-flex align-items-center gap-3 flex-grow-1">
 
                     <img src="${item.image}"
                          width="60"
@@ -112,6 +113,7 @@ function renderCart() {
 
                     <div>
                         <div class="fw-semibold">${item.name}</div>
+
                         <div class="text-danger fw-bold">
                             ${price.toLocaleString('vi-VN')} ₫
                         </div>
@@ -123,14 +125,15 @@ function renderCart() {
 
                 </div>
 
-                <div class="d-flex align-items-center gap-2">
+                <!-- RIGHT -->
+                <div class="d-flex align-items-center gap-2 flex-shrink-0 flex-wrap">
 
                     <input type="number"
                            min="1"
                            max="${stock}"
                            value="${qty}"
                            class="form-control form-control-sm"
-                           style="width:70px"
+                           style="width:80px; min-width:70px"
                            onchange="updateQty(${index}, this.value)">
 
                     <button class="btn btn-outline-danger btn-sm"
@@ -149,7 +152,7 @@ function renderCart() {
 }
 
 // =========================
-// UPDATE QTY (WITH STOCK CHECK)
+// UPDATE QTY
 // =========================
 function updateQty(index, qty) {
 
