@@ -80,7 +80,7 @@ function getCart() {
 }
 
 // =========================
-// RENDER CHECKOUT
+// RENDER CHECKOUT (FIXED MOBILE BUG)
 // =========================
 function renderCheckout() {
 
@@ -110,7 +110,7 @@ function renderCheckout() {
         total += line;
 
         container.innerHTML += `
-            <div class="d-flex align-items-stretch gap-3 border-bottom py-3">
+            <div class="d-flex align-items-start border-bottom py-3">
 
                 <!-- IMAGE -->
                 <div class="flex-shrink-0 d-flex align-items-center">
@@ -122,7 +122,7 @@ function renderCheckout() {
                 </div>
 
                 <!-- CONTENT -->
-                <div class="d-flex flex-column justify-content-center flex-grow-1">
+                <div class="flex-grow-1 ps-3 d-flex flex-column justify-content-center">
 
                     <div class="fw-semibold text-break">
                         ${item.name}
@@ -170,6 +170,7 @@ async function submitOrder() {
             return;
         }
 
+        // CREATE CUSTOMER
         const cusRes = await fetch('/api/customers', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

@@ -1,4 +1,4 @@
-<main class="container py-4">
+<main class="container py-3">
 
     <div class="row g-3">
 
@@ -13,9 +13,7 @@
 
                 <div class="card-body">
 
-                    <div id="cart-items">
-                        Đang tải...
-                    </div>
+                    <div id="cart-items">Đang tải...</div>
 
                 </div>
 
@@ -69,7 +67,7 @@ function saveCart(cart) {
 }
 
 // =========================
-// RENDER CART
+// RENDER CART (MOBILE FIXED)
 // =========================
 function renderCart() {
 
@@ -80,7 +78,7 @@ function renderCart() {
 
     if (!cart.length) {
         container.innerHTML = `
-            <div class="alert alert-warning">
+            <div class="alert alert-warning mb-0">
                 Giỏ hàng trống
             </div>
         `;
@@ -101,18 +99,22 @@ function renderCart() {
         total += subtotal;
 
         container.innerHTML += `
-            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between border-bottom py-3 gap-3">
+            <div class="d-flex flex-column flex-md-row align-items-start justify-content-between border-bottom py-3 gap-3">
 
                 <!-- LEFT -->
-                <div class="d-flex align-items-center gap-3 flex-grow-1">
+                <div class="d-flex align-items-start gap-3 flex-grow-1">
 
                     <img src="${item.image}"
                          width="60"
                          height="60"
+                         class="rounded"
                          style="object-fit:contain">
 
-                    <div>
-                        <div class="fw-semibold">${item.name}</div>
+                    <div class="flex-grow-1">
+
+                        <div class="fw-semibold text-break">
+                            ${item.name}
+                        </div>
 
                         <div class="text-danger fw-bold">
                             ${price.toLocaleString('vi-VN')} ₫
@@ -121,19 +123,20 @@ function renderCart() {
                         <small class="text-muted">
                             Tồn kho: ${stock}
                         </small>
+
                     </div>
 
                 </div>
 
                 <!-- RIGHT -->
-                <div class="d-flex align-items-center gap-2 flex-shrink-0 flex-wrap">
+                <div class="d-flex align-items-center gap-2 flex-wrap">
 
                     <input type="number"
                            min="1"
                            max="${stock}"
                            value="${qty}"
                            class="form-control form-control-sm"
-                           style="width:80px; min-width:70px"
+                           style="width:80px"
                            onchange="updateQty(${index}, this.value)">
 
                     <button class="btn btn-outline-danger btn-sm"
@@ -195,7 +198,7 @@ function goCheckout() {
     window.location.href = '/checkout';
 }
 
-// =========================
+// INIT
 document.addEventListener('DOMContentLoaded', renderCart);
 
 </script>
