@@ -133,9 +133,9 @@ class ProductModel
                     pi.product_id,
                     SUM(pi.quantity) AS stock_in
                 FROM purchase_items pi
-                INNER JOIN purchases p
-                    ON p.id = pi.purchase_id
-                WHERE p.status = 'received'
+                INNER JOIN purchases pu
+                    ON pu.id = pi.purchase_id
+                WHERE pu.status = 'received'
                 GROUP BY pi.product_id
             ) stock_in
                 ON stock_in.product_id = {$this->alias}.id
@@ -157,9 +157,9 @@ class ProductModel
                     pi.product_id,
                     MAX(pi.id) AS purchase_item_id
                 FROM purchase_items pi
-                INNER JOIN purchases p
-                    ON p.id = pi.purchase_id
-                WHERE p.status = 'received'
+                INNER JOIN purchases pu
+                    ON pu.id = pi.purchase_id
+                WHERE pu.status = 'received'
                 GROUP BY pi.product_id
             ) last_purchase
                 ON last_purchase.product_id = {$this->alias}.id
@@ -168,7 +168,7 @@ class ProductModel
         $sql .= $this->buildWhere($conditions, $params);
 
         $sql .= "
-            HAVING (
+            AND (
                 COALESCE(stock_in.stock_in, 0)
                 - COALESCE(stock_out.stock_out, 0)
             ) > 0
@@ -210,9 +210,9 @@ class ProductModel
                     pi.product_id,
                     SUM(pi.quantity) AS stock_in
                 FROM purchase_items pi
-                INNER JOIN purchases p
-                    ON p.id = pi.purchase_id
-                WHERE p.status = 'received'
+                INNER JOIN purchases pu
+                    ON pu.id = pi.purchase_id
+                WHERE pu.status = 'received'
                 GROUP BY pi.product_id
             ) stock_in
                 ON stock_in.product_id = {$this->alias}.id
@@ -234,9 +234,9 @@ class ProductModel
                     pi.product_id,
                     MAX(pi.id) AS purchase_item_id
                 FROM purchase_items pi
-                INNER JOIN purchases p
-                    ON p.id = pi.purchase_id
-                WHERE p.status = 'received'
+                INNER JOIN purchases pu
+                    ON pu.id = pi.purchase_id
+                WHERE pu.status = 'received'
                 GROUP BY pi.product_id
             ) last_purchase
                 ON last_purchase.product_id = {$this->alias}.id
