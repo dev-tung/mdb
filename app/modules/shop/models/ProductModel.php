@@ -147,7 +147,7 @@ class ProductModel
                 FROM order_items oi
                 INNER JOIN orders o
                     ON o.id = oi.order_id
-                WHERE o.status = 'received'
+                WHERE o.status = 'completed'
                 GROUP BY oi.product_id
             ) stock_out
                 ON stock_out.product_id = {$this->alias}.id
@@ -168,7 +168,11 @@ class ProductModel
         $sql .= $this->buildWhere($conditions, $params);
 
         $sql .= "
-            HAVING stock > 0
+            HAVING (
+                COALESCE(stock_in.stock_in, 0)
+                - COALESCE(stock_out.stock_out, 0)
+            ) > 0
+
             ORDER BY {$this->alias}.id DESC
         ";
 
@@ -220,7 +224,7 @@ class ProductModel
                 FROM order_items oi
                 INNER JOIN orders o
                     ON o.id = oi.order_id
-                WHERE o.status = 'received'
+                WHERE o.status = 'completed'
                 GROUP BY oi.product_id
             ) stock_out
                 ON stock_out.product_id = {$this->alias}.id
