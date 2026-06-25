@@ -46,110 +46,54 @@
 
     </div>
 
-<!-- =========================
-    DANH MỤC
-========================= -->
-<section class="mb-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold mb-0">Danh mục sản phẩm</h2>
-        <a href="/product" class="text-decoration-none text-success">
-            Xem tất cả →
-        </a>
-    </div>
+    <!-- =========================
+        DANH MỤC
+    ========================= -->
+    <section class="mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold mb-0">Danh mục sản phẩm</h2>
+            <a href="/product" class="text-decoration-none text-success">
+                Xem tất cả →
+            </a>
+        </div>
 
-    <div class="row g-4">
+        <div class="row g-4">
 
-        <?php foreach ($categories as $cat): ?>
-            <div class="col-6 col-md-4 col-lg-3">
+            <?php foreach ($categories as $cat): ?>
+                <div class="col-6 col-md-4 col-lg-3">
 
-                <a href="/product?category=<?= $cat['id'] ?>" class="text-decoration-none text-dark">
+                    <a href="/product?category=<?= $cat['id'] ?>" class="text-decoration-none text-dark">
 
-                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card border-0 shadow-sm h-100">
 
-                        <!-- IMAGE -->
-                        <div class="ratio ratio-4x3 bg-light">
-                            <img
-                                src="/<?= $cat['thumbnail'] ?>"
-                                alt="<?= htmlspecialchars($cat['name']) ?>"
-                                class="w-100 h-100"
-                                style="object-fit:contain;padding:20px;"
-                                loading="lazy"
-                            >
+                            <!-- IMAGE -->
+                            <div class="ratio ratio-4x3 bg-light">
+                                <img
+                                    src="/<?= $cat['thumbnail'] ?>"
+                                    alt="<?= htmlspecialchars($cat['name']) ?>"
+                                    class="w-100 h-100"
+                                    style="object-fit:contain;padding:20px;"
+                                    loading="lazy"
+                                >
+                            </div>
+
+                            <!-- NAME -->
+                            <div class="card-body text-center">
+                                <h6 class="mb-0 fw-semibold">
+                                    <?= htmlspecialchars($cat['name']) ?>
+                                </h6>
+                            </div>
+
                         </div>
 
-                        <!-- NAME -->
-                        <div class="card-body text-center">
-                            <h6 class="mb-0 fw-semibold">
-                                <?= htmlspecialchars($cat['name']) ?>
-                            </h6>
-                        </div>
+                    </a>
 
-                    </div>
+                </div>
+            <?php endforeach; ?>
 
-                </a>
+        </div>
+    </section>
 
-            </div>
-        <?php endforeach; ?>
-
-    </div>
-</section>
-
-<!-- =========================
-    SẢN PHẨM NỔI BẬT / VỢT
-========================= -->
-<section class="mb-5">
-    <header class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold mb-0 fs-3">Vợt cầu lông nổi bật</h2>
-        <a href="/product?category=1" class="text-decoration-none text-success fw-semibold">
-            Xem tất cả →
-        </a>
-    </header>
-
-    <div class="row g-3 g-md-4">
-
-        <?php foreach ($featuredProducts as $p): ?>
-            <div class="col-6 col-md-4 col-lg-2">
-
-                <article class="card h-100 shadow border position-relative overflow-hidden">
-
-                    <!-- IMAGE -->
-                    <div class="w-100 bg-light d-flex align-items-center justify-content-center" style="height:180px;">
-                        <img
-                            src="/<?= $p['thumbnail'] ?>"
-                            alt="<?= htmlspecialchars($p['name']) ?>"
-                            class="w-100 h-100 p-2"
-                            style="object-fit:contain;"
-                            loading="lazy"
-                        >
-                    </div>
-
-                    <!-- INFO -->
-                    <div class="card-body d-flex flex-column p-3">
-
-                        <h6 class="card-title mb-2 fs-6">
-                            <a href="/product/<?= $p['slug'] ?>"
-                               class="text-decoration-none text-dark stretched-link">
-                                <?= htmlspecialchars($p['name']) ?>
-                            </a>
-                        </h6>
-
-                        <div class="text-muted small">
-                            <?= $p['category_name'] ?>
-                        </div>
-
-                        <div class="text-danger fw-bold mt-auto">
-                            <?= number_format((float)$p['price']) ?> ₫
-                        </div>
-
-                    </div>
-
-                </article>
-
-            </div>
-        <?php endforeach; ?>
-
-    </div>
-</section>
 
     <!-- GIỚI THIỆU SEO -->
     <div class="alert alert-dismissible fade show p-0 border-0 mb-0">

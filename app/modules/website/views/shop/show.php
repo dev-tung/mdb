@@ -67,22 +67,40 @@
                 </p>
             <?php endif; ?>
 
+
             <!-- PRICE -->
             <div class="mb-4">
 
-                <?php if (($product['price'] ?? 0) > 0): ?>
+                <?php if (($product['stock'] ?? 0) > 0): ?>
+
                     <div class="fs-3 fw-bold text-success">
                         <?= number_format($product['price'], 0, ',', '.') ?> ₫
                     </div>
+
+                    <button
+                        class="btn btn-success mt-3"
+                        data-id="<?= $product['id'] ?>"
+                        data-name="<?= urlencode($product['name']) ?>"
+                        data-price="<?= $product['sale_price'] > 0 ? $product['sale_price'] : $product['price'] ?>"
+                        data-image="<?= urlencode($product['thumbnail'] ?? '') ?>"
+                        data-stock="<?= $product['stock'] ?>"
+                        onclick="handleBuy(this)"
+                    >
+                        Mua hàng
+                    </button>
+
                 <?php else: ?>
+
                     <div class="fs-5 fw-bold text-danger">
                         Tạm hết hàng
                     </div>
-                <?php endif; ?>
 
-                <div class="text-muted mt-2">
-                    Liên hệ đặt hàng 0973.359.165
-                </div>
+                    <a href="https://zalo.me/0973359165"
+                    class="btn btn-outline-secondary mt-3">
+                        Liên hệ đặt hàng
+                    </a>
+
+                <?php endif; ?>
 
             </div>
 
@@ -115,3 +133,52 @@
     </div>
 
 </main>
+<script>
+function buyNow(id, name, price, image, stock) {
+
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    const index = cart.findIndex(item => item.product_id === id);
+
+    if (index !== -1) {
+
+        if (cart[index].quantity + 1 > stock) {
+            alert(`Chỉ còn ${stock} sản phẩm trong kho!`);
+            return;
+        }
+
+        cart[index].quantity += 1;
+
+    } else {
+
+        if (stock <= 0) {
+            alert('Sản phẩm đã hết hàng!');
+            return;
+        }
+
+        cart.push({
+            product_id: id,
+            name,
+            price,
+            image,
+            quantity: 1,
+            stock: stock
+        });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    window.location.href = '/cart';
+}
+
+window.handleBuy = function (el) {
+
+    const id = Number(el.dataset.id);
+    const name = decodeURIComponent(el.dataset.name);
+    const price = Number(el.dataset.price || 0);
+    const image = decodeURIComponent(el.dataset.image);
+    const stock = Number(el.dataset.stock || 0);
+
+    buyNow(id, name, price, image, stock);
+};
+</script>
