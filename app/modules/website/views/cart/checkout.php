@@ -1,6 +1,6 @@
 <main class="container py-4">
 
-    <div class="row g-4">
+    <div class="row g-3">
 
         <!-- LEFT: PRODUCTS -->
         <div class="col-12 col-lg-7">
@@ -79,13 +79,18 @@ function getCart() {
     return JSON.parse(localStorage.getItem('cart')) || [];
 }
 
+// =========================
+// RENDER CHECKOUT
+// =========================
 function renderCheckout() {
 
     const cart = getCart();
     const container = document.getElementById('checkout-items');
 
+    if (!container) return;
+
     if (!cart.length) {
-        container.innerHTML = `<div class="alert alert-warning">Giỏ hàng trống</div>`;
+        container.innerHTML = `<div class="alert alert-warning mb-0">Giỏ hàng trống</div>`;
         document.getElementById('checkout-total').innerText = '0 ₫';
         return;
     }
@@ -102,11 +107,15 @@ function renderCheckout() {
         total += line;
 
         container.innerHTML += `
-            <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+            <div class="d-flex align-items-center justify-content-between py-3 border-bottom">
 
-                <div class="d-flex align-items-center gap-2">
+                <div class="d-flex align-items-center gap-3 flex-grow-1">
 
-                    <img src="${item.image}" width="50" height="50" style="object-fit:contain">
+                    <img src="${item.image}"
+                         width="50"
+                         height="50"
+                         class="rounded"
+                         style="object-fit:contain">
 
                     <div>
                         <div class="fw-semibold">${item.name}</div>
@@ -115,7 +124,7 @@ function renderCheckout() {
 
                 </div>
 
-                <div class="fw-bold text-danger">
+                <div class="fw-bold text-danger text-end">
                     ${line.toLocaleString('vi-VN')} ₫
                 </div>
 
@@ -127,6 +136,9 @@ function renderCheckout() {
         total.toLocaleString('vi-VN') + ' ₫';
 }
 
+// =========================
+// SUBMIT ORDER
+// =========================
 async function submitOrder() {
 
     try {
@@ -149,17 +161,17 @@ async function submitOrder() {
         }
 
         // =========================
-        // STEP 1: CREATE CUSTOMER
+        // CREATE CUSTOMER
         // =========================
         const cusRes = await fetch('/api/customers', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 name: customer_name,
-                phone: phone,
+                phone,
                 email: '',
                 group_id: 0,
-                address: address,
+                address,
                 description: note
             })
         });
@@ -174,7 +186,7 @@ async function submitOrder() {
         const customer_id = cusJson.id;
 
         // =========================
-        // STEP 2: CREATE ORDER
+        // CREATE ORDER
         // =========================
         const products = cart.map(item => ({
             product_id: Number(item.product_id),
@@ -213,6 +225,7 @@ async function submitOrder() {
     }
 }
 
+// =========================
 document.addEventListener('DOMContentLoaded', renderCheckout);
 
 </script>
