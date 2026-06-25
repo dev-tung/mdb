@@ -1,8 +1,8 @@
-<main class="container py-4">
+<main class="container py-3">
 
     <div class="row g-3">
 
-        <!-- LEFT: PRODUCTS -->
+        <!-- LEFT: CART -->
         <div class="col-12 col-lg-7">
 
             <div class="card shadow-sm border-0">
@@ -28,7 +28,7 @@
 
         </div>
 
-        <!-- RIGHT: CUSTOMER INFO -->
+        <!-- RIGHT: CUSTOMER -->
         <div class="col-12 col-lg-5">
 
             <div class="card shadow-sm border-0">
@@ -90,7 +90,10 @@ function renderCheckout() {
     if (!container) return;
 
     if (!cart.length) {
-        container.innerHTML = `<div class="alert alert-warning mb-0">Giỏ hàng trống</div>`;
+        container.innerHTML = `
+            <div class="alert alert-warning mb-0">
+                Giỏ hàng trống
+            </div>`;
         document.getElementById('checkout-total').innerText = '0 ₫';
         return;
     }
@@ -107,25 +110,32 @@ function renderCheckout() {
         total += line;
 
         container.innerHTML += `
-            <div class="d-flex align-items-center justify-content-between py-3 border-bottom">
+            <div class="d-flex align-items-stretch gap-3 border-bottom py-3">
 
-                <div class="d-flex align-items-center gap-3 flex-grow-1">
-
+                <!-- IMAGE -->
+                <div class="flex-shrink-0 d-flex align-items-center">
                     <img src="${item.image}"
-                         width="50"
-                         height="50"
+                         width="60"
+                         height="60"
                          class="rounded"
                          style="object-fit:contain">
-
-                    <div>
-                        <div class="fw-semibold">${item.name}</div>
-                        <small class="text-muted">x${qty}</small>
-                    </div>
-
                 </div>
 
-                <div class="fw-bold text-danger text-end">
-                    ${line.toLocaleString('vi-VN')} ₫
+                <!-- CONTENT -->
+                <div class="d-flex flex-column justify-content-center flex-grow-1">
+
+                    <div class="fw-semibold text-break">
+                        ${item.name}
+                    </div>
+
+                    <small class="text-muted">
+                        Số lượng ${qty}
+                    </small>
+
+                    <div class="fw-bold text-danger">
+                        ${line.toLocaleString('vi-VN')} ₫
+                    </div>
+
                 </div>
 
             </div>
@@ -160,9 +170,6 @@ async function submitOrder() {
             return;
         }
 
-        // =========================
-        // CREATE CUSTOMER
-        // =========================
         const cusRes = await fetch('/api/customers', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -183,11 +190,6 @@ async function submitOrder() {
             return;
         }
 
-        const customer_id = cusJson.id;
-
-        // =========================
-        // CREATE ORDER
-        // =========================
         const products = cart.map(item => ({
             product_id: Number(item.product_id),
             quantity: Number(item.quantity),
@@ -199,7 +201,7 @@ async function submitOrder() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                customer_id,
+                customer_id: cusJson.id,
                 products,
                 description: note
             })
@@ -225,7 +227,7 @@ async function submitOrder() {
     }
 }
 
-// =========================
+// INIT
 document.addEventListener('DOMContentLoaded', renderCheckout);
 
 </script>
