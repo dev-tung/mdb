@@ -70,15 +70,19 @@
             <!-- PRICE -->
             <div class="mb-4">
 
-                <?php if (!empty($product['price'])): ?>
+                <?php if (($product['price'] ?? 0) > 0): ?>
                     <div class="fs-3 fw-bold text-success">
                         <?= number_format($product['price'], 0, ',', '.') ?> ₫
                     </div>
                 <?php else: ?>
-                    <span class="badge bg-danger px-3 py-2 fs-6">
-                        Liên hệ
-                    </span>
+                    <div class="fs-5 fw-bold text-danger">
+                        Tạm hết hàng
+                    </div>
                 <?php endif; ?>
+
+                <div class="text-muted mt-2">
+                    Liên hệ đặt hàng 0973.359.165
+                </div>
 
             </div>
 
