@@ -96,11 +96,9 @@ class OrderEndpoint
         ]);
     }
 
-    // =========================
-    // CREATE
-    // =========================
     public function apiCreate()
     {
+        // LẤY DỮ LIỆU REQUEST
         $input = json_decode(file_get_contents("php://input"), true);
 
         $customer_id = (int)($input['customer_id'] ?? 0);
@@ -109,6 +107,7 @@ class OrderEndpoint
         $items       = $input['products'] ?? [];
         $description = $input['description'] ?? '';
 
+        // KIỂM TRA DỮ LIỆU
         if ($customer_id <= 0) {
             return Response::json([
                 'success' => false,
@@ -123,6 +122,7 @@ class OrderEndpoint
             ]);
         }
 
+        // TẠO ĐƠN HÀNG
         $orderId = $this->orderModel->create([
             'customer_id' => $customer_id,
             'status'      => $status,
@@ -132,12 +132,13 @@ class OrderEndpoint
 
         $total = 0;
 
+        // TẠO CHI TIẾT ĐƠN HÀNG
         foreach ($items as $item) {
 
-            $product_id = (int)($item['product_id'] ?? $item['id'] ?? 0);
-            $qty        = (int)($item['quantity'] ?? 1);
-            $price      = (float)($item['price'] ?? 0);
-            $discount   = (float)($item['discount'] ?? 0);
+            $product_id      = (int)($item['product_id'] ?? $item['id'] ?? 0);
+            $qty             = (int)($item['quantity'] ?? 1);
+            $price           = (float)($item['price'] ?? 0);
+            $discount        = (float)($item['discount'] ?? 0);
             $purchase_item_id = (int)($item['purchase_item_id'] ?? 0);
 
             if ($product_id <= 0 || $qty <= 0) {
@@ -148,23 +149,35 @@ class OrderEndpoint
             $total += $lineTotal;
 
             $this->orderItemModel->create([
-                'order_id' => $orderId,
-                'product_id' => $product_id,
+                'order_id'         => $orderId,
+                'product_id'       => $product_id,
                 'purchase_item_id' => $purchase_item_id,
-                'quantity' => $qty,
-                'price' => $price,
-                'discount' => $discount
+                'quantity'         => $qty,
+                'price'            => $price,
+                'discount'         => $discount
+            ]);
+
+            // Tạo lịch sử xuất kho
+            $this->inventoryTransactionModel->create([
+                'product_id'     => $product_id,
+                'type'           => 'out',
+                'quantity'       => $qty,
+                'reference_type' => 'order',
+                'reference_id'   => $orderId,
+                'note'           => 'Xuất kho bán hàng'
             ]);
         }
 
+        // CẬP NHẬT TỔNG TIỀN
         $this->orderModel->updateById($orderId, [
             'total_amount' => $total
         ]);
 
+        // TRẢ KẾT QUẢ
         return Response::json([
             'success' => true,
             'message' => 'Tạo đơn hàng thành công',
-            'id' => $orderId
+            'id'      => $orderId
         ]);
     }
 

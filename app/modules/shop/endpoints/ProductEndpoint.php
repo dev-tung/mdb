@@ -10,36 +10,6 @@ class ProductEndpoint
     }
 
     // =========================
-    // STOCK
-    // =========================
-    public function apiStock()
-    {
-        $filters = request_filters(['keyword', 'category_id', 'status']);
-
-        $products = $this->productModel->getStock($filters);
-
-        return Response::json([
-            'success' => true,
-            'data' => $products
-        ]);
-    }
-
-    // =========================
-    // AVAILABLE
-    // =========================
-    public function apiAvailable()
-    {
-        $filters = request_filters(['keyword', 'category_id', 'status']);
-
-        $products = $this->productModel->getAvailable($filters);
-
-        return Response::json([
-            'success' => true,
-            'data' => $products
-        ]);
-    }
-
-    // =========================
     // LIST
     // =========================
     public function apiList()

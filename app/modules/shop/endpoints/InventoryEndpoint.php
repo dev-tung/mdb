@@ -55,42 +55,38 @@ class InventoryEndpoint
         $data = request()->all();
 
         $id = $this->inventoryModel->create([
-            'product_id'=>$data['product_id'],
-            'warehouse_id'=>$data['warehouse_id'] ?? null,
-            'type'=>$data['type'],
-            'quantity'=>$data['quantity'],
-            'reference_type'=>$data['reference_type'] ?? null,
-            'reference_id'=>$data['reference_id'] ?? null,
-            'note'=>$data['note'] ?? null
+            'product_id'     => $data['product_id'],
+            'warehouse_id'   => $data['warehouse_id'] ?? null,
+            'type'           => $data['type'],
+            'quantity'       => $data['quantity'],
+            'reference_type' => $data['reference_type'] ?? null,
+            'reference_id'   => $data['reference_id'] ?? null,
+            'note'           => $data['note'] ?? null,
         ]);
 
         return Response::json([
-            'success'=>true,
-            'message'=>'Created',
-            'id'=>$id
+            'success' => true,
+            'message' => 'Created',
+            'id'      => $id,
         ]);
     }
-
 
     // UPDATE
     public function apiUpdate()
     {
         $data = request()->all();
 
-        $this->inventoryModel->update(
-            $data['id'],
-            [
-                'product_id'=>$data['product_id'],
-                'warehouse_id'=>$data['warehouse_id'] ?? null,
-                'type'=>$data['type'],
-                'quantity'=>$data['quantity'],
-                'note'=>$data['note'] ?? null
-            ]
-        );
+        $this->inventoryModel->update($data['id'], [
+            'product_id'   => $data['product_id'],
+            'warehouse_id' => $data['warehouse_id'] ?? null,
+            'type'         => $data['type'],
+            'quantity'     => $data['quantity'],
+            'note'         => $data['note'] ?? null,
+        ]);
 
         return Response::json([
-            'success'=>true,
-            'message'=>'Updated'
+            'success' => true,
+            'message' => 'Updated',
         ]);
     }
 
