@@ -1,4 +1,4 @@
-import {Api} from "../../../../common/assets/js/api.js";
+import {Api} from "../helper/api.js";
 
 
 export const CustomerSearch = {

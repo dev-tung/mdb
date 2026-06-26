@@ -3,101 +3,148 @@
 class InventoryModel
 {
 
-    public function apiList(array $conditions = []): array
+    /**
+     * Lấy toàn bộ sản phẩm kèm tồn kho
+     * Bao gồm sản phẩm chưa có tồn
+     */
+    public function getList(array $filters = [])
     {
-        $params = [];
-
         $sql = "
             SELECT
-                it.*,
-                p.name AS product_name,
-                w.name AS warehouse_name
-            FROM inventory_transactions it
-            LEFT JOIN products p ON p.id = it.product_id
-            LEFT JOIN warehouses w ON w.id = it.warehouse_id
+                p.*,
+                COALESCE(i.quantity,0) AS stock
+
+            FROM products p
+
+            LEFT JOIN inventories i
+            ON i.product_id = p.id
+
+            WHERE 1=1
         ";
 
-        $sql .= $this->buildWhere($conditions,$params);
+        $params = [];
 
-        $sql .= " ORDER BY it.id DESC ";
 
-        return Database::get($sql,$params);
+        if (!empty($filters['keyword'])) {
+
+            $sql .= " AND p.name LIKE ? ";
+
+            $params[] = '%' . $filters['keyword'] . '%';
+
+        }
+
+
+        if (!empty($filters['category_id'])) {
+
+            $sql .= " AND p.category_id = ? ";
+
+            $params[] = $filters['category_id'];
+
+        }
+
+
+        $sql .= " ORDER BY p.id DESC ";
+
+
+        return DB::select($sql, $params);
+
     }
 
 
-    public function apiShow($id): ?array
+
+    /**
+     * Lấy sản phẩm đang còn tồn kho
+     * Chỉ lấy stock > 0
+     */
+    public function getStock(array $filters = [])
     {
-        return Database::first("
+        $sql = "
             SELECT
-                it.*,
-                p.name AS product_name,
-                w.name AS warehouse_name
-            FROM inventory_transactions it
-            LEFT JOIN products p ON p.id = it.product_id
-            LEFT JOIN warehouses w ON w.id = it.warehouse_id
-            WHERE it.id=:id
-            LIMIT 1
+                p.*,
+                i.quantity AS stock
+
+            FROM products p
+
+            INNER JOIN inventories i
+            ON i.product_id = p.id
+
+            WHERE i.quantity > 0
+        ";
+
+        $params = [];
+
+
+        if (!empty($filters['keyword'])) {
+
+            $sql .= " AND p.name LIKE ? ";
+
+            $params[] = '%' . $filters['keyword'] . '%';
+
+        }
+
+
+        if (!empty($filters['category_id'])) {
+
+            $sql .= " AND p.category_id = ? ";
+
+            $params[] = $filters['category_id'];
+
+        }
+
+
+        $sql .= " ORDER BY p.id DESC ";
+
+
+        return DB::select($sql, $params);
+
+    }
+
+
+
+    /**
+     * Tăng tồn kho khi nhập hàng
+     */
+    public function increase(int $productId, int $quantity)
+    {
+        return DB::execute("
+
+            INSERT INTO inventories
+            (
+                product_id,
+                quantity
+            )
+
+            VALUES (?,?)
+
+            ON DUPLICATE KEY UPDATE
+
+            quantity = quantity + VALUES(quantity)
+
         ",[
-            'id'=>$id
+            $productId,
+            $quantity
         ]);
     }
 
 
-    public function create(array $data): int
+
+    /**
+     * Giảm tồn kho khi bán hàng
+     */
+    public function decrease(int $productId, int $quantity)
     {
-        return Database::insert('inventory_transactions',$data);
-    }
+        return DB::execute("
 
+            UPDATE inventories
 
-    public function update(int $id,array $data): bool
-    {
-        return Database::update(
-            'inventory_transactions',
-            $data,
-            ['id'=>$id]
-        );
-    }
+            SET quantity = quantity - ?
 
+            WHERE product_id = ?
 
-    public function delete(int $id): bool
-    {
-        return Database::delete(
-            'inventory_transactions',
-            ['id'=>$id]
-        );
-    }
-
-
-    private function buildWhere(array $conditions,array &$params): string
-    {
-        $sql=" WHERE 1=1 ";
-
-        if(!empty($conditions['product_id'])){
-            $sql.=" AND it.product_id=:product_id";
-            $params['product_id']=$conditions['product_id'];
-        }
-
-        if(!empty($conditions['warehouse_id'])){
-            $sql.=" AND it.warehouse_id=:warehouse_id";
-            $params['warehouse_id']=$conditions['warehouse_id'];
-        }
-
-        if(!empty($conditions['type'])){
-            $sql.=" AND it.type=:type";
-            $params['type']=$conditions['type'];
-        }
-
-        if(!empty($conditions['reference_type'])){
-            $sql.=" AND it.reference_type=:reference_type";
-            $params['reference_type']=$conditions['reference_type'];
-        }
-
-        if(!empty($conditions['keyword'])){
-            $sql.=" AND p.name LIKE :keyword";
-            $params['keyword']='%'.$conditions['keyword'].'%';
-        }
-
-        return $sql;
+        ",[
+            $quantity,
+            $productId
+        ]);
     }
 
 }

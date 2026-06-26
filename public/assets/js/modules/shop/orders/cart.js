@@ -1,5 +1,5 @@
 import {OrderState} from "./state.js";
-import {Formatter} from "../../../../common/assets/js/formatter.js";
+import {Formatter} from "../formatter.js";
 
 
 export const Cart = {
@@ -22,7 +22,6 @@ export const Cart = {
             `;
 
         });
-
 
         this.calc();
 
