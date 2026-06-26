@@ -273,7 +273,7 @@
 
     </footer>
     
-    <script src="<?= asset('js/script.js') ?>"></script>
+    <script src="<?= asset('js/bootstrap.js') ?>"></script>
 
 </body>
 </html>

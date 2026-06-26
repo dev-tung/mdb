@@ -4,8 +4,6 @@
 // PRODUCT
 // =========================
 Router::get('/api/products', 'ProductEndpoint@apiList', ['auth' => 'admin']);
-Router::get('/api/products/available', 'ProductEndpoint@apiAvailable', ['auth' => 'admin']);
-Router::get('/api/products/stock', 'ProductEndpoint@apiStock');
 Router::post('/api/products', 'ProductEndpoint@apiCreate', ['auth' => 'admin']);
 Router::get('/api/products/show/{id}', 'ProductEndpoint@apiShow', ['auth' => 'admin']);
 Router::post('/api/products/update', 'ProductEndpoint@apiUpdate', ['auth' => 'admin']);
